@@ -5,10 +5,11 @@ namespace Csp.Jwt.Models
 {
     public class TokenWithClaimsPrincipal
     {
-        public string AccessToken { get; internal set; }
+        public Token AccessToken { get; internal set; }
 
         public ClaimsPrincipal ClaimsPrincipal { get; internal set; }
 
         public AuthenticationProperties AuthProperties { get; internal set; }
+        
     }
 }

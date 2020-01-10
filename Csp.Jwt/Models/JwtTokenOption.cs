@@ -29,6 +29,11 @@ namespace Csp.Jwt.Models
         }
 
         /// <summary>
+        /// 数据保护配置存储路径
+        /// </summary>
+        public string KeyStoragePath { get; set; } = "C://key";
+
+        /// <summary>
         /// 过期时间
         /// </summary>
         public int Expires { get; set; }

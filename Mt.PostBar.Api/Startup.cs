@@ -1,20 +1,14 @@
 using Csp.Consul;
-using Csp.EF.Extensions;
 using Csp.Jwt.Extensions;
-using Csp.OAuth.Api.Application;
-using Csp.OAuth.Api.Application.Services;
-using Csp.OAuth.Api.Infrastructure;
 using Csp.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
 
-namespace Csp.OAuth.Api
+namespace Mt.PostBar.Api
 {
     public class Startup
     {
@@ -28,13 +22,9 @@ namespace Csp.OAuth.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            API.Remote_Service_Base_Url = Configuration.GetValue<string>("OcelotUrl");
-
             services.AddControllers();
-
             services.AddConsul(Configuration);
             services.AddJwt(Configuration);
-            services.AddEF<OAuthDbContext>(Configuration.GetConnectionString("DefaultConnection"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,20 +51,8 @@ namespace Csp.OAuth.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", context => context.Response.WriteAsync("Ok"));
                 endpoints.MapControllers();
             });
-        }
-    }
-
-    static class ServiceCollectionExtensions
-    {
-        public static IServiceCollection AddHttpClientServices(this IServiceCollection services)
-        {
-            services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5));
-            services.AddHttpClient<IWxService, WxService>();
-
-            return services;
         }
     }
 }

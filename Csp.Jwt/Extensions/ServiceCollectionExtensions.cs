@@ -40,7 +40,7 @@ namespace Csp.Jwt.Extensions
             jwtTokenOptions = appSettingsSection.Get<JwtTokenOption>();
 
             var appSettings = configuration.GetSection("AuthUrl");
-            AuthUrlOptions authUrlOptions = appSettingsSection.Get<AuthUrlOptions>();
+            AuthUrlOption authUrlOptions = appSettingsSection.Get<AuthUrlOption>();
 
             var hostingEnvironment = services.BuildServiceProvider().GetService<IWebHostEnvironment>();
 
@@ -52,7 +52,7 @@ namespace Csp.Jwt.Extensions
                 $"{applicationDiscriminator ?? hostingEnvironment.ApplicationName}")
                 //windows、Linux、macOS 下可以使用此种方式 保存到文件系统
                 //也扩展写到redis
-                .PersistKeysToFileSystem(new System.IO.DirectoryInfo("C:\\keys\\"));
+                .PersistKeysToFileSystem(new System.IO.DirectoryInfo(jwtTokenOptions.KeyStoragePath));
 
             services.AddScoped<IDataSerializer<AuthenticationTicket>, TicketSerializer>();
 

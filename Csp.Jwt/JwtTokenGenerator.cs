@@ -27,7 +27,7 @@ namespace Csp.Jwt
 
             return new TokenWithClaimsPrincipal()
             {
-                AccessToken = accessToken,
+                AccessToken = new Token(accessToken, _tokenOptions.Expires),
                 ClaimsPrincipal = ClaimsPrincipalFactory.CreatePrincipal(claims),
                 AuthProperties = CreateAuthProperties(accessToken)
             };

@@ -5,13 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.0" />
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Seq.Extensions.Logging" Version="4.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Csp.Consul\Csp.Consul.csproj" />
-    <ProjectReference Include="..\Csp.EF\Csp.EF.csproj" />
     <ProjectReference Include="..\Csp.Jwt\Csp.Jwt.csproj" />
     <ProjectReference Include="..\Csp.Web\Csp.Web.csproj" />
   </ItemGroup>
