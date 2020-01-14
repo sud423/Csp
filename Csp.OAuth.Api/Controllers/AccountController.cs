@@ -5,20 +5,32 @@ using Csp.OAuth.Api.Models;
 using Csp.OAuth.Api.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
 namespace Csp.OAuth.Api.Controllers
 {
+    [Route("api/v1/account")]
     public class AccountController : ControllerBase
     {
         private readonly OAuthDbContext _ctx;
         private readonly IWxService _wxService;
+        ILogger<AccountController> _logger;
 
-        public AccountController(OAuthDbContext ctx, IWxService wxService)
+        public AccountController(OAuthDbContext ctx, IWxService wxService, ILogger<AccountController> logger)
         {
             _ctx = ctx;
             _wxService = wxService;
+            _logger = logger;
+        }
+
+        [HttpGet,Route("write")]
+        public IActionResult WriteToLog()
+        {
+            _logger.LogDebug($"oh this is oauth! : {DateTime.UtcNow}");
+
+            return Ok();
         }
 
         /// <summary>

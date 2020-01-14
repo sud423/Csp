@@ -6,9 +6,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Csp.Consul\Csp.Consul.csproj" />
+    <ProjectReference Include="..\Csp.Jwt\Csp.Jwt.csproj" />
     <ProjectReference Include="..\Csp.Web\Csp.Web.csproj" />
-    <ProjectReference Include="..\Csp.Wx\Csp.Wx.csproj" />
   </ItemGroup>
-
 
 </Project>

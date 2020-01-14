@@ -41,7 +41,7 @@ namespace Csp.Wx.Api
 
             app.UseStatusCodePages(err => err.Run(async context => await context.StatusCodeResponse()));
 
-            loggerfactory.AddSeq(Configuration.GetSection("Seq"));
+            //loggerfactory.AddSeq(Configuration.GetSection("Seq"));
 
             //Ìí¼Óconsul
             app.UseConsul(lifetime);
@@ -52,7 +52,7 @@ namespace Csp.Wx.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", context => context.Response.WriteAsync("Ok"));
+                endpoints.MapGet("/", async context => await context.Response.WriteAsync("Ok"));
                 endpoints.MapControllers();
             });
         }

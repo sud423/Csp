@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Csp.Wx.Api
+namespace Csp.Blog.Api
 {
     public class Program
     {

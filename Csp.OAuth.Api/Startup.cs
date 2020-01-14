@@ -5,13 +5,13 @@ using Csp.OAuth.Api.Application;
 using Csp.OAuth.Api.Application.Services;
 using Csp.OAuth.Api.Infrastructure;
 using Csp.Web.Extensions;
+using Elastic.Apm.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
 
 namespace Csp.OAuth.Api
@@ -35,10 +35,12 @@ namespace Csp.OAuth.Api
             services.AddConsul(Configuration);
             services.AddJwt(Configuration);
             services.AddEF<OAuthDbContext>(Configuration.GetConnectionString("DefaultConnection"));
+
+            services.AddHttpClientServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime, ILoggerFactory loggerfactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {
             if (env.IsDevelopment())
             {
@@ -49,7 +51,9 @@ namespace Csp.OAuth.Api
 
             app.UseStatusCodePages(err => err.Run(async context => await context.StatusCodeResponse()));
 
-            loggerfactory.AddSeq(Configuration.GetSection("Seq"));
+            //Registers the agent with an IConfiguration instance:
+            app.UseElasticApm(Configuration);
+            //loggerfactory.AddSeq(Configuration.GetSection("Seq"));
 
             //Ìí¼Óconsul
             app.UseConsul(lifetime);
@@ -61,7 +65,7 @@ namespace Csp.OAuth.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", context => context.Response.WriteAsync("Ok"));
+                endpoints.MapGet("/", async context => await context.Response.WriteAsync("Ok"));
                 endpoints.MapControllers();
             });
         }

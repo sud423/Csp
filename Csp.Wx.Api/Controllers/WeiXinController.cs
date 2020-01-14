@@ -36,7 +36,7 @@ namespace Csp.Wx.Api.Controllers
         /// </summary>
         /// <param name="code">授权码</param>
         /// <returns></returns>
-        [Route("getsnsuser/{code:string}")]
+        [Route("getsnsuser/{code}")]
         [HttpGet]
         public async Task<ActionResult<WxUser>> GetWxUser(string code)
         {
