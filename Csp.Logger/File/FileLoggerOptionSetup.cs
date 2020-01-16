@@ -3,9 +3,9 @@ using Microsoft.Extensions.Options;
 
 namespace Csp.Logger.File
 {
-    public class FileLoggerOptionsSetup : ConfigureFromConfigurationOptions<FileLoggerOptions>
+    public class FileLoggerOptionSetup : ConfigureFromConfigurationOptions<FileLoggerOption>
     {
-        public FileLoggerOptionsSetup(ILoggerProviderConfiguration<FileLoggerProvider> providerConfiguration)
+        public FileLoggerOptionSetup(ILoggerProviderConfiguration<FileLoggerProvider> providerConfiguration)
             : base(providerConfiguration.Configuration)
         {
 

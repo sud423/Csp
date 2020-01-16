@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Csp.Logger.File;
+using Microsoft.Extensions.Logging;
 
 namespace Csp.Wx.Api
 {
@@ -12,6 +14,14 @@ namespace Csp.Wx.Api
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    //logging.AddConsole();
+                    //logging.AddDebug();
+                    logging.AddFile();
+                    //logging.AddFileLogger(options => {  });
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

@@ -32,7 +32,7 @@ namespace Csp.OAuth.Api
 
             services.AddControllers();
 
-            services.AddConsul(Configuration);
+            //services.AddConsul(Configuration);
             services.AddJwt(Configuration);
             services.AddEF<OAuthDbContext>(Configuration.GetConnectionString("DefaultConnection"));
 
@@ -56,7 +56,7 @@ namespace Csp.OAuth.Api
             //loggerfactory.AddSeq(Configuration.GetSection("Seq"));
 
             //Ìí¼Óconsul
-            app.UseConsul(lifetime);
+            //app.UseConsul(lifetime);
 
             app.UseRouting();
 

@@ -18,29 +18,28 @@ namespace Csp.Logger.File
     [ProviderAlias("File")]
     public class FileLoggerProvider : LoggerProvider
     {
-        FileLoggerOptions _settings;
-
+        FileLoggerOption _settings;
 
         bool terminated;
         int counter = 0;
         string filePath;
 
-        Dictionary<string, int> lengths = new Dictionary<string, int>();
-
-        ConcurrentQueue<LogEntry> infoQueue = new ConcurrentQueue<LogEntry>();
+        ConcurrentQueue<LogMessage> infoQueue = new ConcurrentQueue<LogMessage>();
 
 
-        public FileLoggerProvider(FileLoggerOptions settings)
+        public FileLoggerProvider(FileLoggerOption settings)
         {
-            PrepareLengths();
+
             _settings = settings;
 
-            // 创建第一个文件
-            BeginFile();
+
+            //日志文件保留策略
+            ApplyRetainPolicy();
+
 
             ThreadProc();
 
-            //IWebHostEnvironment
+            
         }
 
         /// <summary>
@@ -48,27 +47,28 @@ namespace Csp.Logger.File
         /// </summary>
         void ApplyRetainPolicy()
         {
-            FileInfo FI;
+            FileInfo fileInfo;
             try
             {
                 var ext = Path.GetExtension(_settings.Path);
-                var flode = Path.GetFullPath(_settings.Path);
-                List<FileInfo> FileList = new DirectoryInfo(flode)
+                var fullPath = Path.GetFullPath(_settings.Path);
+                List<FileInfo> files = new DirectoryInfo(Path.GetDirectoryName(fullPath))
                 .GetFiles($"*.{ext}", SearchOption.TopDirectoryOnly)
                 .OrderBy(fi => fi.CreationTime)
                 .ToList();
 
-                while (FileList.Count >= _settings.RetainedFileCountLimit)
+                while (_settings.RetainedFileCountLimit.HasValue && files.Count >= _settings.RetainedFileCountLimit)
                 {
-                    FI = FileList.First();
-                    FI.Delete();
-                    FileList.Remove(FI);
+                    fileInfo = files.First();
+                    fileInfo.Delete();
+                    files.Remove(fileInfo);
                 }
             }
             catch
             {
             }
         }
+        
         /// <summary>
         /// 将一行文本写入当前文件
         /// 如果文件达到大小限制，请创建一个新文件并使用该新文件。
@@ -79,10 +79,10 @@ namespace Csp.Logger.File
             counter++;
             if (counter % 100 == 0)
             {
-                FileInfo FI = new FileInfo(filePath);
-                if (FI.Length > (1024 * 1024 * _settings.FileSizeLimit))
+                FileInfo fileInfo = new FileInfo(filePath);
+                if (_settings.FileSizeLimit.HasValue && fileInfo.Length > (1024 * 1024 * _settings.FileSizeLimit.Value))
                 {
-                    BeginFile();
+                    return;
                 }
             }
 
@@ -90,110 +90,28 @@ namespace Csp.Logger.File
         }
 
         /// <summary>
-        /// 用空格填充字符串到最大长度。如果字符串超出限制，则将字符串截断为最大长度。
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="maxLength"></param>
-        /// <returns></returns>
-        string Pad(string text, int maxLength)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-                return "".PadRight(maxLength);
-
-            if (text.Length > maxLength)
-                return text.Substring(0, maxLength);
-
-            return text.PadRight(maxLength);
-        }
-
-
-        /// <summary>
-        /// 准备日志文件中列的长度
-        /// </summary>
-        void PrepareLengths()
-        {
-            //准备长度表格
-            lengths["Time"] = 24;
-            lengths["Host"] = 16;
-            lengths["User"] = 16;
-            lengths["Level"] = 14;
-            lengths["EventId"] = 32;
-            lengths["Category"] = 92;
-            lengths["Scope"] = 64;
-        }
-        /// <summary>
-        /// Creates a new disk file and writes the column titles
-        /// </summary>
-        void BeginFile()
-        {
-            Directory.CreateDirectory(_settings.Path);
-            //filePath = Path.Combine(_settings.Folder, LogEntry.StaticHostName + "-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".log");
-
-            // titles
-            StringBuilder sb = new StringBuilder();
-            sb.Append(Pad("Time", lengths["Time"]));
-            sb.Append(Pad("Host", lengths["Host"]));
-            sb.Append(Pad("User", lengths["User"]));
-            sb.Append(Pad("Level", lengths["Level"]));
-            sb.Append(Pad("EventId", lengths["EventId"]));
-            sb.Append(Pad("Category", lengths["Category"]));
-            sb.Append(Pad("Scope", lengths["Scope"]));
-            sb.AppendLine("Text");
-
-            System.IO.File.WriteAllText(filePath, sb.ToString());
-
-            ApplyRetainPolicy();
-        }
-        /// <summary>
         /// Pops a log info instance from the stack, prepares the text line, and writes the line to the text file.
         /// </summary>
         void WriteLogLine()
         {
-            LogEntry Info = null;
-            if (infoQueue.TryDequeue(out Info))
+            if (infoQueue.TryDequeue(out LogMessage message))
             {
-                string S;
-                StringBuilder sb = new StringBuilder();
-                sb.Append(Pad(Info.Timestamp.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss.ff"), lengths["Time"]));
-                sb.Append(Pad(Info.HostName, lengths["Host"]));
-                sb.Append(Pad(Info.UserName, lengths["User"]));
-                sb.Append(Pad(Info.Level.ToString(), lengths["Level"]));
-                sb.Append(Pad(Info.EventId != null ? Info.EventId.ToString() : "", lengths["EventId"]));
-                sb.Append(Pad(Info.Category, lengths["Category"]));
+                var fullPath = Path.GetFullPath(_settings.Path);
 
-                S = "";
-                if (Info.Scopes != null && Info.Scopes.Count > 0)
-                {
-                    LogScopeInfo SI = Info.Scopes.Last();
-                    if (!string.IsNullOrWhiteSpace(SI.Text))
-                    {
-                        S = SI.Text;
-                    }
-                    else
-                    {
-                    }
-                }
-                sb.Append(Pad(S, lengths["Scope"]));
+                var directory = Path.GetDirectoryName(fullPath);
 
-                string Text = Info.Text;
+                if (!Directory.Exists(directory))
+                    Directory.CreateDirectory(directory);
 
-                /* writing properties is too much for a text file logger
-                if (Info.StateProperties != null && Info.StateProperties.Count > 0)
-                {
-                    Text = Text + " Properties = " + Newtonsoft.Json.JsonConvert.SerializeObject(Info.StateProperties);
-                }                 
-                 */
-
-                if (!string.IsNullOrWhiteSpace(Text))
-                {
-                    sb.Append(Text.Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " "));
-                }
-
-                sb.AppendLine();
-                WriteLine(sb.ToString());
+                var format = _settings.RollingInterval.GetFormat();
+                var ext = Path.GetExtension(fullPath);
+                filePath = fullPath.Replace(ext, $"{message.Timestamp.ToString(format)}{ext}");
+                WriteLine("");
+                WriteLine(message.Message);
             }
 
         }
+        
         void ThreadProc()
         {
             Task.Run(() => {
@@ -213,9 +131,8 @@ namespace Csp.Logger.File
             });
         }
 
-        /* overrides */
         /// <summary>
-        /// Disposes the options change toker. IDisposable pattern implementation.
+        /// 配置选项更改代号。 IDisposable模式实现。
         /// </summary>
         protected override void Dispose(bool disposing)
         {
@@ -223,16 +140,13 @@ namespace Csp.Logger.File
             base.Dispose(disposing);
         }
 
-        /* construction */
         /// <summary>
-        /// Constructor.
-        /// <para>The IOptionsMonitor provides the OnChange() method which is called when the user alters the settings of this provider in the appsettings.json file.</para>
+        /// IOptionsMonitor提供OnChange()方法，当用户更改appsettings.json文件中此提供程序的设置时，将调用此方法。
         /// </summary>
-        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> settings)
-            : this(settings.CurrentValue)
+        public FileLoggerProvider(IOptionsMonitor<FileLoggerOption> settings) : this(settings.CurrentValue)
         {
             // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/change-tokens
-            SettingsChangeToken = settings.OnChange(setting => {
+            _optionsChangeToken = settings.OnChange(setting => {
                 _settings = setting;
             });
         }
@@ -246,9 +160,9 @@ namespace Csp.Logger.File
             return result;
         }
 
-        public override void WriteLog(LogEntry Info)
+        public override void WriteLog(LogMessage message)
         {
-            throw new System.NotImplementedException();
+            infoQueue.Enqueue(message);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Csp.Wx.Api
         {
             services.AddControllers();
             services.AddWx(Configuration);
-            services.AddConsul(Configuration);
+            //services.AddConsul(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +44,7 @@ namespace Csp.Wx.Api
             //loggerfactory.AddSeq(Configuration.GetSection("Seq"));
 
             //Ìí¼Óconsul
-            app.UseConsul(lifetime);
+            //app.UseConsul(lifetime);
 
             app.UseRouting();
 

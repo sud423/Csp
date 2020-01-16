@@ -19,7 +19,7 @@ namespace Csp.Logger.File
                 case RollingIntervalEnum.Minute:
                     return "yyyyMMddHHmm";
                 default:
-                    throw new ArgumentException("无效的滚动间隔");
+                    return "";
             }
         }
     }

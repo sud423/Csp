@@ -14,7 +14,7 @@ namespace Csp.Logger
     {
         ConcurrentDictionary<string, FileLogger> loggers = new ConcurrentDictionary<string, FileLogger>();
         IExternalScopeProvider fScopeProvider;
-        protected IDisposable SettingsChangeToken;
+        protected IDisposable _optionsChangeToken;
 
         /// <summary>
         /// 返回一个ILogger实例，以服务于指定的类别
@@ -51,10 +51,10 @@ namespace Csp.Logger
         /// </summary>
         protected virtual void Dispose(bool disposing)
         {
-            if (SettingsChangeToken != null)
+            if (_optionsChangeToken != null)
             {
-                SettingsChangeToken.Dispose();
-                SettingsChangeToken = null;
+                _optionsChangeToken.Dispose();
+                _optionsChangeToken = null;
             }
         }
 
@@ -64,7 +64,7 @@ namespace Csp.Logger
         /// </summary>
         ~LoggerProvider()
         {
-            if (!this.IsDisposed)
+            if (!IsDisposed)
             {
                 Dispose(false);
             }
@@ -90,7 +90,7 @@ namespace Csp.Logger
         /// 记录器实际上并不以任何介质记录信息
         /// 而是调用其提供程序WriteLog()方法，传递收集的日志信息
         /// </summary>
-        public abstract void WriteLog(LogEntry Info);
+        public abstract void WriteLog(LogMessage message);
 
         /// <summary>
         /// 返回范围提供者

@@ -14,7 +14,7 @@ namespace Csp.Ocelot.Api
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOcelot().AddConsul();//注入Ocelot服务
+            services.AddOcelot();//.AddConsul();//注入Ocelot服务
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

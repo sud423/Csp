@@ -25,7 +25,7 @@ namespace Csp.Blog.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddConsul(Configuration);
+            //services.AddConsul(Configuration);
             services.AddJwt(Configuration);
         }
 
@@ -44,7 +44,7 @@ namespace Csp.Blog.Api
             //loggerfactory.AddSeq(Configuration.GetSection("Seq"));
 
             //Ìí¼Óconsul
-            app.UseConsul(lifetime);
+            //app.UseConsul(lifetime);
 
             app.UseRouting();
 

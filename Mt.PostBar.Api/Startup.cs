@@ -23,7 +23,7 @@ namespace Mt.PostBar.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddConsul(Configuration);
+            //services.AddConsul(Configuration);
             services.AddJwt(Configuration);
         }
 
@@ -42,7 +42,7 @@ namespace Mt.PostBar.Api
             //loggerfactory.AddSeq(Configuration.GetSection("Seq"));
 
             //Ìí¼Óconsul
-            app.UseConsul(lifetime);
+            //app.UseConsul(lifetime);
 
             app.UseRouting();
 

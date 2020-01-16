@@ -2,6 +2,8 @@
 using Csp.Wx.Api.Models;
 using Csp.Wx.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Csp.Wx.Api.Controllers
@@ -11,9 +13,27 @@ namespace Csp.Wx.Api.Controllers
     {
         readonly IWxService _wxService;
 
-        public WeiXinController(IWxService wxService)
+        ILogger _logger;
+
+        public WeiXinController(IWxService wxService,ILogger<WeiXinController> logger)
         {
             _wxService = wxService;
+            _logger = logger;
+        }
+
+
+        public IActionResult Index()
+        {
+            var fullPath = Path.GetFullPath("logs/log20180223.log");
+
+            var ext = Path.GetExtension(fullPath);
+            var filePath = fullPath.Replace(ext, $"xxx{ext}");
+
+            _logger.LogInformation(fullPath);
+            _logger.LogError(ext);
+            _logger.LogDebug(filePath);
+
+            return Ok($"FullPath:{fullPath}\nDirectoryName:{Path.GetDirectoryName(fullPath)}\nFileName:{filePath}");
         }
 
         /// <summary>

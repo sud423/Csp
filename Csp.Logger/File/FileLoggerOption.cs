@@ -3,10 +3,10 @@ using System;
 
 namespace Csp.Logger.File
 {
-    public class FileLoggerOptions
+    public class FileLoggerOption
     {
         private long? _fileSizeLimit; //每个文件的最大日志大小（以字节为单位）
-        private int? _retainedFileCountLimit = 31; // 保留一个月的日志
+        private int? _retainedFileCountLimit; // 保留最新几个日志
 
 
         /// <summary>
@@ -58,6 +58,6 @@ namespace Csp.Logger.File
         /// <summary>
         /// 获取或设置日志文件滚动的频率。
         /// </summary>
-        public RollingIntervalEnum RollingInterval { get; set; }
+        public RollingIntervalEnum RollingInterval { get; set; } = RollingIntervalEnum.Day;
     }
 }
