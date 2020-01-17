@@ -1,5 +1,7 @@
+using Csp.Logger;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Csp.Blog.Api
 {
@@ -12,6 +14,13 @@ namespace Csp.Blog.Api
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    //logging.AddConsole();
+                    //logging.AddDebug();
+                    logging.AddFile();
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

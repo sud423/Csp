@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Csp.Logger.File
+namespace Csp.Logger
 {
     public class LogMessage
     {

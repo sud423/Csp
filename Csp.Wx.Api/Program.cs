@@ -1,6 +1,6 @@
+using Csp.Logger;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Csp.Logger.File;
 using Microsoft.Extensions.Logging;
 
 namespace Csp.Wx.Api
