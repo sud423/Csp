@@ -20,7 +20,6 @@ namespace Csp.Wx.Api
                     //logging.AddConsole();
                     //logging.AddDebug();
                     logging.AddFile();
-                    //logging.AddFileLogger(options => {  });
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

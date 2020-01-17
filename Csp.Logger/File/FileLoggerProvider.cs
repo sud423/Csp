@@ -106,7 +106,7 @@ namespace Csp.Logger.File
                 var format = _settings.RollingInterval.GetFormat();
                 var ext = Path.GetExtension(fullPath);
                 filePath = fullPath.Replace(ext, $"{message.Timestamp.ToString(format)}{ext}");
-                WriteLine("");
+                
                 WriteLine(message.Message);
             }
 
