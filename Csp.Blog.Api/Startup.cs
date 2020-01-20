@@ -1,4 +1,3 @@
-using Csp.Consul;
 using Csp.Jwt.Extensions;
 using Csp.Web.Extensions;
 using Microsoft.AspNetCore.Builder;

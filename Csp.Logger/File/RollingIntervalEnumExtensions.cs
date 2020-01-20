@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Csp.Logger.File
+﻿namespace Csp.Logger.File
 {
     internal static class RollingIntervalEnumExtensions
     {

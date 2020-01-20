@@ -1,14 +1,20 @@
+using Csp.EF.Extensions;
+using Csp.Jwt;
+using Csp.Jwt.Extensions;
+using Csp.Upload.Api.Application;
+using Csp.Upload.Api.Application.Services;
+using Csp.Upload.Api.Infrastructure;
+using Csp.Upload.Api.Models;
 using Csp.Web.Extensions;
-using Csp.Wx.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using System;
 
-namespace Csp.Wx.Api
+namespace Csp.Upload.Api
 {
     public class Startup
     {
@@ -20,16 +26,19 @@ namespace Csp.Wx.Api
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddWx(Configuration);
-            //services.AddConsul(Configuration);
+            services.AddHttpContextAccessor();
+            services.AddEF<OssDbContext>(Configuration.GetConnectionString("DefaultConnection"));
+
+            services.AddJwt(Configuration);
+            services.AddOssServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime,
-                        ILoggerFactory loggerfactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -40,20 +49,30 @@ namespace Csp.Wx.Api
 
             app.UseStatusCodePages(err => err.Run(async context => await context.StatusCodeResponse()));
 
-            //loggerfactory.AddSeq(Configuration.GetSection("Seq"));
-
-            //Ìí¼Óconsul
-            //app.UseConsul(lifetime);
-
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context => await context.Response.WriteAsync("Ok"));
+                endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("Ok");
+                });
                 endpoints.MapControllers();
             });
+        }
+    }
+    static class ServiceCollectionExtensions
+    {
+        public static IServiceCollection AddOssServices(this IServiceCollection services)
+        {
+            //services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5));
+            services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IIdentityParser<AppUser>, IdentityParser>();
+
+            return services;
         }
     }
 }

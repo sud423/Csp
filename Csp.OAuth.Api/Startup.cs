@@ -1,4 +1,3 @@
-using Csp.Consul;
 using Csp.EF.Extensions;
 using Csp.Jwt.Extensions;
 using Csp.OAuth.Api.Application;
@@ -52,7 +51,7 @@ namespace Csp.OAuth.Api
             app.UseStatusCodePages(err => err.Run(async context => await context.StatusCodeResponse()));
 
             //Registers the agent with an IConfiguration instance:
-            app.UseElasticApm(Configuration);
+            //app.UseElasticApm(Configuration);
             //loggerfactory.AddSeq(Configuration.GetSection("Seq"));
 
             //Ìí¼Óconsul

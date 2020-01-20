@@ -1,4 +1,5 @@
-﻿using Csp.OAuth.Api.Application;
+﻿using Csp.Jwt;
+using Csp.OAuth.Api.Application;
 using Csp.OAuth.Api.Application.Services;
 using Csp.OAuth.Api.Infrastructure;
 using Csp.OAuth.Api.Models;
@@ -7,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Csp.OAuth.Api.Controllers
@@ -16,21 +19,29 @@ namespace Csp.OAuth.Api.Controllers
     {
         private readonly OAuthDbContext _ctx;
         private readonly IWxService _wxService;
-        ILogger<AccountController> _logger;
+        readonly ILogger<AccountController> _logger;
+        private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-        public AccountController(OAuthDbContext ctx, IWxService wxService, ILogger<AccountController> logger)
+        public AccountController(OAuthDbContext ctx, IWxService wxService, ILogger<AccountController> logger, IJwtTokenGenerator jwtTokenGenerator)
         {
             _ctx = ctx;
             _wxService = wxService;
             _logger = logger;
+            _jwtTokenGenerator = jwtTokenGenerator;
         }
 
-        [HttpGet,Route("write")]
-        public IActionResult WriteToLog()
+        [Route("sigin")]
+        [HttpPost]
+        public async Task<IActionResult> SigIn([FromBody]LoginModel model)
         {
-            _logger.LogDebug($"oh this is oauth! : {DateTime.UtcNow}");
+            var user = await _ctx.Users.SingleOrDefaultAsync(a => a.UserName == model.UserName);
 
-            return Ok();
+            if (user == null || !PasswordHasher.Verify(model.Password, user?.Password))
+                return BadRequest(OptResult.Failed("用户名和密码不正确"));
+
+            var accessTokenResult = _jwtTokenGenerator.GenerateAccessTokenWithClaimsPrincipal(model.UserName, AddMyClaims(user));
+
+            return Ok(accessTokenResult.AccessToken);
         }
 
         /// <summary>
@@ -83,12 +94,11 @@ namespace Csp.OAuth.Api.Controllers
             else
             {
                 //记录登录信息
+                _logger.LogInformation($"{user.UserLogin?.OpenId}-{DateTimeOffset.UtcNow.LocalDateTime} 登录成功");
             }
             return Ok(user);
         }
-
-
-
+        
         /// <summary>
         /// 创建用户
         /// </summary>
@@ -105,6 +115,28 @@ namespace Csp.OAuth.Api.Controllers
             await _ctx.SaveChangesAsync();
 
             return Ok(OptResult.Success());
+        }
+
+
+        private IEnumerable<Claim> AddMyClaims(User user)
+        {
+            var myClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name,user.Name??""),
+                //new Claim(ClaimTypes.Role,dto.Role.ToString()),
+                new Claim(ClaimTypes.Email,user.Email??""),
+                new Claim(ClaimTypes.MobilePhone,user.Cell??""),
+                new Claim(ClaimTypes.NameIdentifier,user.UserName??(user.UserLogin?.NickName??"")),
+                new Claim(ClaimTypes.GroupSid,$"{user.TenantId}"),
+                new Claim(ClaimTypes.Sid,$"{user.Id}"),
+                new Claim("avatar",user.Avatar??(user.UserLogin?.HeadImg??"")),
+                new Claim("open_id",user.UserLogin?.OpenId??""),
+                new Claim("aud", "OAuth"),
+                new Claim("aud", "Blog"),
+                new Claim("aud", "Upload")
+            };
+
+            return myClaims;
         }
     }
 }
