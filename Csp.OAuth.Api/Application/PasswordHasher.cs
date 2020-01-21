@@ -26,19 +26,19 @@ namespace Csp.OAuth.Api.Application
         /// <returns>the hash</returns>
         public static string Hash(string password, int iterations)
         {
-            //create salt
+            //创建 salt
             byte[] salt;
             new RNGCryptoServiceProvider().GetBytes(salt = new byte[SaltSize]);
-            //create hash
+            //创建 hash
             var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations);
             var hash = pbkdf2.GetBytes(HashSize);
-            //combine salt and hash
+            //合并 salt and hash
             var hashBytes = new byte[SaltSize + HashSize];
             Array.Copy(salt, 0, hashBytes, 0, SaltSize);
             Array.Copy(hash, 0, hashBytes, SaltSize, HashSize);
-            //convert to base64
+            //转换为 base64
             var base64Hash = Convert.ToBase64String(hashBytes);
-            //format hash with extra information
+            //格式化带有额外信息的哈希
             return $"{Key}{iterations}${base64Hash}";
         }
         /// <summary>
