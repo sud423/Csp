@@ -1,3 +1,5 @@
+using Csp.Blog.Api.Infrastructure;
+using Csp.EF.Extensions;
 using Csp.Jwt.Extensions;
 using Csp.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -26,6 +28,7 @@ namespace Csp.Blog.Api
             services.AddControllers();
             //services.AddConsul(Configuration);
             services.AddJwt(Configuration);
+            services.AddEF<BlogDbContext>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
