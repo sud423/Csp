@@ -12,15 +12,10 @@ namespace Csp.OAuth.Api.Infrastructure.EntityConfigurations
 
             builder.HasKey(a => a.Id);
 
-            builder.Property(a => a.TenantId).HasColumnName("tenant_id");
-            builder.Property(a => a.UserName).HasColumnName("user_name");
-            builder.Property(a => a.Audit).HasColumnName("audit_reason");
-            builder.Property(a => a.CreatedAt).HasColumnName("add_time");
-            
-            builder.Ignore(a => a.Avatar);
-            builder.Ignore(a => a.UpdatedAt);
 
-            builder.HasOne(a => a.UserLogin).WithOne(a => a.User).HasForeignKey<UserLogin>(a=>a.UserId);
+            builder.HasOne(a => a.UserLogin).WithOne(a => a.User).HasForeignKey<UserLogin>(a=>a.Id);
+            builder.HasOne(a => a.ExternalLogin).WithOne(a => a.User).HasForeignKey<ExternalLogin>(a => a.Id);
+            builder.HasOne(a => a.UserInfo).WithOne(a => a.User).HasForeignKey<UserInfo>(a => a.Id);
         }
     }
 }

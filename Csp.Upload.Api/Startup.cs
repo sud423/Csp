@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace Csp.Upload.Api
 {
@@ -31,7 +30,7 @@ namespace Csp.Upload.Api
         {
             services.AddControllers();
             services.AddHttpContextAccessor();
-            services.AddEF<OssDbContext>(Configuration.GetConnectionString("DefaultConnection"));
+            services.AddEF<OssDbContext>(Configuration);
 
             services.AddJwt(Configuration);
             services.AddOssServices();

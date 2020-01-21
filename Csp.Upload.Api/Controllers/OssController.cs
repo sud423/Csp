@@ -1,6 +1,5 @@
 ﻿
 using Csp.Upload.Api.Application.Services;
-using Csp.Upload.Api.Models;
 using Csp.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -54,7 +53,6 @@ namespace Csp.Upload.Api.Controllers
                 newImg.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
                 var bytes = ms.GetBuffer();
                 ms.Close();
-                ms.Flush();
                 return File(bytes, file.ContentType);
             }
         }
@@ -73,7 +71,6 @@ namespace Csp.Upload.Api.Controllers
                 var bytes = new byte[sw.Length];
                 sw.Read(bytes, 0, bytes.Length);
                 sw.Close();
-                sw.Flush();
                 return File(bytes, file.ContentType);
             }
         }

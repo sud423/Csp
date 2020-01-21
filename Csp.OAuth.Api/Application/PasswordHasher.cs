@@ -6,12 +6,12 @@ namespace Csp.OAuth.Api.Application
     public class PasswordHasher
     {
         /// <summary>
-        /// Size of salt
+        /// 盐的大小
         /// </summary>
         private const int SaltSize = 16;
 
         /// <summary>
-        /// Size of hash
+        /// 哈希大小
         /// </summary>
         private const int HashSize = 20;
 
@@ -19,10 +19,10 @@ namespace Csp.OAuth.Api.Application
 
 
         /// <summary>
-        /// Creates a hash from a password
+        /// 密码加密为哈希
         /// </summary>
-        /// <param name="password">the password</param>
-        /// <param name="iterations">number of iterations</param>
+        /// <param name="password">密码</param>
+        /// <param name="iterations">迭代次数</param>
         /// <returns>the hash</returns>
         public static string Hash(string password, int iterations)
         {
@@ -39,52 +39,52 @@ namespace Csp.OAuth.Api.Application
             //convert to base64
             var base64Hash = Convert.ToBase64String(hashBytes);
             //format hash with extra information
-            return $"{Key}{iterations}{base64Hash}";
+            return $"{Key}{iterations}${base64Hash}";
         }
         /// <summary>
-        /// Creates a hash from a password with 10000 iterations
+        /// 使用10000次迭代创建哈希密码
         /// </summary>
-        /// <param name="password">the password</param>
-        /// <returns>the hash</returns>
+        /// <param name="password">密码</param>
+        /// <returns>哈希</returns>
         public static string Hash(string password)
         {
             return Hash(password, 10000);
         }
         /// <summary>
-        /// Check if hash is supported
+        /// 检查是否支持哈希
         /// </summary>
-        /// <param name="hashString">the hash</param>
-        /// <returns>is supported?</returns>
+        /// <param name="hashString">哈希</param>
+        /// <returns>支持吗？</returns>
         public static bool IsHashSupported(string hashString)
         {
             return hashString.Contains(Key);
         }
         /// <summary>
-        /// verify a password against a hash
+        /// 针对哈希验证密码
         /// </summary>
-        /// <param name="password">the password</param>
-        /// <param name="hashedPassword">the hash</param>
+        /// <param name="password">密码</param>
+        /// <param name="hashedPassword">哈希</param>
         /// <returns>could be verified?</returns>
         public static bool Verify(string password, string hashedPassword)
         {
             //check hash
             if (!IsHashSupported(hashedPassword))
             {
-                throw new NotSupportedException("The hashtype is not supported");
+                throw new NotSupportedException("待检验密码不是哈希类型");
             }
-            //extract iteration and Base64 string
+            //提取Base64字符串
             var splittedHashString = hashedPassword.Replace(Key, "").Split('$');
             var iterations = int.Parse(splittedHashString[0]);
             var base64Hash = splittedHashString[1];
-            //get hashbytes
+            //获取哈希字节
             var hashBytes = Convert.FromBase64String(base64Hash);
-            //get salt
+            //盐
             var salt = new byte[SaltSize];
             Array.Copy(hashBytes, 0, salt, 0, SaltSize);
-            //create hash with given salt
+            //用给定的盐创建哈希
             var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations);
             byte[] hash = pbkdf2.GetBytes(HashSize);
-            //get result
+            //得到结果
             for (var i = 0; i < HashSize; i++)
             {
                 if (hashBytes[i + SaltSize] != hash[i])

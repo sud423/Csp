@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -11,14 +12,28 @@ namespace Csp.EF.Extensions
             builder.AddFilter((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information).AddConsole();
         });
 
-        public static IServiceCollection AddEF<TDbContext>(this IServiceCollection services, string connectionString) where TDbContext : DbContext
+
+        public static IServiceCollection AddEF<TDbContext>(this IServiceCollection services, IConfiguration configuration) where TDbContext : DbContext
         {
+            var appSettingsSection = configuration.GetSection("SqlConnection");
+
+            var _options = appSettingsSection.Get<SqlOption>();
             services.AddDbContext<TDbContext>(options =>
             {
-                options.UseLoggerFactory(MyLoggerFactory).UseMySql(connectionString);
+                options.UseLoggerFactory(MyLoggerFactory);
+                switch (_options.SqlType)
+                {
+                    case SqlType.MySql:
+                        options.UseMySql(_options.MySqlConnection);
+                        break;
+                    case SqlType.SqlServer:
+                        options.UseSqlServer(_options.SqlServerConnection);
+                        break;
+                }
             });
 
             return services;
         }
+
     }
 }

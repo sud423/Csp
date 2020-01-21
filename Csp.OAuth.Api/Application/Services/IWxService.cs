@@ -5,6 +5,6 @@ namespace Csp.OAuth.Api.Application.Services
 {
     public interface IWxService
     {
-        Task<UserLogin> GetLogin(string code);
+        Task<ExternalLogin> GetLogin(string code);
     }
 }

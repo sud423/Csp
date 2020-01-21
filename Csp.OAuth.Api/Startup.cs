@@ -4,7 +4,6 @@ using Csp.OAuth.Api.Application;
 using Csp.OAuth.Api.Application.Services;
 using Csp.OAuth.Api.Infrastructure;
 using Csp.Web.Extensions;
-using Elastic.Apm.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -33,7 +32,7 @@ namespace Csp.OAuth.Api
 
             //services.AddConsul(Configuration);
             services.AddJwt(Configuration);
-            services.AddEF<OAuthDbContext>(Configuration.GetConnectionString("DefaultConnection"));
+            services.AddEF<OAuthDbContext>(Configuration);
 
             services.AddHttpClientServices();
         }

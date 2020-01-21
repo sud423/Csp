@@ -10,7 +10,7 @@ namespace Csp.Web.Extensions
         /// </summary>
         /// <param name="pairs">验证错误dictionary</param>
         /// <returns></returns>
-        public static OptResult ToFirstError(this ModelStateDictionary pairs)
+        public static OptResult First(this ModelStateDictionary pairs)
         {
             if (pairs == null)
                 return OptResult.Success();

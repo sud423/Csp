@@ -57,7 +57,7 @@ namespace Csp.Wx.Api.Controllers
         public async Task<IActionResult> SendTemp([FromBody]SendTemplateModel model)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState.ToFirstError());
+                return BadRequest(ModelState.First());
 
             await _wxService.SendTempMsg(model.ToUser, model.TemplateId, model.Data, model.Url, model.Color);
 

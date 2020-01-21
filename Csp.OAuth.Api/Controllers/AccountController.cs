@@ -4,6 +4,7 @@ using Csp.OAuth.Api.Application.Services;
 using Csp.OAuth.Api.Infrastructure;
 using Csp.OAuth.Api.Models;
 using Csp.OAuth.Api.ViewModel;
+using Csp.Web.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -34,9 +35,12 @@ namespace Csp.OAuth.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> SigIn([FromBody]LoginModel model)
         {
-            var user = await _ctx.Users.SingleOrDefaultAsync(a => a.UserName == model.UserName);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.First());
 
-            if (user == null || !PasswordHasher.Verify(model.Password, user?.Password))
+            var user = await _ctx.Users.Include(a => a.UserLogin).SingleOrDefaultAsync(a => a.UserLogin.UserName == model.UserName);
+
+            if (user == null || !PasswordHasher.Verify(model.Password, user.UserLogin?.Password))
                 return BadRequest(OptResult.Failed("用户名和密码不正确"));
 
             var accessTokenResult = _jwtTokenGenerator.GenerateAccessTokenWithClaimsPrincipal(model.UserName, AddMyClaims(user));
@@ -52,8 +56,11 @@ namespace Csp.OAuth.Api.Controllers
         [Route("signin"), HttpPost]
         public async Task<IActionResult> SignInByPassword([FromBody]LoginModel model)
         {
-            var user = await _ctx.Users.SingleOrDefaultAsync(a => a.UserName == model.UserName);
-            if (user == null || !PasswordHasher.Verify(model.Password, user?.Password))
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.First());
+
+            var user = await _ctx.Users.Include(a=>a.UserLogin).SingleOrDefaultAsync(a => a.UserLogin.UserName == model.UserName);
+            if (user == null || !PasswordHasher.Verify(model.Password, user.UserLogin?.Password))
                 return BadRequest(OptResult.Failed("用户名和密码不正确"));
 
             //记录登录信息
@@ -73,15 +80,13 @@ namespace Csp.OAuth.Api.Controllers
             if (login == null)
                 return BadRequest(OptResult.Failed("授权码无效"));
 
-            var user= await _ctx.Users.Include(a => a.UserLogin).SingleOrDefaultAsync(a => a.UserLogin.OpenId == login.OpenId);
+            var user= await _ctx.Users.Include(a => a.ExternalLogin).SingleOrDefaultAsync(a => a.ExternalLogin.OpenId == login.OpenId);
 
             if(user == null)
             {
-                login.TenantId = tenantId;
-
                 user = new User
                 {
-                    UserLogin = login,
+                    ExternalLogin = login,
                     Status = 1,
                     CreatedAt = DateTime.Now,
                     TenantId = tenantId
@@ -94,21 +99,42 @@ namespace Csp.OAuth.Api.Controllers
             else
             {
                 //记录登录信息
-                _logger.LogInformation($"{user.UserLogin?.OpenId}-{DateTimeOffset.UtcNow.LocalDateTime} 登录成功");
+                _logger.LogInformation($"{user.ExternalLogin?.OpenId}-{DateTimeOffset.UtcNow.LocalDateTime} 登录成功");
             }
             return Ok(user);
         }
-        
+
         /// <summary>
         /// 创建用户
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="model"></param>
         /// <returns></returns>
         [Route("create"), HttpPost]
-        public async Task<IActionResult> Create([FromBody]User user)
+        public async Task<IActionResult> Create([FromBody]UserModel model)
         {
-            if (!string.IsNullOrEmpty(user.Password))
-                user.Password = PasswordHasher.Hash(user.Password);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.First());
+
+            var userLogin = new UserLogin
+            {
+                UserName = model.UserName,
+                Password = PasswordHasher.Hash(model.Password)                
+            };
+
+            var userInfo = new UserInfo
+            {
+                Cell = model.Cell,
+                Email = model.Email,
+                Sex = Sex.Unknown                
+            };
+
+            var user = new User
+            {
+                UserInfo = userInfo,
+                UserLogin = userLogin,
+                Status = 1,
+                TenantId = model.TenantId                
+            };
 
             _ctx.Users.Add(user);
 
@@ -122,15 +148,15 @@ namespace Csp.OAuth.Api.Controllers
         {
             var myClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name,user.Name??""),
+                new Claim(ClaimTypes.Name,user.UserInfo?.Name??""),
                 //new Claim(ClaimTypes.Role,dto.Role.ToString()),
-                new Claim(ClaimTypes.Email,user.Email??""),
-                new Claim(ClaimTypes.MobilePhone,user.Cell??""),
-                new Claim(ClaimTypes.NameIdentifier,user.UserName??(user.UserLogin?.NickName??"")),
+                new Claim(ClaimTypes.Email,user.UserInfo?.Email??""),
+                new Claim(ClaimTypes.MobilePhone,user.UserInfo?.Cell??""),
+                new Claim(ClaimTypes.NameIdentifier,user.UserLogin?.UserName??(user.ExternalLogin?.NickName??"")),
                 new Claim(ClaimTypes.GroupSid,$"{user.TenantId}"),
                 new Claim(ClaimTypes.Sid,$"{user.Id}"),
-                new Claim("avatar",user.Avatar??(user.UserLogin?.HeadImg??"")),
-                new Claim("open_id",user.UserLogin?.OpenId??""),
+                new Claim("avatar",user.UserInfo?.Avatar??(user.ExternalLogin?.HeadImg??"")),
+                new Claim("open_id",user.ExternalLogin?.OpenId??""),
                 new Claim("aud", "OAuth"),
                 new Claim("aud", "Blog"),
                 new Claim("aud", "Upload")
