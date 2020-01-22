@@ -68,6 +68,8 @@ namespace Csp.Blog.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.First());
 
+            //_blogDbContext.Entry(category).Property(a => a.CreatedAt).IsModified = false;
+
             if (category.Id > 0)
             {
                 _blogDbContext.Categories.Update(category);
@@ -97,12 +99,10 @@ namespace Csp.Blog.Api.Controllers
             if (category == null || category.Id < 0)
                 return BadRequest(OptResult.Failed("删除的数据不存在"));
 
-            category.Status = 0;
-            category.Articles?.ToList()?.ForEach(a => {
-                a.Status = 0;
-            });
+            category.Remove();
 
             _blogDbContext.Categories.Update(category);
+
             _blogDbContext.SaveChanges();
             return Ok(OptResult.Success());
 
@@ -121,18 +121,8 @@ namespace Csp.Blog.Api.Controllers
             if (category == null || category.Id == 0)
                 return BadRequest(OptResult.Failed("关注的分类不存在"));
 
-            //存在删除
-            if(category.CategoryLikes.Any(b => b.UserId == _appUser.Id))
-            {
-                category.Followers -= 1;
-                category.CategoryLikes.Remove(category.CategoryLikes.First(a => a.UserId == _appUser.Id));
-            }
-            else
-            {
-                category.Followers += 1;
-                CategoryLike cl = new CategoryLike(id, _appUser.Id);
-                category.CategoryLikes.Add(cl);
-            }
+            category.Attention(id, _appUser.Id);
+
             _blogDbContext.Categories.Update(category);
 
             _blogDbContext.SaveChanges();

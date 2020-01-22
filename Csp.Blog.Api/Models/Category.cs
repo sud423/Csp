@@ -1,6 +1,7 @@
 ﻿using Csp.EF;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Csp.Blog.Api.Models
 {
@@ -45,6 +46,38 @@ namespace Csp.Blog.Api.Models
             CategoryLikes = new List<CategoryLike>();
             Status = 1;
             Sort = 10001;
+        }
+
+        /// <summary>
+        /// 移除
+        /// </summary>
+        public void Remove()
+        {
+            Status = 0;
+            Articles.ToList()?.ForEach(a => {
+                a.Status = 0;
+            });
+        }
+
+        /// <summary>
+        /// 关注或取关
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        public void Attention(int id,int userId)
+        {
+            //存在删除
+            if (CategoryLikes.Any(b => b.UserId == userId))
+            {
+                Followers -= 1;
+                CategoryLikes.Remove(CategoryLikes.First(a => a.UserId == userId));
+            }
+            else
+            {
+                Followers += 1;
+                CategoryLike cl = new CategoryLike(id, userId);
+                CategoryLikes.Add(cl);
+            }
         }
     }
 }
