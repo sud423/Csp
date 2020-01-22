@@ -7,7 +7,7 @@
   },
   "ReRoutes": [
     {
-      "DownstreamPathTemplate": "/api/v1/wx{action}", //下游服务配置,提供API服务的配置
+      "DownstreamPathTemplate": "/api/v1/wx/{action}", //下游服务配置,提供API服务的配置
       "DownstreamScheme": "http",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
@@ -20,7 +20,7 @@
           "Port": 65311
         }
       ],
-      "UpstreamPathTemplate": "/api/v1/wx{action}" //上游服务配置,服务消费方的调用配置
+      "UpstreamPathTemplate": "/api/v1/wx/{action}" //上游服务配置,服务消费方的调用配置
     },
     {
       "DownstreamPathTemplate": "/api/v1/{action}", //下游服务配置,提供API服务的配置
@@ -33,10 +33,26 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 65311
+          "Port": 58184
         }
       ],
       "UpstreamPathTemplate": "/u/api/v1/{action}" //上游服务配置,服务消费方的调用配置
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/{action}", //下游服务配置,提供API服务的配置
+      "DownstreamScheme": "http",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      //"ServiceName": "OAuthService",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 32951
+        }
+      ],
+      "UpstreamPathTemplate": "/blog/api/v1/{action}" //上游服务配置,服务消费方的调用配置
     }
   ]
 }

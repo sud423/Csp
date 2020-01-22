@@ -1,6 +1,10 @@
+using Csp.Blog.Api.Application;
 using Csp.Blog.Api.Infrastructure;
+using Csp.Blog.Api.Models;
 using Csp.EF.Extensions;
+using Csp.Jwt;
 using Csp.Jwt.Extensions;
+using Csp.Web;
 using Csp.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,10 +29,14 @@ namespace Csp.Blog.Api
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options => { 
+                options.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
+            }) ;
+            services.AddHttpContextAccessor();
             //services.AddConsul(Configuration);
             services.AddJwt(Configuration);
             services.AddEF<BlogDbContext>(Configuration);
+            services.AddBlogServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +70,17 @@ namespace Csp.Blog.Api
 
                 endpoints.MapControllers();
             });
+        }
+    }
+    static class ServiceCollectionExtensions
+    {
+        public static IServiceCollection AddBlogServices(this IServiceCollection services)
+        {
+            //services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5));
+            
+            services.AddTransient<IIdentityParser<AppUser>, IdentityParser>();
+
+            return services;
         }
     }
 }

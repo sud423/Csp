@@ -12,8 +12,4 @@
     <ProjectReference Include="..\Csp.Web\Csp.Web.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
