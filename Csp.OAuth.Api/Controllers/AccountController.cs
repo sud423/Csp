@@ -159,7 +159,8 @@ namespace Csp.OAuth.Api.Controllers
                 new Claim("open_id",user.ExternalLogin?.OpenId??""),
                 new Claim("aud", "OAuth"),
                 new Claim("aud", "Blog"),
-                new Claim("aud", "Upload")
+                new Claim("aud", "Upload"),
+                new Claim("aud", "Ask")
             };
 
             return myClaims;

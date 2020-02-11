@@ -39,12 +39,12 @@
       "UpstreamPathTemplate": "/u/api/v1/{action}" //上游服务配置,服务消费方的调用配置
     },
     {
-      "DownstreamPathTemplate": "/api/v1/{action}", //下游服务配置,提供API服务的配置
+      "DownstreamPathTemplate": "/api/v1/{url}", //下游服务配置,提供API服务的配置
       "DownstreamScheme": "http",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       },
-      //"ServiceName": "OAuthService",
+      //"ServiceName": "BlogService",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "DownstreamHostAndPorts": [
         {
@@ -52,7 +52,23 @@
           "Port": 32951
         }
       ],
-      "UpstreamPathTemplate": "/blog/api/v1/{action}" //上游服务配置,服务消费方的调用配置
+      "UpstreamPathTemplate": "/blog/api/v1/{url}" //上游服务配置,服务消费方的调用配置
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/{url}", //下游服务配置,提供API服务的配置
+      "DownstreamScheme": "http",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      //"ServiceName": "AskService",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 32951
+        }
+      ],
+      "UpstreamPathTemplate": "/ask/api/v1/{url}" //上游服务配置,服务消费方的调用配置
     }
   ]
 }

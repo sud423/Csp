@@ -27,7 +27,7 @@ namespace Csp.Blog.Api.Controllers
         /// <param name="page">查询页码</param>
         /// <param name="size"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet,Route("{tenantId:int}")]
         public async Task<IActionResult> Index(int tenantId,int page,int size)
         {
             var result =await _blogDbContext.Articles

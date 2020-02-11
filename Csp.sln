@@ -31,7 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Csp.Blog.Api", "Csp.Blog.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Csp.Logger", "Csp.Logger\Csp.Logger.csproj", "{CD1EA831-E39D-4439-9EEA-E9EC7447DC94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Csp.Upload.Api", "Csp.Upload.Api\Csp.Upload.Api.csproj", "{C4515D74-C152-49CF-B3AB-74CF41885689}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Csp.Upload.Api", "Csp.Upload.Api\Csp.Upload.Api.csproj", "{C4515D74-C152-49CF-B3AB-74CF41885689}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mt.Ask.Api", "Mt.Ask.Api\Mt.Ask.Api.csproj", "{18705F35-DA79-4DCF-8802-86590691019E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{C4515D74-C152-49CF-B3AB-74CF41885689}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4515D74-C152-49CF-B3AB-74CF41885689}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4515D74-C152-49CF-B3AB-74CF41885689}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18705F35-DA79-4DCF-8802-86590691019E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18705F35-DA79-4DCF-8802-86590691019E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18705F35-DA79-4DCF-8802-86590691019E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18705F35-DA79-4DCF-8802-86590691019E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +110,7 @@ Global
 		{B82B666A-11BD-47BB-9735-C960194F768B} = {E0CFA157-91A1-49F2-B726-D042CC63BA0E}
 		{CD1EA831-E39D-4439-9EEA-E9EC7447DC94} = {C18EEF37-8FEC-4D5D-8B90-40362B8BDFF5}
 		{C4515D74-C152-49CF-B3AB-74CF41885689} = {26DB15E0-7452-4E10-8F57-58CB2B5872FA}
+		{18705F35-DA79-4DCF-8802-86590691019E} = {E0CFA157-91A1-49F2-B726-D042CC63BA0E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D8AD45D-2558-4D81-9E07-F031B4220EAA}
