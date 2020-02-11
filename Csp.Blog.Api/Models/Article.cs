@@ -1,4 +1,5 @@
 ﻿using Csp.EF;
+using System.ComponentModel.DataAnnotations;
 
 namespace Csp.Blog.Api.Models
 {
@@ -10,12 +11,16 @@ namespace Csp.Blog.Api.Models
 
         public int CategoryId { get; set; }
 
+        [Required(ErrorMessage ="标题不能为空")]
+        [StringLength(100,ErrorMessage ="标题最大为100个字符")]
         public string Title { get; set; }
 
+        [StringLength(255, ErrorMessage = "关键字最大为255个字符")]
         public string Keywrod { get; set; }
 
         public string Cover { get; set; }
 
+        [StringLength(255, ErrorMessage = "导语最大为255个字符")]
         public string Lead { get; set; }
 
         public string Content { get; set; }
@@ -40,6 +45,7 @@ namespace Csp.Blog.Api.Models
 
         public int Sort { get; set; }
 
+        [StringLength(50, ErrorMessage = "最后回复用户最大为50个字符")]
         public string LastReplyUser { get; set; }
 
         public int UserId { get; set; }

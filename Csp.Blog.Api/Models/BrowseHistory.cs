@@ -1,6 +1,9 @@
-﻿namespace Csp.Blog.Api.Models
+﻿using Csp.EF;
+using System;
+
+namespace Csp.Blog.Api.Models
 {
-    public class BrowseHistory
+    public class BrowseHistory :Entity
     {
         public int Id { get; set; }
 
@@ -18,6 +21,7 @@
 
         public string Source { get; set; }
 
-        public string SourceId { get; set; }
+        public int SourceId { get; set; }
+
     }
 }

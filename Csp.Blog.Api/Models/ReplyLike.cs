@@ -7,5 +7,14 @@
         public int UserId { get; set; }
 
         public virtual Reply Reply { get; set; }
+
+
+        public ReplyLike() { }
+
+        public ReplyLike(int replyId,int userId)
+        {
+            ReplyId = replyId;
+            UserId = userId;
+        }
     }
 }
