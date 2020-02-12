@@ -7,6 +7,8 @@ namespace Csp.OAuth.Api.Models
         public int Id { get; set; }
 
         public int TenantId { get; set; }
+
+        public int WebSiteId { get; set; }
         
         public byte Status { get; set; }
         

@@ -54,24 +54,44 @@ namespace Csp.Blog.Api.Controllers
         /// <param name="page">查询页码</param>
         /// <param name="size"></param>
         /// <returns></returns>
-        [HttpGet, Route("articles/{id:int}")]
+        [HttpGet, Route("articles/{tenantId:int}")]
         public async Task<IActionResult> GetArticles(int tenantId)
         {
             var result = await _blogDbContext.Articles
                 .Where(a => a.TenantId == tenantId && a.Status == 1)
-                .OrderBy(a => a.Sort).ToListAsync();
+                .OrderBy(a => a.Sort)
+                .ThenByDescending(a=>a.CreatedAt)
+                .ToListAsync();
 
             return Ok(result);
         }
 
+        /// <summary>
+        /// 获取文章列表
+        /// </summary>
+        /// <param name="page">查询页码</param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        [HttpGet, Route("articles/{tenantId:int}/{categoryId:int}/{webSiteId:int}/{size:int}")]
+        public async Task<IActionResult> GetArticles(int tenantId,int categoryId, int webSiteId, int size)
+        {
+            var result = await _blogDbContext.Articles
+                .Where(a => a.TenantId == tenantId && a.Status == 1 && (a.WebSiteId==0 || a.WebSiteId==webSiteId))
+                .Take(size)
+                .OrderBy(a => a.Sort)
+                .ThenByDescending(a => a.CreatedAt)
+                .ToListAsync();
+
+            return Ok(result);
+        }
         /// <summary>
         /// 根据主键获取文章信息
         /// </summary>
         /// <param name="id">主键编号</param>
         /// <param name="ip">客户端ip地址</param>
         /// <returns></returns>
-        [HttpGet, Route("articles/find/{id:int}")]
-        public async Task<IActionResult> GetArticleById(BrowseHistory browseHistory)
+        [HttpPost, Route("articles/browse")]
+        public async Task<IActionResult> GetArticleById([FromBody]BrowseHistory browseHistory)
         {
             if (browseHistory==null)
                 return BadRequest(OptResult.Failed("浏览的信息不存在"));

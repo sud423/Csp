@@ -160,7 +160,9 @@ namespace Csp.OAuth.Api.Controllers
                 new Claim("aud", "OAuth"),
                 new Claim("aud", "Blog"),
                 new Claim("aud", "Upload"),
-                new Claim("aud", "Ask")
+                new Claim("aud", "AskApi"),
+                new Claim("aud", "AskWeb"),
+                new Claim("aud", "MtWeb")
             };
 
             return myClaims;

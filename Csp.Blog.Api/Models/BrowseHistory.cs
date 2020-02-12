@@ -1,11 +1,10 @@
 ﻿using Csp.EF;
-using System;
 
 namespace Csp.Blog.Api.Models
 {
     public class BrowseHistory :Entity
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public int TenantId { get; set; }
 

@@ -11,6 +11,8 @@ namespace Csp.Blog.Api.Models
 
         public int TenantId { get; set; }
 
+        public int CategoryId { get; set; }
+
         [Required(ErrorMessage = "分类名称不能为空")]
         [StringLength(60,ErrorMessage = "分类名称最大为60个字符")]
         public string Name { get; set; }
@@ -25,11 +27,13 @@ namespace Csp.Blog.Api.Models
 
         public int Sort { get; set; } 
 
-        public byte Status { get; set; } 
+        public byte Status { get; set; }
 
+        [StringLength(255, ErrorMessage = "图片最大为255个字符")]
         public string Icon { get; set; }
 
-        public string Remark { get; set; }
+        [StringLength(2000, ErrorMessage = "描述最大为2000个字符")]
+        public string Descript { get; set; }
 
         public int UserId { get; set; }
 

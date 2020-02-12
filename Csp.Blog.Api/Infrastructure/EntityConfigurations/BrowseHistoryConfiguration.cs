@@ -11,8 +11,8 @@ namespace Csp.Blog.Api.Infrastructure.EntityConfigurations
             builder.ToTable("browsehistory");
 
             builder.HasKey(a => a.Id);
+            builder.Property(a => a.Id).ValueGeneratedOnAdd();
 
-            builder.Ignore(a => a.UpdatedAt);
         }
     }
 }

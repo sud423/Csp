@@ -9,6 +9,8 @@ namespace Csp.Blog.Api.Models
 
         public int TenantId { get; set; }
 
+        public int WebSiteId { get; set; }
+
         public int CategoryId { get; set; }
 
         [Required(ErrorMessage ="标题不能为空")]
