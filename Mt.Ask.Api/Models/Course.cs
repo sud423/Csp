@@ -1,4 +1,5 @@
 ﻿using Csp.EF;
+using System;
 
 namespace Mt.Ask.Api.Models
 {
@@ -22,7 +23,7 @@ namespace Mt.Ask.Api.Models
 
         public string Summary { get; set; }
 
-        public string OpenDate { get; set; }
+        public DateTime OpenDate { get; set; }
 
         public string Address { get; set; }
 
@@ -31,6 +32,8 @@ namespace Mt.Ask.Api.Models
         public int Sort { get; set; }
 
         public byte Status { get; set; }
+
+        public bool IsHot { get; set; }
 
         public int UserId { get; set; }
 

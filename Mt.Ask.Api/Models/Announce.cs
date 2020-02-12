@@ -13,9 +13,9 @@ namespace Mt.Ask.Api.Models
 
         public string Content { get; set; }
 
-        public DateTime BeginTime { get; set; }
+        public DateTime? BeginTime { get; set; }
 
-        public DateTime EndTiime { get; set; }
+        public DateTime? EndTime { get; set; }
 
         public byte Status { get; set; }
 

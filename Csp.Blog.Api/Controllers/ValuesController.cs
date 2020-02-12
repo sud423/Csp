@@ -52,13 +52,12 @@ namespace Csp.Blog.Api.Controllers
         /// 获取文章列表
         /// </summary>
         /// <param name="page">查询页码</param>
-        /// <param name="size"></param>
         /// <returns></returns>
-        [HttpGet, Route("articles/{tenantId:int}")]
-        public async Task<IActionResult> GetArticles(int tenantId)
+        [HttpGet, Route("articles/{tenantId:int}/{categoryId:int}/{webSiteId:int}")]
+        public async Task<IActionResult> GetArticles(int tenantId, int categoryId, int webSiteId)
         {
             var result = await _blogDbContext.Articles
-                .Where(a => a.TenantId == tenantId && a.Status == 1)
+                .Where(a => a.TenantId == tenantId && a.Status == 1 && categoryId == a.CategoryId && (a.WebSiteId == 0 || a.WebSiteId == webSiteId))
                 .OrderBy(a => a.Sort)
                 .ThenByDescending(a=>a.CreatedAt)
                 .ToListAsync();
@@ -76,10 +75,10 @@ namespace Csp.Blog.Api.Controllers
         public async Task<IActionResult> GetArticles(int tenantId,int categoryId, int webSiteId, int size)
         {
             var result = await _blogDbContext.Articles
-                .Where(a => a.TenantId == tenantId && a.Status == 1 && (a.WebSiteId==0 || a.WebSiteId==webSiteId))
-                .Take(size)
+                .Where(a => a.TenantId == tenantId && a.Status == 1 && categoryId==a.CategoryId && (a.WebSiteId==0 || a.WebSiteId==webSiteId))
                 .OrderBy(a => a.Sort)
                 .ThenByDescending(a => a.CreatedAt)
+                .Take(size)
                 .ToListAsync();
 
             return Ok(result);
