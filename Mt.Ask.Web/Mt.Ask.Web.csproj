@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Csp.Jwt\Csp.Jwt.csproj" />
     <ProjectReference Include="..\Csp.Logger\Csp.Logger.csproj" />
     <ProjectReference Include="..\Csp.Web\Csp.Web.csproj" />
   </ItemGroup>

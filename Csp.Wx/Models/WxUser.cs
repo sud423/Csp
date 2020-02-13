@@ -5,11 +5,6 @@ namespace Csp.Wx.Models
     public class WxUser
     {
         /// <summary>
-        /// 所属租房编号
-        /// </summary>
-        public int TenantId { get; set; }
-
-        /// <summary>
         /// 用户的唯一标识
         /// </summary>
         [JsonProperty("openid")]

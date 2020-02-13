@@ -71,6 +71,7 @@ namespace Mt.Ask.Web
             services.AddHttpClient<IAnnounceService, AnnounceService>();
             services.AddHttpClient<IArticleService, ArticleService>();
             services.AddHttpClient<ICourseService, CourseService>();
+            services.AddHttpClient<IAuthService, AuthService>();
 
             return services;
         }

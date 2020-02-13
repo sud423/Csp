@@ -10,7 +10,7 @@ namespace Csp.OAuth.Api.Infrastructure.EntityConfigurations
         {
             builder.ToTable("userlogin");
 
-            builder.HasKey(a => a.Id);
+            builder.HasKey(a => new { a.Id,a.UserName });
 
         }
     }

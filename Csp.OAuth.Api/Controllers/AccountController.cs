@@ -59,7 +59,7 @@ namespace Csp.OAuth.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.First());
 
-            var user = await _ctx.Users.Include(a=>a.UserLogin).SingleOrDefaultAsync(a => a.UserLogin.UserName == model.UserName);
+            var user = await _ctx.Users.Include(a=>a.UserLogin).SingleOrDefaultAsync(a => a.UserLogin.UserName == model.UserName);// && a.UserLogin.WebSiteId==model.WebSiteId
             if (user == null || !PasswordHasher.Verify(model.Password, user.UserLogin?.Password))
                 return BadRequest(OptResult.Failed("用户名和密码不正确"));
 
@@ -74,11 +74,14 @@ namespace Csp.OAuth.Api.Controllers
         /// <param name="code">第三方登录授权码</param>
         /// <param name="tenantId">租户编号</param>
         /// <returns></returns>
-        public async Task<IActionResult> SignInByProvide(string code,int tenantId)
+        [HttpPost,Route("wxlogin/{tenantId:int}/{webSiteId:int}/{code}")]
+        public async Task<IActionResult> SignInByProvide(string code,int tenantId,int webSiteId)
         {
             var login =await _wxService.GetLogin(code);
             if (login == null)
                 return BadRequest(OptResult.Failed("授权码无效"));
+
+            login.WebSiteId = webSiteId;
 
             var user= await _ctx.Users.Include(a => a.ExternalLogin).SingleOrDefaultAsync(a => a.ExternalLogin.OpenId == login.OpenId);
 
@@ -86,6 +89,7 @@ namespace Csp.OAuth.Api.Controllers
             {
                 user = new User
                 {
+                    Cell="",
                     ExternalLogin = login,
                     Status = 1,
                     CreatedAt = DateTime.Now,
@@ -115,34 +119,47 @@ namespace Csp.OAuth.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.First());
 
-            var userLogin = new UserLogin
-            {
-                UserName = model.UserName,
-                Password = PasswordHasher.Hash(model.Password)                
-            };
+            var user =await _ctx.Users.Include(a => a.UserLogin).SingleOrDefaultAsync(a => a.Cell == model.Cell);
 
-            var userInfo = new UserInfo
-            {
-                Cell = model.Cell,
-                Email = model.Email,
-                Sex = Sex.Unknown                
-            };
+            if (user.UserLogin != null)
+                return BadRequest(OptResult.Failed("该用户已注册"));
 
-            var user = new User
-            {
-                UserInfo = userInfo,
-                UserLogin = userLogin,
-                Status = 1,
-                TenantId = model.TenantId                
-            };
+            var userLogin = model.ToUserLogin();
 
-            _ctx.Users.Add(user);
+            if (user == null)
+            {
+                user = model.ToUser();
+
+                _ctx.Users.Add(user);
+            }
+            else
+            {
+                user.UserLogin = model.ToUserLogin();
+
+                _ctx.Users.Update(user);
+
+            }
 
             await _ctx.SaveChangesAsync();
 
             return Ok(OptResult.Success());
         }
 
+        [HttpPut,Route("bind/{userId:int}/{cell}")]
+        public async Task<IActionResult> BindCell(int userId,string cell)
+        {
+            if (string.IsNullOrEmpty(cell))
+                return BadRequest(OptResult.Failed("手机号不能为空"));
+
+            var user = await _ctx.Users.SingleOrDefaultAsync(a => a.Id==userId);
+            user.Cell = cell;
+
+            _ctx.Users.Update(user);
+
+            await _ctx.SaveChangesAsync();
+
+            return Ok(OptResult.Success());
+        }
 
         private IEnumerable<Claim> AddMyClaims(User user)
         {

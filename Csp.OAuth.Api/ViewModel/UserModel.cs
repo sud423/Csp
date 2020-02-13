@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Csp.OAuth.Api.Application;
+using Csp.OAuth.Api.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Csp.OAuth.Api.ViewModel
 {
@@ -19,9 +21,27 @@ namespace Csp.OAuth.Api.ViewModel
         [RegularExpression(@"^0?1[3|4|5|7|8|6|9][0-9]\d{8}$", ErrorMessage = "手机号格式不正确")]
         public string Cell { get; set; }
 
-        [StringLength(100, ErrorMessage = "邮箱最大长度为100个字符")]
-        //[RegularExpression("",ErrorMessage = "邮箱格式不正确")]
-        [EmailAddress(ErrorMessage = "邮箱格式不正确")]
-        public string Email { get; set; }
+        public int WebSiteId { get; set; }
+
+        public UserLogin ToUserLogin()
+        {
+            return new UserLogin
+            {
+                WebSiteId = WebSiteId,
+                UserName = UserName,
+                Password = PasswordHasher.Hash(Password)
+            };
+        }
+
+        public User ToUser()
+        {
+            return new User
+            {
+                UserLogin = ToUserLogin(),
+                Status = 1,
+                Cell = Cell,
+                TenantId = TenantId
+            }; 
+        }
     }
 }

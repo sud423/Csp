@@ -24,7 +24,7 @@ namespace Csp.Wx.Api.Controllers
         /// <param name="url">回调地址</param>
         /// <param name="state">状态码，为空时值为：csp</param>
         /// <returns></returns>
-        [Route("get"),HttpGet]
+        [Route("getauth"),HttpGet]
         public IActionResult GetAuthUrl(string url,string state=null)
         {
             if (string.IsNullOrEmpty(url))

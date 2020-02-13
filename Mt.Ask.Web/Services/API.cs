@@ -30,5 +30,16 @@
             public static string GetHotCourses(string baseUrl) => $"{baseUrl}/courses/2";
 
         }
+
+        public static class Auth
+        {
+            public static string GetAuthUrl(string baseUrl, string redirectUrl) => $"{baseUrl}/getauth?url={redirectUrl}";
+
+            public static string GetUser(string baseUrl, string code) =>$"{baseUrl }/wxlogin/2/1/{code}";
+
+            public static string BindCell(string baseUrl, string cell,int userId) => $"{baseUrl }/bind/{userId}/{cell}";
+
+            public static string UserLogin(string baseUrl) => $"{baseUrl}/signin";
+        }
     }
 }

@@ -6,6 +6,8 @@ namespace Csp.OAuth.Api.Models
     {
         public int Id { get; set; }
 
+        public int WebSiteId { get; set; }
+
         public string Provide { get; set; }
 
         public string OpenId { get; set; }
