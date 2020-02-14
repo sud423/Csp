@@ -13,5 +13,7 @@ namespace Csp.OAuth.Api.ViewModel
         public string Password { get; set; }
 
         public int WebSiteId { get; set; }
+
+        public int TenantId { get; set; }
     }
 }

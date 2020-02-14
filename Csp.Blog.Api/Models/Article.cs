@@ -1,4 +1,5 @@
 ﻿using Csp.EF;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Csp.Blog.Api.Models
@@ -53,5 +54,15 @@ namespace Csp.Blog.Api.Models
         public int UserId { get; set; }
 
         public virtual Category Category { get; set; }
+
+        public virtual AppUser AppUser { get; set; }
+
+
+
+        public void SetUpdated(string title,string content)
+        {
+            Title = title;
+            Content = content;
+        }
     }
 }

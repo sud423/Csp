@@ -8,7 +8,7 @@
     {
         /// <summary>
         /// 在未经身份验证的请求的情况下将用户重定向到的登录路径。
-        /// 默认值 "/Account/Login"
+        /// 默认值 "/Account/Index"
         /// </summary>
         public string LoginPath { get; set; }
 

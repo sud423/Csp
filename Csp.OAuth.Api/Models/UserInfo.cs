@@ -1,5 +1,6 @@
 ﻿using Csp.EF;
 using System;
+using System.Text.Json.Serialization;
 
 namespace Csp.OAuth.Api.Models
 {
@@ -32,6 +33,7 @@ namespace Csp.OAuth.Api.Models
 
         public string Remark { get; set; }
 
+        [JsonIgnore]
         public virtual User User { get; set; }
     }
 }

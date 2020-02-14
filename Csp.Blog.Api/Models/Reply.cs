@@ -1,6 +1,7 @@
 ﻿using Csp.EF;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Csp.Blog.Api.Models
 {
@@ -21,9 +22,10 @@ namespace Csp.Blog.Api.Models
         public int Likes { get; set; }
 
         public int UserId { get; set; }
-
-        public virtual Article Article { get; set; }
-
+        
         public virtual ICollection<ReplyLike> ReplyLikes { get; set; }
+
+        public virtual AppUser AppUser { get; set; }
+
     }
 }

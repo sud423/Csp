@@ -56,7 +56,7 @@ namespace Csp.Jwt.Extensions
 
             services.AddScoped<IDataSerializer<AuthenticationTicket>, TicketSerializer>();
 
-            //services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+            services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -73,8 +73,8 @@ namespace Csp.Jwt.Extensions
                         {
                             $"{applicationDiscriminator ?? hostingEnvironment.ApplicationName}.Auth"
                         }));
-                    options.LoginPath = authUrlOptions != null ? new PathString(authUrlOptions.LoginPath) : new PathString("/Account/Login");
-                    options.LogoutPath = authUrlOptions != null ? new PathString(authUrlOptions.LogoutPath) : new PathString("/Account/Logout");
+                    options.LoginPath = !string.IsNullOrWhiteSpace(authUrlOptions.LoginPath) ? new PathString(authUrlOptions.LoginPath) : new PathString("/Account/Index");
+                    options.LogoutPath = !string.IsNullOrWhiteSpace(authUrlOptions.LogoutPath) ? new PathString(authUrlOptions.LogoutPath) : new PathString("/Account/Logout");
                     options.AccessDeniedPath = options.LoginPath;
                     options.ReturnUrlParameter = authUrlOptions?.ReturnUrlParameter ?? "returnUrl";
                     options.SlidingExpiration = true;

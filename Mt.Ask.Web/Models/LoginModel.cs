@@ -13,5 +13,7 @@ namespace Mt.Ask.Web.Models
         public string Password { get; set; }
 
         public int WebSiteId { get; set; } = 1;
+
+        public int TenantId { get; set; } = 2;
     }
 }

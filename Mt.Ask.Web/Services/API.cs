@@ -4,11 +4,22 @@
     {
         public static class Article
         {
+            public static string Create(string baseUrl) => $"{baseUrl}/article/create";
+
             public static string GetArticle(string baseUrl) => $"{baseUrl}/articles/browse";
+
+            public static string GetArticle(string baseUrl,int id) => $"{baseUrl}/article/find/{id}";
 
             public static string GetArticles(string baseUrl,int categoryId,int size) => $"{baseUrl}/articles/2/{categoryId}/1/{size}";
 
             public static string GetArticles(string baseUrl, int categoryId) => $"{baseUrl}/articles/2/{categoryId}/1";
+
+            public static string GetArticleByPage(string baseUrl,int categoryId, int userId, int page, int size)
+                => $"{baseUrl}/article/2/{categoryId}?userId={userId}&page={page}&size={size}";
+
+            public static string GetReplyByPage(string baseUrl, int id, int page, int size)
+                => $"{baseUrl}/article/getreplies/{id}?page={page}&size={size}";
+
         }
 
         public static class Announce

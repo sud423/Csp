@@ -13,4 +13,8 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Csp.Logger\Csp.Logger.csproj" />
+  </ItemGroup>
+
 </Project>

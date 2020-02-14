@@ -69,16 +69,16 @@ namespace Mt.Ask.Api.Controllers
 
             var predicate = PredicateExtension.True<Course>();
 
-            predicate.And(a => a.TenantId == tenantId && a.Status == 1);
+            predicate = predicate.And(a => a.TenantId == tenantId && a.Status == 1);
 
             if (!string.IsNullOrEmpty(academy))
             {
-                predicate.And(a => a.Academy == academy);
+                predicate = predicate.And(a => a.Academy == academy);
             }
 
             if (!string.IsNullOrEmpty(classify))
             {
-                predicate.And(a => a.Classify == classify);
+                predicate = predicate.And(a => a.Classify == classify);
             }
 
 

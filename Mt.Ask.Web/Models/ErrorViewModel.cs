@@ -1,5 +1,3 @@
-using System;
-
 namespace Mt.Ask.Web.Models
 {
     public class ErrorViewModel

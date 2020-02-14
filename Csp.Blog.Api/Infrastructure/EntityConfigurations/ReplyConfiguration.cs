@@ -11,6 +11,9 @@ namespace Csp.Blog.Api.Infrastructure.EntityConfigurations
             builder.ToTable("reply");
 
             builder.HasKey(a => a.Id);
+
+            builder.HasMany(a => a.ReplyLikes).WithOne(a => a.Reply).HasForeignKey(a => a.ReplyId);
+            builder.HasOne(a => a.AppUser).WithOne(a => a.Reply).HasForeignKey<Reply>(a => a.UserId);
         }
     }
 }

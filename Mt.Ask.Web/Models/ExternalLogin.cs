@@ -8,7 +8,7 @@
         
         public int WebSiteId { get; set; }
 
-        public string HeadImgUrl { get; set; }
+        public string HeadImg { get; set; }
 
     }
 }

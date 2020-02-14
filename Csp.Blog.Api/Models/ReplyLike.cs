@@ -1,4 +1,6 @@
-﻿namespace Csp.Blog.Api.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Csp.Blog.Api.Models
 {
     public class ReplyLike
     {
@@ -6,6 +8,7 @@
 
         public int UserId { get; set; }
 
+        [JsonIgnore]
         public virtual Reply Reply { get; set; }
 
 

@@ -67,9 +67,9 @@
                  src="~/images/gkk-6.jpg" alt="">
         </div>
         <div class="col-lg-12 text-left">
-            <span style="width:800px;display:block;font-size: 25px;margin: 25px auto 20px; color: #541a1f;"><a href="/detail/@(Model.Item2.First().Id)">《@(Model.Item2.First().Name)》</a>公开课火热进行中！<a href="/download?fileName=【我爱上课】环球CEO高层智慧研修班报名表.docx">点击报名……</a></span>
+            <span style="width:800px;display:block;font-size: 25px;margin: 25px auto 20px; color: #541a1f;"><a href="/detail/@(Model.Item2.FirstOrDefault().Id)">《@(Model.Item2.FirstOrDefault().Name)》</a>公开课火热进行中！<a href="/download?fileName=【我爱上课】环球CEO高层智慧研修班报名表.docx">点击报名……</a></span>
 
-            <span style="width:800px;display:block;font-size: 25px;margin: 0px auto 30px; color: #541a1f;"><a href="/detail/@(Model.Item2.Last().Id)">《@(Model.Item2.Last().Name)》</a>公开课火热进行中！<a>点击报名……</a></span>
+            <span style="width:800px;display:block;font-size: 25px;margin: 0px auto 30px; color: #541a1f;"><a href="/detail/@(Model.Item2.LastOrDefault().Id)">《@(Model.Item2.LastOrDefault().Name)》</a>公开课火热进行中！<a>点击报名……</a></span>
         </div>
     </div>
 </div>

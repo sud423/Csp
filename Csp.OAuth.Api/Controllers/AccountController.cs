@@ -59,7 +59,7 @@ namespace Csp.OAuth.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.First());
 
-            var user = await _ctx.Users.Include(a=>a.UserLogin).SingleOrDefaultAsync(a => a.UserLogin.UserName == model.UserName);// && a.UserLogin.WebSiteId==model.WebSiteId
+            var user = await _ctx.Users.Include(a=>a.UserLogin).SingleOrDefaultAsync(a => a.UserLogin.UserName == model.UserName && a.TenantId== model.TenantId);// && a.UserLogin.WebSiteId==model.WebSiteId
             if (user == null || !PasswordHasher.Verify(model.Password, user.UserLogin?.Password))
                 return BadRequest(OptResult.Failed("用户名和密码不正确"));
 

@@ -1,5 +1,6 @@
 ﻿using Csp.Blog.Api.Infrastructure;
 using Csp.Blog.Api.Models;
+using Csp.EF.Extensions;
 using Csp.EF.Paging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,12 +28,20 @@ namespace Csp.Blog.Api.Controllers
         /// <param name="page">查询页码</param>
         /// <param name="size"></param>
         /// <returns></returns>
-        [HttpGet,Route("{tenantId:int}")]
-        public async Task<IActionResult> Index(int tenantId,int page,int size)
+        [HttpGet,Route("{tenantId:int}/{categoryId:int}")]
+        public async Task<IActionResult> Index(int tenantId,int categoryId,int userId,int page,int size)
         {
+            var predicate = PredicateExtension.True<Article>();
+
+            predicate = predicate.And(a => a.TenantId == tenantId && a.Status == 1 && a.CategoryId == categoryId);
+
+            if (userId > 0)
+                predicate = predicate.And(a => a.UserId == userId);
+            
             var result =await _blogDbContext.Articles
-                .Where(a => a.TenantId == tenantId && a.Status == 1)
+                .Where(predicate)
                 .OrderBy(a => a.Sort)
+                .ThenByDescending(a=>a.CreatedAt)
                 .ToPagedAsync(page, size);
 
             return Ok(result);
@@ -59,6 +68,7 @@ namespace Csp.Blog.Api.Controllers
         /// </summary>
         /// <param name="article">文章对象信息</param>
         /// <returns></returns>
+        [HttpPost,Route("create")]
         public async Task<IActionResult> Create([FromBody]Article article)
         {
             if (!ModelState.IsValid)
@@ -66,7 +76,9 @@ namespace Csp.Blog.Api.Controllers
 
             if(article.Id>0)
             {
-                _blogDbContext.Articles.Update(article);
+                var old = await _blogDbContext.Articles.SingleOrDefaultAsync(a => a.Id == article.Id);
+                old.SetUpdated(article.Title, article.Content);
+                _blogDbContext.Articles.Update(old);
             }
             else
             {
@@ -134,11 +146,17 @@ namespace Csp.Blog.Api.Controllers
         /// <param name="size">查询记录数</param>
         /// <returns></returns>
         [HttpGet, Route("getreplies/{articleId:int}")]
-        public async Task<IActionResult> GetReplies(int articleId,int page,int size)
+        public async Task<IActionResult> GetReplies(int articleId, int page, int size)
         {
             var result = await _blogDbContext.Replies
-                .Where(a => a.SourceId == articleId)
-                .OrderBy(a => a.CreatedAt)
+                .Include(a=>a.ReplyLikes)
+                .Include(a => a.AppUser)
+                .ThenInclude(a => a.ExternalLogin)
+                .Include(a => a.AppUser)
+                .ThenInclude(a => a.UserLogin)
+                .AsNoTracking()
+                .Where(a => a.SourceId == articleId && a.Source == "article")
+                .OrderByDescending(a => a.CreatedAt)
                 .ToPagedAsync(page, size);
 
             return Ok(result);

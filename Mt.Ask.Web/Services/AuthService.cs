@@ -2,9 +2,6 @@
 using Microsoft.Extensions.Options;
 using Mt.Ask.Web.Models;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +22,7 @@ namespace Mt.Ask.Web.Services
             _httpClient = httpClient;
             //_logger = logger;
 
-            _remoteServiceBaseUrl = $"{_settings.Value.OcelotUrl}/u/api/v1";
+            _remoteServiceBaseUrl = $"{_settings.Value.OcelotUrl}/u/api/v1/account";
         }
 
         public async Task<OptResult> BindCell(string cell, int userId)
@@ -63,7 +60,7 @@ namespace Mt.Ask.Web.Services
         {
             string uri = API.Auth.UserLogin(_remoteServiceBaseUrl);
             
-            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8);
+            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync(uri, content);
 

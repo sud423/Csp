@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Csp.Web.Mvc.Paging;
+using Microsoft.Extensions.Options;
 using Mt.Ask.Web.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -24,17 +25,49 @@ namespace Mt.Ask.Web.Services
             _remoteServiceBaseUrl = $"{_settings.Value.OcelotUrl}/blog/api/v1";
         }
 
-        public async Task<Article> GetArticle(int id, string ip, string browser, string device, string os)
+        public async Task Create(Article article)
         {
-            var browse = new BrowseHistory(id, ip, browser, os, device);
+            string uri = API.Article.Create(_remoteServiceBaseUrl);
+
+            var forumContent = new StringContent(JsonConvert.SerializeObject(article), System.Text.Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(uri, forumContent);
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task<Article> GetArticle(int id, string ip, string browser, string device, string os, int userId = 0)
+        {
+            var browse = new BrowseHistory(id, ip, browser, os, device,userId);
 
             string uri = API.Article.GetArticle(_remoteServiceBaseUrl);
 
             var forumContent = new StringContent(JsonConvert.SerializeObject(browse), System.Text.Encoding.UTF8, "application/json");
-            var responseString = await _httpClient.PostAsync(uri, forumContent);
-            var response = JsonConvert.DeserializeObject<Article>(await responseString.Content.ReadAsStringAsync());
+            var response = await _httpClient.PostAsync(uri, forumContent);
+            var result = JsonConvert.DeserializeObject<Article>(await response.Content.ReadAsStringAsync());
 
-            return response;
+            return result;
+        }
+
+        public async Task<Article> GetArticle(int id)
+        {
+            string uri = API.Article.GetArticle(_remoteServiceBaseUrl, id);
+
+            var responseString = await _httpClient.GetStringAsync(uri);
+
+            var result = JsonConvert.DeserializeObject<Article>(responseString);
+
+            return result;
+        }
+
+        public async Task<PagedResult<Article>> GetArticleByPage(int categoryId, int userId, int page, int size)
+        {
+            string uri = API.Article.GetArticleByPage(_remoteServiceBaseUrl, categoryId, userId, page, size);
+
+            var responseString = await _httpClient.GetStringAsync(uri);
+
+            var result = JsonConvert.DeserializeObject<PagedResult<Article>>(responseString);
+
+            return result;
         }
 
         public async Task<IEnumerable<Article>> GetArticles(int categoryId)
@@ -43,9 +76,9 @@ namespace Mt.Ask.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var response = JsonConvert.DeserializeObject<IEnumerable<Article>>(responseString);
+            var result = JsonConvert.DeserializeObject<IEnumerable<Article>>(responseString);
 
-            return response;
+            return result;
         }
 
         public async Task<IEnumerable<Article>> GetArticles(int categoryId,int size)
@@ -54,9 +87,20 @@ namespace Mt.Ask.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var response = JsonConvert.DeserializeObject<IEnumerable<Article>>(responseString);
+            var result = JsonConvert.DeserializeObject<IEnumerable<Article>>(responseString);
 
-            return response;
+            return result;
+        }
+
+        public async Task<PagedResult<Reply>> GetReplies(int id, int page, int size)
+        {
+            string uri = API.Article.GetReplyByPage(_remoteServiceBaseUrl, id, page, size);
+
+            var responseString = await _httpClient.GetStringAsync(uri);
+
+            var result = JsonConvert.DeserializeObject<PagedResult<Reply>>(responseString);
+
+            return result;
         }
     }
 }

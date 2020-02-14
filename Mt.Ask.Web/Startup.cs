@@ -1,3 +1,5 @@
+using Csp.Jwt;
+using Csp.Jwt.Extensions;
 using Csp.Web.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -5,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Mt.Ask.Web.Models;
 using Mt.Ask.Web.Services;
 using System;
 
@@ -30,7 +33,13 @@ namespace Mt.Ask.Web
 
             services.AddControllersWithViews();
 
+            services.AddMvcJwt(Configuration);
+
             services.AddHttpClientServices();
+
+            services.AddHttpContextAccessor();
+            services.AddTransient<IIdentityParser<User>, IdentityParser>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,7 +57,10 @@ namespace Mt.Ask.Web
 
             app.UseRouting();
 
+
+            app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
@@ -63,13 +75,13 @@ namespace Mt.Ask.Web
         public static IServiceCollection AddHttpClientServices(this IServiceCollection services)
         {
             //services.AddTransient<DevspacesMessageHandler>();
-            //services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
+            services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
             //services.AddTransient<HttpClientRequestIdDelegatingHandler>();
 
             services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5));//.AddDevspacesSupport();
 
             services.AddHttpClient<IAnnounceService, AnnounceService>();
-            services.AddHttpClient<IArticleService, ArticleService>();
+            services.AddHttpClient<IArticleService, ArticleService>().AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
             services.AddHttpClient<ICourseService, CourseService>();
             services.AddHttpClient<IAuthService, AuthService>();
 

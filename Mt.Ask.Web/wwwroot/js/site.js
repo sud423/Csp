@@ -1,4 +1,4 @@
-var pageIndex=0;
+var pageIndex=1;
 
 /**
  * 判断手机端
@@ -123,7 +123,7 @@ function getReplyList(){
         prePage = data.previousPage;
         pages = data.totalPages;
 
-        $(".page_num").text((data.pageIndex + 1) + "/" + data.totalPages);
+        $(".page_num").text((data.pageIndex) + "/" + data.totalPages);
 
         if (data.hasNextPage) {
             $("#btnNext").removeClass("disabled");

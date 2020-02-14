@@ -8,6 +8,8 @@ namespace Csp.Blog.Api.Models
 
         public int TenantId { get; set; }
 
+        public int WebSiteId { get; set; }
+
         public int UserId { get; set; }
 
         public string Ip { get; set; }

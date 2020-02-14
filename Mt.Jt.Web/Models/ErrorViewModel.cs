@@ -1,5 +1,3 @@
-using System;
-
 namespace Mt.Jt.Web.Models
 {
     public class ErrorViewModel

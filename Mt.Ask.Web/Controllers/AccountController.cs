@@ -30,10 +30,10 @@ namespace Mt.Ask.Web.Controllers
                 return RedirectToLocal(returnUrl);
             }
             string redirectTo = $"{Request.GetDomain()}{Url.Action("RedirectTo", "Account", new { returnUrl })}";
-
+#if !DEBUG
             if (Request.IsMobile())
                 return Redirect(await _authService.GetAuthUrl(redirectTo));
-
+#endif
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -100,7 +100,7 @@ namespace Mt.Ask.Web.Controllers
 
         private async Task<IActionResult> Sigin(User user,string returnUrl)
         {
-            var accessTokenResult = _jwtTokenGenerator.GenerateAccessTokenWithClaimsPrincipal(user.ExternalLogin.OpenId, AddMyClaims(user));
+            var accessTokenResult = _jwtTokenGenerator.GenerateAccessTokenWithClaimsPrincipal(user.UserLogin.UserName, AddMyClaims(user));
             await HttpContext.SignInAsync(accessTokenResult.ClaimsPrincipal, accessTokenResult.AuthProperties);
             return RedirectToLocal(returnUrl);
         }
@@ -127,8 +127,9 @@ namespace Mt.Ask.Web.Controllers
                 new Claim(ClaimTypes.NameIdentifier,user.UserLogin?.UserName??(user.ExternalLogin?.NickName??"")),
                 new Claim(ClaimTypes.GroupSid,$"{user.TenantId}"),
                 new Claim(ClaimTypes.Sid,$"{user.Id}"),
-                new Claim("avatar",user.ExternalLogin?.HeadImgUrl??""),
-                new Claim("open_id",user.ExternalLogin?.OpenId??""),
+                new Claim("avatar",user.ExternalLogin?.HeadImg??""),
+                new Claim("OpenId",user.ExternalLogin?.OpenId??""),
+                new Claim("WebSiteId",$"{user.ExternalLogin?.WebSiteId??user.UserLogin?.WebSiteId??0}"),
                 new Claim("aud", "OAuth"),
                 new Claim("aud", "Blog"),
                 new Claim("aud", "Upload"),
