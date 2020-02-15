@@ -1,6 +1,7 @@
 using Csp.Jwt;
 using Csp.Jwt.Extensions;
 using Csp.Web.Mvc;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -30,6 +31,8 @@ namespace Mt.Ask.Web
             });
 
             services.Configure<AppSettings>(Configuration);
+            
+            services.AddMediatR(typeof(Startup).Assembly);
 
             services.AddControllersWithViews();
 
@@ -77,6 +80,9 @@ namespace Mt.Ask.Web
             //services.AddTransient<DevspacesMessageHandler>();
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
             //services.AddTransient<HttpClientRequestIdDelegatingHandler>();
+
+            services.AddHttpClient("WxApiClient");
+            services.AddHttpClient("ArticleClient").AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
 
             services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5));//.AddDevspacesSupport();
 

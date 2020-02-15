@@ -4,23 +4,22 @@
 @{
     ViewBag.Title = "我爱8点详情，我爱上课";
 
-    //WxConfig config = ViewBag.WxConfig as WxConfig;
+    WxConfig config = ViewBag.WxConfig as WxConfig;
 }
 
 @model Article
 @using System.Security.Claims
-
-@*@using Sd.Infrastructure.Wechat*@
+@using Csp.Web.Extensions
 
 <ol class="breadcrumb" style="margin-bottom: 0px;">
     <li><a asp-controller="home" asp-action="index">首页</a></li>
     <li><a asp-controller="forum" asp-action="index">我爱8点</a></li>
-    <li class="active">8点详情</li>
+    <li class="active" rel="@(ViewContext.HttpContext.Request.GetCurrentUrl())">8点详情</li>
 </ol>
 
 <div class="container">
     <h4>
-        <strong>@Model.Title</strong>
+        <strong title="@(Model.Title)">@Model.Title</strong>
     </h4>
     <div class="row">
 
@@ -43,7 +42,7 @@
 <div class="container">
     <div style="margin-bottom: 7px;">
         <img style="width: 36px;" src="@(string.IsNullOrEmpty(Model.User.HeadImgUrl)?"~/images/r_logo.png":Model.User.HeadImgUrl)" alt="用户头像" class="img-circle">
-        <span>@Html.Raw(string.IsNullOrEmpty(Model.User.NickName)?"我爱上课会员":Model.User.NickName)</span>
+        <span id="lbluser" rel="@(Model.User.ExternalLogin.OpenId)">@Html.Raw(string.IsNullOrEmpty(Model.User.NickName)?"我爱上课会员":Model.User.NickName)</span>
     </div>
     <p>
         @Html.Raw(Model.Content)
@@ -84,21 +83,18 @@
 
 @section Scripts{
 
-    
-
     <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
-
-
+    
     <script type="text/javascript">
         var url='@Html.Raw($"{ViewContext.HttpContext.Request.Scheme}://{ViewContext.HttpContext.Request.Host.Value}{ViewContext.HttpContext.Request.Path.Value}{ViewContext.HttpContext.Request.QueryString.Value}")';
-        @*wx.config({
+        wx.config({
             //debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: '@(config?.AppId)', // 必填，公众号的唯一标识
             timestamp: @(config?.Timestamp??0), // 必填，生成签名的时间戳
             nonceStr: '@(config?.NonceStr)', // 必填，生成签名的随机串
             signature: '@(config?.Signature)',// 必填，签名
             jsApiList: [ "updateAppMessageShareData", "updateTimelineShareData", "onMenuShareTimeline", "onMenuShareAppMessage", "showMenuItems", "hideAllNonBaseMenuItem" ] // 必填，需要使用的JS接口列表
-        });*@
+        });
         wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
             wx.hideAllNonBaseMenuItem({
                 success: function () {

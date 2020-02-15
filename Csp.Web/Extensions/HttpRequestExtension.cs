@@ -234,7 +234,7 @@ namespace Csp.Web.Extensions
         {
             //判断是否有地址
             if (request.Path.HasValue)
-                return $"{request.GetDomain()}://{request.Path.Value}";
+                return $"{request.GetDomain()}{request.Path.Value}";
 
             return request.GetDomain();
         }

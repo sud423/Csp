@@ -98,6 +98,7 @@ namespace Csp.Blog.Api.Controllers
 
             var article = await _blogDbContext.Articles
                 .Include(a => a.User)
+                .ThenInclude(a=>a.ExternalLogin)
                 .SingleOrDefaultAsync(a=>a.Id==browseHistory.SourceId);
 
             var now = DateTime.Now.Date;

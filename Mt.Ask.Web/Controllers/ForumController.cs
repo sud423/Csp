@@ -1,8 +1,10 @@
 ﻿using Csp;
 using Csp.Jwt;
 using Csp.Web.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Mt.Ask.Web.Commands;
 using Mt.Ask.Web.Models;
 using Mt.Ask.Web.Services;
 using System.Threading.Tasks;
@@ -12,12 +14,14 @@ namespace Mt.Ask.Web.Controllers
     [Authorize]
     public class ForumController : Controller
     {
+        private readonly IMediator _mediator;
         private readonly IArticleService _articleService;
         private readonly User _user;
 
 
-        public ForumController(IArticleService articleService,IIdentityParser<User> parser)
+        public ForumController(IMediator mediator, IArticleService articleService,IIdentityParser<User> parser)
         {
+            _mediator = mediator;
             _articleService = articleService;
             _user = parser.Parse();
         }
@@ -70,15 +74,13 @@ namespace Mt.Ask.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Detail(int id)
         {
-            var article = await _articleService.GetArticle(id, HttpContext.RemoteIp(), Request.BrowserNameByUserAgent(), Request.DeviceByUserAgent(), Request.OsByUserAgent(),_user.Id); ;
-            //if(vm!=null && vm.Id > 0)
-            //{
-            //    var request = Domain.Statistics.CreateForumStastic(Request.IpByUserAgent(), Request.BrowserNameByUserAgent(), Request.OsNameByUserAgent(), id);
-            //}
+            var article = await _articleService.GetArticle(id, HttpContext.RemoteIp(),
+                Request.BrowserNameByUserAgent(), Request.DeviceByUserAgent(), 
+                Request.OsByUserAgent(),_user.Id); ;
 
 #if !DEBUG
-            var config =await Util.GetConfig($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.Path.Value}{HttpContext.Request.QueryString.Value}");
-
+            var config = await _articleService.GetWxConfig(Request.GetCurrentUrl());
+            
             ViewBag.WxConfig = config;
 #endif
             return View(article);
@@ -98,17 +100,20 @@ namespace Mt.Ask.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Reply(int forumId, int id, string content)
+        public async Task<IActionResult> Reply(ReplyCommand request)
         {
+            request.UserId = _user.Id;
 
-            await _articleService.Reply(forumId, id, content, _user.Id);
+            await _mediator.Publish(request);
             return Ok(OptResult.Success());
         }
 
         [HttpPost]
-        public async Task<ActionResult> Agree(int id)
+        public async Task<ActionResult> Agree(AgreeCommand request)
         {
-            await _articleService.Agree(id, _user.Id);
+            request.UserId = _user.Id;
+
+            await _mediator.Publish(request);
             return Ok(OptResult.Success());
         }
 

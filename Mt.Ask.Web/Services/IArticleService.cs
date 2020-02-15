@@ -7,7 +7,6 @@ namespace Mt.Ask.Web.Services
 {
     public interface IArticleService
     {
-        Task Agree(int replyId,int userId);
 
         Task Create(Article article);
 
@@ -27,6 +26,7 @@ namespace Mt.Ask.Web.Services
 
         Task<PagedResult<Reply>> GetReplies(int id, int page, int size);
 
-        Task Reply(int articleId, int replyId, string content, int userId);
+        Task<WxConfig> GetWxConfig(string url);
+
     }
 }

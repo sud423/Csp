@@ -151,6 +151,7 @@ namespace Csp.Blog.Api.Controllers
             var result = await _blogDbContext.Replies
                 .Include(a => a.ReplyLikes)
                 .Include(a => a.User)
+                .ThenInclude(a=>a.ExternalLogin)
                 .Where(a => a.SourceId == articleId && a.Source == "article")
                 .OrderByDescending(a => a.CreatedAt)
                 .AsNoTracking()
@@ -179,7 +180,7 @@ namespace Csp.Blog.Api.Controllers
             {
                 var article = await _blogDbContext.Articles.SingleOrDefaultAsync(a => a.Id == reply.SourceId);
 
-                article.Clicks += 1;
+                article.Replys += 1;
 
                 _blogDbContext.Articles.Update(article);
 

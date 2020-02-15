@@ -2,7 +2,7 @@
 
 namespace Csp.Wx.Api.Models
 {
-    public class SendTemplateModel
+    public class TemplateMessage
     {
         /// <summary>
         /// 接收者openid

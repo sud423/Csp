@@ -4,8 +4,6 @@
     {
         public static class Article
         {
-            public static string Agree(string baseUrl, int replyId,int userId) => $"{baseUrl}/article/Agree/{replyId}/{userId}";
-
             public static string Create(string baseUrl) => $"{baseUrl}/article/create";
 
             public static string Delete(string baseUrl,int id) => $"{baseUrl}/article/delete/{id}";
@@ -26,7 +24,6 @@
             public static string GetReplyByPage(string baseUrl, int id, int page, int size)
                 => $"{baseUrl}/article/getreplies/{id}?page={page}&size={size}";
 
-            public static string Reply(string baseUrl) => $"{baseUrl}/article/reply";
 
         }
 

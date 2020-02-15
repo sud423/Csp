@@ -25,14 +25,6 @@ namespace Mt.Ask.Web.Services
             _remoteServiceBaseUrl = $"{_settings.Value.OcelotUrl}/blog/api/v1";
         }
 
-        public async Task Agree(int replyId, int userId)
-        {
-            string uri = API.Article.Agree(_remoteServiceBaseUrl, replyId, userId);
-
-            var response = await _httpClient.PutAsync(uri, null);
-
-            response.EnsureSuccessStatusCode();
-        }
 
         public async Task Create(Article article)
         {
@@ -130,23 +122,15 @@ namespace Mt.Ask.Web.Services
             return result;
         }
 
-        public async Task Reply(int articleId, int replyId, string content,int userId)
+        public async Task<WxConfig> GetWxConfig(string url)
         {
-            var reply = new
-            {
-                Id = replyId,
-                SourceId = articleId,
-                Source = "article",
-                Content = content,
-                UserId = userId
-            };
+            string uri = $"{_settings.Value.OcelotUrl}/api/v1/wx/getconfig/{url}";
 
-            string uri = API.Article.Reply(_remoteServiceBaseUrl);
+            var responseString = await _httpClient.GetStringAsync(uri);
 
-            var forumContent = new StringContent(JsonConvert.SerializeObject(reply), System.Text.Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync(uri, forumContent);
+            var result = JsonConvert.DeserializeObject<WxConfig>(responseString);
 
-            response.EnsureSuccessStatusCode();
+            return result;
         }
     }
 }

@@ -36,10 +36,12 @@ $(function(){
 		});
 		if($("#content").val().trim()!=="") {
             $.post("/forum/reply", {
-                id: $("#txtId").val(),
-                forumId: $("#txtForumId").val(),
+                replyId: $("#txtId").val(),
+                articleId: $("#txtForumId").val(),
                 content: $("#content").val(),
-                referenceId: 0
+                topic: $("strong").text(),
+                toUser: $("#lbluser").attr("rel"),
+                url: $(".breadcrumb .active").attr("rel")
             }, function (data) {
                 if (data.succeed) {
                     $("#content").val("");
@@ -154,7 +156,7 @@ function getReplyList(){
             arr.push("<div class=\"avatar\"><img style=\"width: 30px;\" src=\"" + headImg + "\" alt=\"用户头像\" class=\"img-circle\"></div>");
             arr.push("<a class=\"user-name\">" + nick + "</a>");
             arr.push("<div class=\"user-other\">");
-            arr.push(this.createdAt.replace("T"," "));
+            arr.push(this.createdAt);
             arr.push("</div>");
             arr.push("</div>");
             arr.push("<div class=\"operations\">");
@@ -164,9 +166,9 @@ function getReplyList(){
             });
 
             if (agree)
-                arr.push("<a style='margin-right:5px;' onclick='agree(" + this.id + ",this)'>取消同意(" + this.likes + ")</a>&nbsp;");//亮了(100)
+                arr.push("<a style='margin-right:5px;' onclick='agree(" + this.id + ",0)'>取消同意(" + this.likes + ")</a>&nbsp;");//亮了(100)
             else
-                arr.push("<a style='margin-right:5px;' onclick='agree(" + this.id + ",this)'>同意(" + this.likes + ")</a>&nbsp;");//亮了(100)
+                arr.push("<a style='margin-right:5px;' onclick='agree(" + this.id + ",1,\"" + this.user.externalLogin.openId+"\",this)'>同意(" + this.likes + ")</a>&nbsp;");//亮了(100)
 
             if (this.userId==$("#txtLoginId").val() || $("#txtUserId").val() == $("#txtLoginId").val()) {
                 arr.push("<a style='margin-right:5px;' onclick='delReply(" + this.id + "," + this.forumId + ")'>删除</a>");//删除我的评论
@@ -283,12 +285,22 @@ function del(id){
 /**
  * 同意
  * @param {any} id 回复编号
- * @param {any} obj 回复编号
+ * @param {any} tag 0:取消，1：同意
+ * @param {any} toUser 通知回复人
+ * @param {any} obj 点击的dom节点对象
  */
-function agree(id,obj) {
-    $.post("/forum/agree?id=" + id + "&url=" + url, function (data) {
+function agree(id, tag,toUser,obj) {
+    var d = {
+        url: $(".breadcrumb .active").attr("rel"),
+        toUser: toUser,
+        replyId: id,
+        content: $("#" + id +" .short-content").text(),
+        topic: $("strong").text(),
+        nickName: $("#"+id+" .user-name").text()
+    };
+    $.post("/forum/agree",d, function (data) {
 
-        if (data.succeed && obj.text.indexOf("取消同意") < 0) {
+        if (data.succeed && tag===1) {
             $.tipsBox({
                 obj: $(obj),
                 str: "+1",

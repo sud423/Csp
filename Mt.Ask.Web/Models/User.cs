@@ -24,7 +24,7 @@ namespace Mt.Ask.Web.Models
         [JsonIgnore]
         public byte Status { get; set; }
 
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual ExternalLogin ExternalLogin { get; set; }
 
         [JsonIgnore]

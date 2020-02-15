@@ -33,6 +33,16 @@ namespace Csp.Wx.Api.Controllers
             return Content(_wxService.GetAuthUrl(url, state));
         }
 
+
+        [Route("getconfig/{url}"), HttpGet]
+        public async Task<IActionResult> GetConfig(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+                return BadRequest(OptResult.Failed("当前页面地址不能为空"));
+
+            return Ok(await _wxService.GetConfig(url));
+        }
+
         /// <summary>
         /// 拉取用户信息
         /// </summary>
@@ -54,7 +64,7 @@ namespace Csp.Wx.Api.Controllers
         /// <param name="model">模板信息</param>
         /// <returns></returns>
         [HttpPost,Route("send")]
-        public async Task<IActionResult> SendTemp([FromBody]SendTemplateModel model)
+        public async Task<IActionResult> SendTemp([FromBody]TemplateMessage model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.First());

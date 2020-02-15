@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="8.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Csp.Jwt\Csp.Jwt.csproj" />
     <ProjectReference Include="..\Csp.Logger\Csp.Logger.csproj" />
     <ProjectReference Include="..\Csp.Web\Csp.Web.csproj" />
