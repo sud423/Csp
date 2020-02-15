@@ -15,7 +15,7 @@ namespace Csp.Blog.Api.Infrastructure.EntityConfigurations
 
             builder.HasOne(a => a.Category).WithMany(a => a.Articles).HasForeignKey("CategoryId");
 
-            builder.HasOne(a => a.AppUser).WithOne(a => a.Article).HasForeignKey<Article>(a=>a.UserId);
+            builder.HasOne(a => a.User).WithOne(a => a.Article).HasForeignKey<Article>(a=>a.UserId);
 
             //builder.HasMany(a => a.Replies).WithOne(a => a.Article).HasForeignKey("ReplyId");
         }

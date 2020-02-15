@@ -10,6 +10,10 @@ namespace Csp.OAuth.Api.Models
 
         public string Cell { get; set; }
         
+        public string NickName { get; set; }
+
+        public string HeadImgUrl { get; set; }
+
         public byte Status { get; set; }
         
         /// <summary>

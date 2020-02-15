@@ -2,11 +2,16 @@
 
 namespace Csp.Blog.Api.Models
 {
-    public class AppUser
+    public class User
     {
         public int Id { get; set; }
 
         public int TenantId { get; set; }
+
+
+        public string NickName { get; set; }
+
+        public string HeadImgUrl { get; set; }
 
         public virtual ExternalLogin ExternalLogin { get; set; }
 
@@ -28,12 +33,9 @@ namespace Csp.Blog.Api.Models
 
         public string OpenId { get; set; }
 
-        public string NickName { get; set; }
-
-        public string HeadImg { get; set; }
 
         [JsonIgnore]
-        public virtual AppUser User { get; set; }
+        public virtual User User { get; set; }
 
     }
 
@@ -45,6 +47,6 @@ namespace Csp.Blog.Api.Models
         public string UserName { get; set; }
 
         [JsonIgnore]
-        public virtual AppUser User { get; set; }
+        public virtual User User { get; set; }
     }
 }

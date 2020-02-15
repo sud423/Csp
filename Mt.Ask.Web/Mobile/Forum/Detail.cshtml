@@ -2,7 +2,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    ViewBag.Title = "发布帖子，我爱8点，我爱上课";
+    ViewBag.Title = "我爱8点详情，我爱上课";
 
     //WxConfig config = ViewBag.WxConfig as WxConfig;
 }
@@ -42,8 +42,8 @@
 <hr style="margin-bottom: 7px; margin-top: 7px;">
 <div class="container">
     <div style="margin-bottom: 7px;">
-        <img style="width: 36px;" src="@(Model.AppUser?.ExternalLogin?.HeadImg)" alt="用户头像" class="img-circle">
-        <span>@Html.Raw(Model.AppUser?.ExternalLogin?.NickName)</span>
+        <img style="width: 36px;" src="@(string.IsNullOrEmpty(Model.User.HeadImgUrl)?"~/images/r_logo.png":Model.User.HeadImgUrl)" alt="用户头像" class="img-circle">
+        <span>@Html.Raw(string.IsNullOrEmpty(Model.User.NickName)?"我爱上课会员":Model.User.NickName)</span>
     </div>
     <p>
         @Html.Raw(Model.Content)

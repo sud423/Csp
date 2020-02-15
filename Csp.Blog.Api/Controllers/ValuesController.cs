@@ -96,14 +96,9 @@ namespace Csp.Blog.Api.Controllers
             if (browseHistory==null || browseHistory.SourceId <= 0)
                 return BadRequest(OptResult.Failed("浏览的信息不存在"));
 
-
             var article = await _blogDbContext.Articles
-                .Include(a => a.AppUser)
-                .ThenInclude(a => a.ExternalLogin)
-                .Include(a => a.AppUser)
-                .ThenInclude(a => a.UserLogin)
-                .AsNoTracking()
-                .SingleOrDefaultAsync(a => a.Id == browseHistory.SourceId);
+                .Include(a => a.User)
+                .SingleOrDefaultAsync(a=>a.Id==browseHistory.SourceId);
 
             var now = DateTime.Now.Date;
 

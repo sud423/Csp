@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace Csp.Blog.Api.Application
 {
-    public class IdentityParser : IIdentityParser<AppUser>
+    public class IdentityParser : IIdentityParser<User>
     {
         private IHttpContextAccessor _httpContextAccessor;
 
@@ -15,11 +15,11 @@ namespace Csp.Blog.Api.Application
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public AppUser Parse()
+        public User Parse()
         {
             if (_httpContextAccessor.HttpContext.User is ClaimsPrincipal claims)
             {
-                return new AppUser
+                return new User
                 {
                     Id = int.Parse(claims.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid)?.Value ?? "0"),
                     TenantId = int.Parse(claims.Claims.FirstOrDefault(x => x.Type == ClaimTypes.GroupSid)?.Value ?? "0")

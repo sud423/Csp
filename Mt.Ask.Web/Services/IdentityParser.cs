@@ -30,9 +30,10 @@ namespace Mt.Ask.Web.Services
                     ExternalLogin=new ExternalLogin
                     {
                         OpenId = claims.Claims.FirstOrDefault(a => a.Type == "OpenId")?.Value ?? "",
-                        NickName=claims.Claims.FirstOrDefault(a=>a.Type== ClaimTypes.NameIdentifier)?.Value??"",
-                        HeadImg= claims.Claims.FirstOrDefault(a => a.Type == "avatar")?.Value ?? ""
-                    }
+                        WebSiteId = int.Parse(claims.Claims.FirstOrDefault(a => a.Type == "WebSiteId")?.Value ?? "0")
+                    },
+                    NickName = claims.Claims.FirstOrDefault(a => a.Type == ClaimTypes.NameIdentifier)?.Value ?? "",
+                    HeadImgUrl = claims.Claims.FirstOrDefault(a => a.Type == "HeadImgUrl")?.Value ?? ""
                 };
             }
 

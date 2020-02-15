@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Mt.Ask.Web.Models
 {
@@ -21,14 +22,18 @@ namespace Mt.Ask.Web.Models
 
         public int Replys { get; set; }
 
+        [JsonIgnore]
         public byte Status { get; set; }
 
+        [JsonIgnore]
         public int UserId { get; set; }
 
+        [JsonIgnore]
         public int TenantId { get; set; }
 
+        [JsonIgnore]
         public int WebSiteId { get; set; }
 
-        public virtual User AppUser { get; set; }
+        public virtual User User { get; set; }
     }
 }

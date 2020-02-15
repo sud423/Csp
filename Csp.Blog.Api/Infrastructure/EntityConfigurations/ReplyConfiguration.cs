@@ -13,7 +13,7 @@ namespace Csp.Blog.Api.Infrastructure.EntityConfigurations
             builder.HasKey(a => a.Id);
 
             builder.HasMany(a => a.ReplyLikes).WithOne(a => a.Reply).HasForeignKey(a => a.ReplyId);
-            builder.HasOne(a => a.AppUser).WithOne(a => a.Reply).HasForeignKey<Reply>(a => a.UserId);
+            builder.HasOne(a => a.User).WithOne(a => a.Reply).HasForeignKey<Reply>(a => a.UserId);
         }
     }
 }

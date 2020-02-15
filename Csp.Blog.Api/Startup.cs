@@ -78,7 +78,7 @@ namespace Csp.Blog.Api
         {
             //services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5));
             
-            services.AddTransient<IIdentityParser<AppUser>, IdentityParser>();
+            services.AddTransient<IIdentityParser<User>, IdentityParser>();
 
             return services;
         }

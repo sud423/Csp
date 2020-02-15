@@ -1,4 +1,5 @@
-﻿using Csp.Jwt;
+﻿using Csp;
+using Csp.Jwt;
 using Csp.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -83,9 +84,39 @@ namespace Mt.Ask.Web.Controllers
             return View(article);
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _articleService.Delete(id);
+            return Ok(OptResult.Success());
+        }
+
         public async Task<IActionResult> GetReplies(int id, int page=1)
         {
             return Ok(await _articleService.GetReplies(id, page, 20));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Reply(int forumId, int id, string content)
+        {
+
+            await _articleService.Reply(forumId, id, content, _user.Id);
+            return Ok(OptResult.Success());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Agree(int id)
+        {
+            await _articleService.Agree(id, _user.Id);
+            return Ok(OptResult.Success());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> DelReply(int id)
+        {
+            await _articleService.DeleteReply(id);
+            return Ok(OptResult.Success());
         }
     }
 }

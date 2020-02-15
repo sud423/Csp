@@ -30,5 +30,15 @@ namespace Csp.Web.Mvc.Paging
         /// 总记录数
         /// </summary>
         public int TotalCount { get; set; }
+
+        /// <summary>
+        /// 是否有上一页
+        /// </summary>
+        public bool HasPreviousPage => CurrentPage - 1 > 0;
+
+        /// <summary>
+        /// 是否有下一页
+        /// </summary>
+        public bool HasNextPage => CurrentPage < TotalPage;
     }
 }

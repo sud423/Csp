@@ -13,9 +13,6 @@ namespace Csp.OAuth.Api.Models
 
         public string OpenId { get; set; }
 
-        public string NickName { get; set; }
-
-        public string HeadImg { get; set; }
 
         [JsonIgnore]
         public virtual User User { get; set; }

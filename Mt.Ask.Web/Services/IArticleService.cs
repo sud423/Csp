@@ -7,7 +7,13 @@ namespace Mt.Ask.Web.Services
 {
     public interface IArticleService
     {
+        Task Agree(int replyId,int userId);
+
         Task Create(Article article);
+
+        Task Delete(int id);
+
+        Task DeleteReply(int replyId);
 
         Task<Article> GetArticle(int id, string ip, string browser, string device, string os, int userId = 0);
 
@@ -20,5 +26,7 @@ namespace Mt.Ask.Web.Services
         Task<IEnumerable<Article>> GetArticles(int categoryId, int size);
 
         Task<PagedResult<Reply>> GetReplies(int id, int page, int size);
+
+        Task Reply(int articleId, int replyId, string content, int userId);
     }
 }

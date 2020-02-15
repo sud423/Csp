@@ -110,20 +110,16 @@ $(function(){
 });
 
 
-var nextPage=0;
-var prePage=0;
 var pages=0;
 function getReplyList(){
-    $.get("/forum/getReplies?id=" + $("#txtForumId").val() + "&pageIndex=" + pageIndex, function (data) {
+    $.get("/forum/getReplies?id=" + $("#txtForumId").val() + "&page=" + pageIndex, function (data) {
 
         if (data.Count === 0)
             return;
 
-        nextPage = data.nextPage;
-        prePage = data.previousPage;
-        pages = data.totalPages;
+        pages = data.totalPage;
 
-        $(".page_num").text((data.pageIndex) + "/" + data.totalPages);
+        $(".page_num").text((data.currentPage) + "/" + data.totalPage);
 
         if (data.hasNextPage) {
             $("#btnNext").removeClass("disabled");
@@ -152,7 +148,7 @@ function getReplyList(){
             var headImg = "/images/r_logo.png";
             if (this.user) {
                 nick = this.user.nickName;
-                headImg = this.user.headImg;
+                headImg = this.user.headImgUrl;
             }
 
             arr.push("<div class=\"avatar\"><img style=\"width: 30px;\" src=\"" + headImg + "\" alt=\"用户头像\" class=\"img-circle\"></div>");
@@ -163,7 +159,7 @@ function getReplyList(){
             arr.push("</div>");
             arr.push("<div class=\"operations\">");
 
-            var agree = this.replyLikeLogs.some(item => {
+            var agree = this.replyLikes.some(item => {
                 return item.userId == $("#txtLoginId").val();
             });
 
@@ -213,7 +209,7 @@ function first() {
  */
 function pre() {
     if ($("#btnPrevious").attr("class") !== "disabled") {
-        pageIndex = prePage;
+        pageIndex +=1;
         getReplyList();
     }
 }
@@ -223,7 +219,7 @@ function pre() {
  */
 function next() {
     if ($("#btnNext").attr("class") !== "disabled") {
-        pageIndex = nextPage;
+        pageIndex -= 1;
         getReplyList();
     }
 }

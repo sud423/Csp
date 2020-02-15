@@ -77,26 +77,15 @@ namespace Csp.OAuth.Api.Controllers
         [HttpPost,Route("wxlogin/{tenantId:int}/{webSiteId:int}/{code}")]
         public async Task<IActionResult> SignInByProvide(string code,int tenantId,int webSiteId)
         {
-            var login =await _wxService.GetLogin(code);
+            var login =await _wxService.GetLogin(code,tenantId,webSiteId);
             if (login == null)
                 return BadRequest(OptResult.Failed("授权码无效"));
 
-            login.WebSiteId = webSiteId;
-
-            var user= await _ctx.Users.Include(a => a.ExternalLogin).SingleOrDefaultAsync(a => a.ExternalLogin.OpenId == login.OpenId);
+            var user= await _ctx.Users.Include(a => a.ExternalLogin).SingleOrDefaultAsync(a => a.ExternalLogin.OpenId == login.ExternalLogin.OpenId);
 
             if(user == null)
             {
-                user = new User
-                {
-                    Cell="",
-                    ExternalLogin = login,
-                    Status = 1,
-                    CreatedAt = DateTime.Now,
-                    TenantId = tenantId
-                };
-
-                await _ctx.Users.AddAsync(user);
+                await _ctx.Users.AddAsync(login);
 
                 await _ctx.SaveChangesAsync();
             }
@@ -169,11 +158,11 @@ namespace Csp.OAuth.Api.Controllers
                 //new Claim(ClaimTypes.Role,dto.Role.ToString()),
                 new Claim(ClaimTypes.Email,user.UserInfo?.Email??""),
                 new Claim(ClaimTypes.MobilePhone,user.UserInfo?.Cell??""),
-                new Claim(ClaimTypes.NameIdentifier,user.UserLogin?.UserName??(user.ExternalLogin?.NickName??"")),
+                new Claim(ClaimTypes.NameIdentifier,user.NickName??""),
                 new Claim(ClaimTypes.GroupSid,$"{user.TenantId}"),
                 new Claim(ClaimTypes.Sid,$"{user.Id}"),
-                new Claim("avatar",user.UserInfo?.Avatar??(user.ExternalLogin?.HeadImg??"")),
-                new Claim("open_id",user.ExternalLogin?.OpenId??""),
+                new Claim("HeadImgUrl",user.HeadImgUrl??""),
+                new Claim("OpenId",user.ExternalLogin?.OpenId??""),
                 new Claim("aud", "OAuth"),
                 new Claim("aud", "Blog"),
                 new Claim("aud", "Upload"),

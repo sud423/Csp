@@ -17,7 +17,7 @@ namespace Mt.Ask.Web.Models
 
         public DateTime CreatedAt { get; set; }
 
-        public ExternalLogin ExternalLogin { get; set; }
+        public User User { get; set; }
 
         public IEnumerable<ReplyLike> ReplyLikes { get; set; }
     }

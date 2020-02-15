@@ -39,14 +39,12 @@ namespace Csp.Blog.Api.Models
 
         public ICollection<Article> Articles { get; set; }
 
-        public ICollection<Reply> Replies { get; set; }
-
+        
         public ICollection<CategoryLike> CategoryLikes { get; set; }
 
         public Category()
         {
             Articles = new List<Article>();
-            Replies = new List<Reply>();
             CategoryLikes = new List<CategoryLike>();
             Status = 1;
             Sort = 10001;

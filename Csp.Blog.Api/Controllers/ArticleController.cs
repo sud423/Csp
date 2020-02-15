@@ -149,14 +149,11 @@ namespace Csp.Blog.Api.Controllers
         public async Task<IActionResult> GetReplies(int articleId, int page, int size)
         {
             var result = await _blogDbContext.Replies
-                .Include(a=>a.ReplyLikes)
-                .Include(a => a.AppUser)
-                .ThenInclude(a => a.ExternalLogin)
-                .Include(a => a.AppUser)
-                .ThenInclude(a => a.UserLogin)
-                .AsNoTracking()
+                .Include(a => a.ReplyLikes)
+                .Include(a => a.User)
                 .Where(a => a.SourceId == articleId && a.Source == "article")
                 .OrderByDescending(a => a.CreatedAt)
+                .AsNoTracking()
                 .ToPagedAsync(page, size);
 
             return Ok(result);
@@ -174,7 +171,7 @@ namespace Csp.Blog.Api.Controllers
             {
                 var old = await _blogDbContext.Replies.SingleOrDefaultAsync(a => a.Id == reply.Id);
 
-                reply.Content = reply.Content;
+                old.Content = reply.Content;
 
                 _blogDbContext.Replies.Update(old);
             }

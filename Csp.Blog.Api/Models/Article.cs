@@ -55,7 +55,7 @@ namespace Csp.Blog.Api.Models
 
         public virtual Category Category { get; set; }
 
-        public virtual AppUser AppUser { get; set; }
+        public virtual User User { get; set; }
 
 
 

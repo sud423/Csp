@@ -17,19 +17,31 @@ namespace Csp.OAuth.Api.Application.Services
             _remoteServiceBaseUrl = $"{API.Remote_Service_Base_Url}/api/v1/wx";
         }
 
-        public async Task<ExternalLogin> GetLogin(string code)
+        public async Task<User> GetLogin(string code, int tenantId, int webSiteId)
         {
-            var uri = API.WeiXin.GetWxUserByCode(_remoteServiceBaseUrl,code);
+            var uri = API.WeiXin.GetWxUserByCode(_remoteServiceBaseUrl, code);
 
             var response = await _httpClient.GetAsync(uri);
 
             var jsonString = await response.Content.ReadAsStringAsync();
-            var login=jsonString.FromJson<ExternalLogin>();
+            var login = jsonString.FromJson<dynamic>();
 
-            if (login != null)
-                login.Provide = "weixin";
+            var user = new User
+            {
+                Cell = "",
+                ExternalLogin = new ExternalLogin
+                {
+                    Provide = "weixin",
+                    OpenId = login.OpenId,
+                    WebSiteId = webSiteId
+                },
+                NickName = login.NickName,
+                HeadImgUrl = login.HeadImgUrl,
+                Status = 1,
+                TenantId = tenantId
+            };
+
             return login;
-
         }
     }
 }

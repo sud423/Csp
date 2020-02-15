@@ -25,12 +25,39 @@ namespace Mt.Ask.Web.Services
             _remoteServiceBaseUrl = $"{_settings.Value.OcelotUrl}/blog/api/v1";
         }
 
+        public async Task Agree(int replyId, int userId)
+        {
+            string uri = API.Article.Agree(_remoteServiceBaseUrl, replyId, userId);
+
+            var response = await _httpClient.PutAsync(uri, null);
+
+            response.EnsureSuccessStatusCode();
+        }
+
         public async Task Create(Article article)
         {
             string uri = API.Article.Create(_remoteServiceBaseUrl);
 
             var forumContent = new StringContent(JsonConvert.SerializeObject(article), System.Text.Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(uri, forumContent);
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task Delete(int id)
+        {
+            string uri = API.Article.Delete(_remoteServiceBaseUrl, id);
+
+            var response = await _httpClient.PutAsync(uri, null);
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task DeleteReply(int replyId)
+        {
+            string uri = API.Article.DeleteReply(_remoteServiceBaseUrl, replyId);
+
+            var response = await _httpClient.PutAsync(uri, null);
 
             response.EnsureSuccessStatusCode();
         }
@@ -101,6 +128,25 @@ namespace Mt.Ask.Web.Services
             var result = JsonConvert.DeserializeObject<PagedResult<Reply>>(responseString);
 
             return result;
+        }
+
+        public async Task Reply(int articleId, int replyId, string content,int userId)
+        {
+            var reply = new
+            {
+                Id = replyId,
+                SourceId = articleId,
+                Source = "article",
+                Content = content,
+                UserId = userId
+            };
+
+            string uri = API.Article.Reply(_remoteServiceBaseUrl);
+
+            var forumContent = new StringContent(JsonConvert.SerializeObject(reply), System.Text.Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(uri, forumContent);
+
+            response.EnsureSuccessStatusCode();
         }
     }
 }
