@@ -1,7 +1,6 @@
 ﻿using Csp.EF;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace Csp.Blog.Api.Models
 {

@@ -1,5 +1,4 @@
 ﻿using Csp.EF;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Csp.Blog.Api.Models
@@ -46,7 +45,7 @@ namespace Csp.Blog.Api.Models
 
         public bool IsSlide { get; set; }
 
-        public int Sort { get; set; }
+        public int Sort { get; set; } = 100001;
 
         [StringLength(50, ErrorMessage = "最后回复用户最大为50个字符")]
         public string LastReplyUser { get; set; }

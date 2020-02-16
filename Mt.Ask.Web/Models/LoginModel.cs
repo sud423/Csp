@@ -12,7 +12,7 @@ namespace Mt.Ask.Web.Models
         [StringLength(20, ErrorMessage = "密码最大不能超过20个字符")]
         public string Password { get; set; }
 
-        public int WebSiteId { get; set; } = 1;
+        public int WebSiteId { get; set; } = 3;
 
         public int TenantId { get; set; } = 2;
     }

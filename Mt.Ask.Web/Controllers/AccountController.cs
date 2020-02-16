@@ -33,8 +33,13 @@ namespace Mt.Ask.Web.Controllers
 #if !DEBUG
             if (Request.IsMobile())
                 return Redirect(await _authService.GetAuthUrl(redirectTo));
+#else
+            await Task.CompletedTask;
 #endif
+
             ViewData["ReturnUrl"] = returnUrl;
+
+
             return View();
         }
 

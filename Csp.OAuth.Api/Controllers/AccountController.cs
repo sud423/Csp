@@ -110,7 +110,7 @@ namespace Csp.OAuth.Api.Controllers
 
             var user =await _ctx.Users.Include(a => a.UserLogin).SingleOrDefaultAsync(a => a.Cell == model.Cell);
 
-            if (user.UserLogin != null)
+            if (user!=null && user.UserLogin != null && user.UserLogin.UserName == model.UserName)
                 return BadRequest(OptResult.Failed("该用户已注册"));
 
             var userLogin = model.ToUserLogin();

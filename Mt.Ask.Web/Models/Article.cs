@@ -35,5 +35,15 @@ namespace Mt.Ask.Web.Models
         public int WebSiteId { get; set; }
 
         public virtual User User { get; set; }
+
+        public void SetId(int tenantId,int userId,int webSiteId,int id)
+        {
+            Id = id;
+            TenantId = tenantId;
+            UserId = userId;
+
+            WebSiteId = webSiteId;
+            CategoryId = 1;
+        }
     }
 }

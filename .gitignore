@@ -338,4 +338,12 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
-/Csp.Upload.Api/attached/image/202001
+/Csp.Upload.Api/attached/image/
+/Csp.OAuth.Api/.config
+/Csp.Ocelot.Api/.config
+/Csp.Upload.Api/.config
+/Csp.Wx.Api/.config
+/Mt.Ask.Web/.config
+/Mt.Fruit.Web/.config
+/Mt.Web/.config
+/Mt.Jt.Web/.config

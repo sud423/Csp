@@ -1,5 +1,6 @@
 ﻿using Csp.Blog.Api.Infrastructure;
 using Csp.Blog.Api.Models;
+using Csp.EF.Paging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,12 +23,29 @@ namespace Csp.Blog.Api.Controllers
         /// </summary>
         /// <param name="tenantId">租户</param>
         /// <returns></returns>
-        [HttpGet,Route("categories/{tenantId:int}")]
-        public IActionResult GetCategories(int tenantId,string type)
+        [HttpGet,Route("categories/{tenantId:int}/{webSiteId:int}/{type}")]
+        public async Task<IActionResult> GetCategories(int tenantId,int webSiteId,string type)
         {
-            var result = _blogDbContext.Categories
-                .Where(a => a.TenantId == tenantId && a.Status == 1 && a.Type==type)
-                .OrderBy(a => a.Sort);
+            var result = await _blogDbContext.Categories
+                .Where(a => a.TenantId == tenantId && a.Status == 1 
+                && webSiteId == a.WebSiteId 
+                && a.Type==type)
+                .OrderBy(a => a.Sort)
+                .ToListAsync();
+
+            return Ok(result);
+        }
+
+        [HttpGet, Route("categories/hot/{tenantId:int}/{webSiteId:int}/{type}")]
+        public async Task<IActionResult> GetHotCategories(int tenantId, int webSiteId, string type)
+        {
+            var result = await _blogDbContext.Categories
+                .Where(a => a.TenantId == tenantId && a.Status == 1
+                && webSiteId == a.WebSiteId
+                && a.Type == type
+                && a.IsHot)
+                .OrderBy(a => a.Sort)
+                .ToListAsync();
 
             return Ok(result);
         }
@@ -80,6 +98,27 @@ namespace Csp.Blog.Api.Controllers
                 .ThenByDescending(a => a.CreatedAt)
                 .Take(size)
                 .ToListAsync();
+
+            return Ok(result);
+        }
+
+
+        /// <summary>
+        /// 获取文章列表
+        /// </summary>
+        /// <param name="page">查询页码</param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        [HttpGet, Route("articles/{tenantId:int}/{categoryId:int}/{webSiteId:int}/{page:int}/{size:int}")]
+        public async Task<IActionResult> GetArticles(int tenantId, int categoryId, int webSiteId,int page, int size)
+        {
+            var result = await _blogDbContext.Articles
+                .Include(a=>a.User)
+                .Where(a => a.TenantId == tenantId && a.Status == 1 && categoryId == a.CategoryId && (a.WebSiteId == 0 || a.WebSiteId == webSiteId))
+                .OrderBy(a => a.Sort)
+                .ThenByDescending(a => a.CreatedAt)
+                .AsNoTracking()
+                .ToPagedAsync(page, size);
 
             return Ok(result);
         }

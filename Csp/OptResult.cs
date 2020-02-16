@@ -21,12 +21,12 @@ namespace Csp
         /// <summary>
         /// 如果操作成功，则为true
         /// </summary>
-        public bool Succeed { get; private set; }
+        public bool Succeed { get; set; }
 
         /// <summary>
         /// 返回提示消息
         /// </summary>
-        public string Msg { get; private set; }
+        public string Msg { get; set; }
 
         public override string ToString()
         {

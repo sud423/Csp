@@ -58,13 +58,7 @@ namespace Mt.Ask.Web.Controllers
             if (!ModelState.IsValid)
                 return View(nameof(Post), article);
 
-            article.Id = id;
-            article.CategoryId = 1;
-
-            article.UserId = _user.Id;
-            article.TenantId = _user.TenantId;
-
-            article.WebSiteId = _user.UserLogin.WebSiteId;
+            article.SetId(_user.TenantId, _user.Id, 1, id);//不能当前登录的用户的注册站点编号
 
             await _articleService.Create(article);
 
