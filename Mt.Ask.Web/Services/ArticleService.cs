@@ -1,4 +1,6 @@
-﻿using Csp.Web.Mvc.Paging;
+﻿using Csp;
+using Csp.Web.Extensions;
+using Csp.Web.Mvc.Paging;
 using Microsoft.Extensions.Options;
 using Mt.Ask.Web.Models;
 using Newtonsoft.Json;
@@ -26,32 +28,33 @@ namespace Mt.Ask.Web.Services
         }
 
 
-        public async Task Create(Article article)
+        public async Task<OptResult> Create(Article article)
         {
             string uri = API.Article.Create(_remoteServiceBaseUrl);
 
             var forumContent = new StringContent(JsonConvert.SerializeObject(article), System.Text.Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync(uri, forumContent);
+            var response= await _httpClient.PostAsync(uri, forumContent);
 
-            response.EnsureSuccessStatusCode();
+            return await response.GetResult();
+
         }
 
-        public async Task Delete(int id)
+        public async Task<OptResult> Delete(int id)
         {
             string uri = API.Article.Delete(_remoteServiceBaseUrl, id);
 
-            var response = await _httpClient.DeleteAsync(uri);
+            var response= await _httpClient.DeleteAsync(uri);
 
-            response.EnsureSuccessStatusCode();
+            return await response.GetResult();
         }
 
-        public async Task DeleteReply(int replyId)
+        public async Task<OptResult> DeleteReply(int replyId)
         {
             string uri = API.Article.DeleteReply(_remoteServiceBaseUrl, replyId);
 
             var response = await _httpClient.DeleteAsync(uri);
 
-            response.EnsureSuccessStatusCode();
+            return await response.GetResult();
         }
 
         public async Task<Article> GetArticle(int id, string ip, string browser, string device, string os, int userId = 0)

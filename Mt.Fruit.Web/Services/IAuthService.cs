@@ -1,4 +1,5 @@
 ﻿using Mt.Fruit.Web.Models;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Mt.Fruit.Web.Services
@@ -8,6 +9,6 @@ namespace Mt.Fruit.Web.Services
 
         Task Create(RegModel model);
 
-        Task<User> SignByPwd(LoginModel model);
+        Task<HttpResponseMessage> SignByPwd(LoginModel model);
     }
 }

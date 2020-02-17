@@ -36,7 +36,7 @@ namespace Mt.Fruit.Web.Services
         }
 
 
-        public async Task<User> SignByPwd(LoginModel model)
+        public async Task<HttpResponseMessage> SignByPwd(LoginModel model)
         {
             string uri = API.Auth.UserLogin(_remoteServiceBaseUrl);
             
@@ -44,9 +44,7 @@ namespace Mt.Fruit.Web.Services
 
             var response = await _httpClient.PostAsync(uri, content);
 
-            var responseString = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<User>(responseString);
+            return response;
         }
     }
 }

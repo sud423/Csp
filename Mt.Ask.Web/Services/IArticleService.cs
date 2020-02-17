@@ -1,6 +1,8 @@
-﻿using Csp.Web.Mvc.Paging;
+﻿using Csp;
+using Csp.Web.Mvc.Paging;
 using Mt.Ask.Web.Models;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Mt.Ask.Web.Services
@@ -8,11 +10,11 @@ namespace Mt.Ask.Web.Services
     public interface IArticleService
     {
 
-        Task Create(Article article);
+        Task<OptResult> Create(Article article);
 
-        Task Delete(int id);
+        Task<OptResult> Delete(int id);
 
-        Task DeleteReply(int replyId);
+        Task<OptResult> DeleteReply(int replyId);
 
         Task<Article> GetArticle(int id, string ip, string browser, string device, string os, int userId = 0);
 

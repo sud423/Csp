@@ -1,4 +1,5 @@
 ﻿using Csp.Jwt;
+using Csp.Web.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -47,14 +48,14 @@ namespace Mt.Fruit.Web.Controllers
             }
             ViewBag.returnUrl = returnUrl;
 
-            var user = await _authService.SignByPwd(model);
-            if (user == null)
+            var response = await _authService.SignByPwd(model);
+            if (!response.IsSuccessStatusCode)
             {
-                ModelState.AddModelError("Error", "用户名或密码不正确");
+                ModelState.AddModelError("Error", (await response.GetResult()).Msg);
                 return View("Index", model);
             }
 
-
+            var user = await response.GetResult<User>();
             var accessTokenResult = _jwtTokenGenerator.GenerateAccessTokenWithClaimsPrincipal(model.UserName, AddMyClaims(user));
 
             //清空cookie身份信息

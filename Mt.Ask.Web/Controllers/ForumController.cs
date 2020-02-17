@@ -60,9 +60,15 @@ namespace Mt.Ask.Web.Controllers
 
             article.SetId(_user.TenantId, _user.Id, 1, id);//不能当前登录的用户的注册站点编号
 
-            await _articleService.Create(article);
+            var result=await _articleService.Create(article);
 
-            return RedirectToAction(nameof(List));
+            if (result.Succeed)
+                return RedirectToAction(nameof(List));
+
+            ModelState.AddModelError("Error", result.Msg);
+
+            return View(nameof(Post), article);
+
         }
 
         [HttpGet]
@@ -84,8 +90,9 @@ namespace Mt.Ask.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            await _articleService.Delete(id);
-            return Ok(OptResult.Success());
+            var result = await _articleService.Delete(id);
+            
+            return Ok(result);
         }
 
         public async Task<IActionResult> GetReplies(int id, int page=1)
@@ -114,8 +121,8 @@ namespace Mt.Ask.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> DelReply(int id)
         {
-            await _articleService.DeleteReply(id);
-            return Ok(OptResult.Success());
+            var result = await _articleService.DeleteReply(id);
+            return Ok(result);
         }
     }
 }

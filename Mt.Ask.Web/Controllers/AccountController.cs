@@ -92,13 +92,14 @@ namespace Mt.Ask.Web.Controllers
             }
             ViewBag.returnUrl = returnUrl;
 
-            
-            var user = await _authService.SignByPwd(model);
-            if (user == null)
+            var response = await _authService.SignByPwd(model);
+            if (!response.IsSuccessStatusCode)
             {
-                ModelState.AddModelError("Error", "用户名或密码不正确");
+                ModelState.AddModelError("Error", (await response.GetResult()).Msg);
                 return View("Index", model);
             }
+
+            var user = await response.GetResult<User>();
 
             return await Sigin(user, returnUrl);
         }

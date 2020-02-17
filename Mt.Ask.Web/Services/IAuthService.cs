@@ -1,5 +1,6 @@
 ﻿using Csp;
 using Mt.Ask.Web.Models;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Mt.Ask.Web.Services
@@ -12,6 +13,6 @@ namespace Mt.Ask.Web.Services
 
         Task<OptResult> BindCell(string cell, int userId);
 
-        Task<User> SignByPwd(LoginModel model);
+        Task<HttpResponseMessage> SignByPwd(LoginModel model);
     }
 }

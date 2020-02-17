@@ -1,0 +1,25 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+namespace Csp.Web.Extensions
+{
+    public static class HttpResponseMessageExtension
+    {
+        public static async Task<OptResult> GetResult(this HttpResponseMessage httpResponse)
+        {
+            return await httpResponse.GetResult<OptResult>();
+        }
+
+        public static async Task<T> GetResult<T>(this HttpResponseMessage httpResponse) where T:class
+        {
+            var responseString = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            var result = JsonConvert.DeserializeObject<T>(responseString);
+
+            return result;
+        }
+    }
+}
