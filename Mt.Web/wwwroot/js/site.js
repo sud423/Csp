@@ -19,3 +19,35 @@ var isMobile = {
 		return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Windows());
 	}
 };
+
+function openPhotoSwipe(_img) {
+    var items = [{ src: _img.src, w: _img.naturalWidth, h: _img.naturalHeight }];
+    var imgs = $("#jcsj").find("img");
+    if (imgs.length > 0) {
+        // build items array
+        $.each(imgs, function (i, img) {
+            if (img.src != _img.src) {
+                items.push({
+                    src: img.src,
+                    w: img.naturalWidth,
+                    h: img.naturalHeight
+                });
+            }
+        });
+    }
+    var pswpElement = document.querySelectorAll('.pswp')[0];
+
+    // define options (if needed)
+    var options = {
+        // history & focus options are disabled on CodePen
+        history: false,
+        focus: false,
+
+        showAnimationDuration: 0,
+        hideAnimationDuration: 0
+
+    };
+
+    var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+    gallery.init();
+}

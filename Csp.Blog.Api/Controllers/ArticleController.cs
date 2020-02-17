@@ -95,7 +95,7 @@ namespace Csp.Blog.Api.Controllers
         /// </summary>
         /// <param name="id">根据主键删除</param>
         /// <returns></returns>
-        [HttpPut, Route("delete/{id:int}")]
+        [HttpDelete, Route("delete/{id:int}")]
         public async Task<IActionResult> Deprecated(int id)
         {
             var artice = await _blogDbContext.Articles.SingleOrDefaultAsync(a => a.Id == id);
@@ -197,7 +197,7 @@ namespace Csp.Blog.Api.Controllers
         /// </summary>
         /// <param name="replyId">回复编号</param>
         /// <returns></returns>
-        [HttpPut,Route("delreply/{replyId:int}")]
+        [HttpDelete, Route("delreply/{replyId:int}")]
         public async Task<IActionResult> DeleteReply(int replyId)
         {
             var reply = await _blogDbContext.Replies.SingleOrDefaultAsync(a => a.Id == replyId);

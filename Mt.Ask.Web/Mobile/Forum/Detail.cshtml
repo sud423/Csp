@@ -118,16 +118,16 @@
 
             if (isMobile.iOS) {
                 wx.updateTimelineShareData({
-                    desc: '@Html.Raw(Model.Content)', // 分享描述
-                    title: '我爱8点，@Html.Raw(Model.Title)', // 分享标题
+                    desc: '@(Model.Content)', // 分享描述
+                    title: '我爱8点，@(Model.Title)', // 分享标题
                     link: 'http://www.5-ask.com/forum/detail/@(Model.Id)', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                     imgUrl: 'http://www.5-ask.com/images/r_logo.png', // 分享图标
                     type: 'link' // 分享类型,music、video或link，不填默认为link
                 });
 
                 wx.updateAppMessageShareData({
-                    desc: '@Html.Raw(Model.Content)', // 分享描述
-                    title: '我爱8点，@Html.Raw(Model.Title)', // 分享标题
+                    desc: '@(Model.Content)', // 分享描述
+                    title: '我爱8点，@(Model.Title)', // 分享标题
                     link: 'http://www.5-ask.com/forum/detail/@(Model.Id)', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                     imgUrl: 'http://www.5-ask.com/images/r_logo.png', // 分享图标
                     type: 'link', // 分享类型,music、video或link，不填默认为link
@@ -149,16 +149,16 @@
                 });
             } else {
                 wx.onMenuShareTimeline({
-                    desc: '@Html.Raw(Model.Content)', // 分享描述
-                    title: '我爱8点，@Html.Raw(Model.Title)', // 分享标题
+                    desc: '@(Model.Content)', // 分享描述
+                    title: '我爱8点，@(Model.Title)', // 分享标题
                     link: 'http://www.5-ask.com/forum/detail/@(Model.Id)', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                     imgUrl: 'http://www.5-ask.com/images/r_logo.png', // 分享图标
                     type: 'link' // 分享类型,music、video或link，不填默认为link
                 });
 
                 wx.onMenuShareAppMessage({
-                    desc: '@Html.Raw(Model.Content)', // 分享描述
-                    title: '我爱8点，@Html.Raw(Model.Title)', // 分享标题
+                    desc: '@(Model.Content)', // 分享描述
+                    title: '我爱8点，@(Model.Title)', // 分享标题
                     link: 'http://www.5-ask.com/forum/detail/@(Model.Id)', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                     imgUrl: 'http://www.5-ask.com/images/r_logo.png', // 分享图标
                     type: 'link', // 分享类型,music、video或link，不填默认为link

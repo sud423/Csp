@@ -11,7 +11,7 @@ namespace Csp.Wx.Extensions
             var appSettingsSection = configuration.GetSection("Wx");
             services.Configure<WxOption>(appSettingsSection);
 
-            services.AddSingleton<WxRequestHeaderDelegatingHandler>();
+            services.AddTransient<WxRequestHeaderDelegatingHandler>();
 
             services.AddMemoryCache();
             services.AddHttpClient<IWxService, WxService>().AddHttpMessageHandler<WxRequestHeaderDelegatingHandler>();

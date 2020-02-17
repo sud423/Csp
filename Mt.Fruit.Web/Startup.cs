@@ -1,5 +1,6 @@
 using Csp.Jwt;
 using Csp.Jwt.Extensions;
+using Csp.Web;
 using Csp.Web.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +33,9 @@ namespace Mt.Fruit.Web
 
             services.Configure<AppSettings>(Configuration);
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddJsonOptions(options => {
+                options.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
+            });
 
             services.AddMvcJwt(Configuration);
 

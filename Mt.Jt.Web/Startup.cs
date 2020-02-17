@@ -1,3 +1,4 @@
+using Csp.Web;
 using Csp.Web.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,7 +24,9 @@ namespace Mt.Jt.Web
             services.Configure<RazorViewEngineOptions>(o => {
                 o.ViewLocationExpanders.Add(new ViewLocationExpander());
             });
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddJsonOptions(options => {
+                options.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
+            });
 
         }
 

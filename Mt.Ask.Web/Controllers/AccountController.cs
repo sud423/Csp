@@ -105,7 +105,9 @@ namespace Mt.Ask.Web.Controllers
 
         private async Task<IActionResult> Sigin(User user,string returnUrl)
         {
-            var accessTokenResult = _jwtTokenGenerator.GenerateAccessTokenWithClaimsPrincipal(user.UserLogin.UserName, AddMyClaims(user));
+            string userName = user.UserLogin != null ? user.UserLogin.UserName : user.ExternalLogin.OpenId;
+
+            var accessTokenResult = _jwtTokenGenerator.GenerateAccessTokenWithClaimsPrincipal(userName, AddMyClaims(user));
             await HttpContext.SignInAsync(accessTokenResult.ClaimsPrincipal, accessTokenResult.AuthProperties);
             return RedirectToLocal(returnUrl);
         }

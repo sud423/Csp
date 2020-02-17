@@ -1,6 +1,5 @@
 ﻿using Csp.Jwt;
 using Csp.OAuth.Api.Application;
-using Csp.OAuth.Api.Application.Services;
 using Csp.OAuth.Api.Infrastructure;
 using Csp.OAuth.Api.Models;
 using Csp.OAuth.Api.ViewModel;
@@ -134,7 +133,7 @@ namespace Csp.OAuth.Api.Controllers
             return Ok(OptResult.Success());
         }
 
-        [HttpPut,Route("bind/{userId:int}/{cell}")]
+        [HttpPut, Route("bind/{userId:int}/{cell}")]
         public async Task<IActionResult> BindCell(int userId,string cell)
         {
             if (string.IsNullOrEmpty(cell))

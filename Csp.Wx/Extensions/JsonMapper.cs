@@ -52,6 +52,9 @@ namespace Csp.Wx.Extensions
         /// <returns></returns>
         internal static T GetValue<T>(this string json, string nodeKey)
         {
+            if (JObject.Parse(json).SelectToken(nodeKey) == null)
+                return default;
+
             var val = JObject.Parse(json).SelectToken(nodeKey).Value<T>();
             return val;
         }

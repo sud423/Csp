@@ -1,7 +1,6 @@
 using Csp.EF.Extensions;
 using Csp.Jwt.Extensions;
 using Csp.OAuth.Api.Application;
-using Csp.OAuth.Api.Application.Services;
 using Csp.OAuth.Api.Infrastructure;
 using Csp.Web.Extensions;
 using Microsoft.AspNetCore.Builder;

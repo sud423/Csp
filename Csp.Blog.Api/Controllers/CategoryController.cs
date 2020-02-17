@@ -112,7 +112,7 @@ namespace Csp.Blog.Api.Controllers
         /// </summary>
         /// <param name="id">根据主键关注或取关</param>
         /// <returns></returns>
-        [HttpPut, Route("attention/{id}")]
+        [HttpDelete, Route("attention/{id}")]
         public async Task<IActionResult> Attention(int id, int userId)
         {
             var category = await _blogDbContext.Categories.Include(a => a.CategoryLikes)

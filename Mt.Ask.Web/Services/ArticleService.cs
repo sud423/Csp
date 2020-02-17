@@ -40,7 +40,7 @@ namespace Mt.Ask.Web.Services
         {
             string uri = API.Article.Delete(_remoteServiceBaseUrl, id);
 
-            var response = await _httpClient.PutAsync(uri, null);
+            var response = await _httpClient.DeleteAsync(uri);
 
             response.EnsureSuccessStatusCode();
         }
@@ -49,7 +49,7 @@ namespace Mt.Ask.Web.Services
         {
             string uri = API.Article.DeleteReply(_remoteServiceBaseUrl, replyId);
 
-            var response = await _httpClient.PutAsync(uri, null);
+            var response = await _httpClient.DeleteAsync(uri);
 
             response.EnsureSuccessStatusCode();
         }
@@ -124,7 +124,7 @@ namespace Mt.Ask.Web.Services
 
         public async Task<WxConfig> GetWxConfig(string url)
         {
-            string uri = $"{_settings.Value.OcelotUrl}/api/v1/wx/getconfig/{url}";
+            string uri = $"{_settings.Value.OcelotUrl}/api/v1/wx/getconfig?url={url}";
 
             var responseString = await _httpClient.GetStringAsync(uri);
 

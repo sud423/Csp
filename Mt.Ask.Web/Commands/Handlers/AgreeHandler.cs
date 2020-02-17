@@ -24,7 +24,7 @@ namespace Mt.Ask.Web.Commands.Handlers
         }
         public async Task Handle(AgreeCommand notification, CancellationToken cancellationToken)
         {
-            string uri = $"{_remoteServiceBaseUrl}/article/Agree/{notification.ReplyId}/{notification.UserId}";
+            string uri = $"{_remoteServiceBaseUrl}/article/agree/{notification.ReplyId}/{notification.UserId}";
 
             var response = await _httpClient.PutAsync(uri, null);
 

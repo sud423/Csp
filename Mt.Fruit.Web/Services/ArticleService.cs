@@ -40,7 +40,7 @@ namespace Mt.Fruit.Web.Services
         {
             string uri = API.Article.Delete(_remoteServiceBaseUrl, id);
 
-            var response = await _httpClient.PutAsync(uri, null);
+            var response = await _httpClient.DeleteAsync(uri);
 
             response.EnsureSuccessStatusCode();
         }

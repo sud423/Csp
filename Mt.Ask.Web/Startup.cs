@@ -1,5 +1,6 @@
 using Csp.Jwt;
 using Csp.Jwt.Extensions;
+using Csp.Web;
 using Csp.Web.Mvc;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -34,7 +35,9 @@ namespace Mt.Ask.Web
             
             services.AddMediatR(typeof(Startup).Assembly);
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddJsonOptions(options => {
+                options.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
+            });
 
             services.AddMvcJwt(Configuration);
 

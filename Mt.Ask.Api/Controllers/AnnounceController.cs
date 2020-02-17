@@ -85,7 +85,7 @@ namespace Mt.Ask.Api.Controllers
         /// </summary>
         /// <param name="id">根据主键删除</param>
         /// <returns></returns>
-        [HttpPut, Route("delete/{id:int}")]
+        [HttpDelete, Route("delete/{id:int}")]
         public async Task<IActionResult> Deprecated(int id)
         {
             var course = await _askDbContext.Announces.SingleOrDefaultAsync(a => a.Id == id);

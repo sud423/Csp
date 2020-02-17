@@ -80,7 +80,7 @@ namespace Csp.Wx
         {
             var message = await response.Content.ReadAsStringAsync();
 
-            if (0 == message.GetValue<int>("errcode"))
+            if (response.IsSuccessStatusCode && 0 == message.GetValue<int>("errcode"))
                 return message.FromJson<T>();
 
             return default;

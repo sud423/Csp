@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Csp.Wx.Api.Models
 {
@@ -20,7 +21,7 @@ namespace Csp.Wx.Api.Models
         /// 模板数据
         /// </summary>
         [Required(ErrorMessage = "{0}：不能为空")]
-        public object Data { get; set; }
+        public Dictionary<string,Dictionary<string,string>> Data { get; set; }
 
         /// <summary>
         /// 模板跳转链接

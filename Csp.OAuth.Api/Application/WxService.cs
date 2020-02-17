@@ -2,8 +2,9 @@
 using System.Threading.Tasks;
 using Csp.Extensions;
 using Csp.OAuth.Api.Models;
+using Microsoft.Extensions.Logging;
 
-namespace Csp.OAuth.Api.Application.Services
+namespace Csp.OAuth.Api.Application
 {
     public class WxService : IWxService
     {
@@ -24,6 +25,8 @@ namespace Csp.OAuth.Api.Application.Services
             var response = await _httpClient.GetAsync(uri);
 
             var jsonString = await response.Content.ReadAsStringAsync();
+
+
             var login = jsonString.FromJson<dynamic>();
 
             var user = new User
@@ -32,16 +35,16 @@ namespace Csp.OAuth.Api.Application.Services
                 ExternalLogin = new ExternalLogin
                 {
                     Provide = "weixin",
-                    OpenId = login.OpenId,
+                    OpenId = login.openId,
                     WebSiteId = webSiteId
                 },
-                NickName = login.NickName,
-                HeadImgUrl = login.HeadImgUrl,
+                NickName = login.nickName,
+                HeadImgUrl = login.headImgUrl,
                 Status = 1,
                 TenantId = tenantId
             };
 
-            return login;
+            return user;
         }
     }
 }

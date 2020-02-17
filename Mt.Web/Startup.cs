@@ -1,3 +1,4 @@
+using Csp.Web;
 using Csp.Web.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,8 +30,10 @@ namespace Mt.Web
 
             services.Configure<AppSettings>(Configuration);
 
-            services.AddControllersWithViews();
-            
+            services.AddControllersWithViews().AddJsonOptions(options => {
+                options.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
+            });
+
             services.AddHttpClientServices();
         }
 

@@ -34,7 +34,7 @@ namespace Csp.Wx.Api.Controllers
         }
 
 
-        [Route("getconfig/{url}"), HttpGet]
+        [Route("getconfig"), HttpGet]
         public async Task<IActionResult> GetConfig(string url)
         {
             if (string.IsNullOrEmpty(url))
@@ -69,8 +69,11 @@ namespace Csp.Wx.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.First());
 
+#if DEBUG
+            await Task.CompletedTask;
+#else
             await _wxService.SendTempMsg(model.ToUser, model.TemplateId, model.Data, model.Url, model.Color);
-
+#endif
             return Ok();
         }
     }

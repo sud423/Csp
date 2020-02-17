@@ -28,9 +28,7 @@ namespace Mt.Ask.Web.Commands.Handlers
         {
             if (notification.ReplyId > 0)
                 return;
-#if DEBUG
-            await Task.FromResult(0);
-#else
+
             var notice = new
             {
                 notification.ToUser,
@@ -51,7 +49,7 @@ namespace Mt.Ask.Web.Commands.Handlers
             var response = await _httpClient.PostAsync(uri, forumContent);
 
             response.EnsureSuccessStatusCode();
-#endif
+
         }
     }
 }
