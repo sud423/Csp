@@ -56,8 +56,6 @@
                 <tbody>
                 </tbody>
                 <tfoot>
-
-
                     <tr id="trExample" style="display:none;">
                         <td>{0}</td>
                         <td>{1}</td>
@@ -110,8 +108,8 @@
 
 @section Scripts{ 
     <script src="~/js/bootstrap-paginator.js" type="text/javascript"></script>
-<script type="text/javascript">
-    categoryId=@(ViewBag.CategoryId)
-    render(1);
-</script>
+    <script type="text/javascript">
+        categoryId =@(ViewBag.CategoryId);
+        getArticles(1);
+    </script>
 }

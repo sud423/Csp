@@ -14,7 +14,14 @@ namespace Mt.Fruit.Web.Models
         [Required(ErrorMessage = "标题不能为空")]
         public string Title { get; set; }
 
+        public string Cover { get; set; }
+
+        [StringLength(255,ErrorMessage ="导语最大为255个字符")]
+        public string Lead { get; set; }
+
         public string Content { get; set; }
+
+        public string Author { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
@@ -40,13 +47,14 @@ namespace Mt.Fruit.Web.Models
 
         public virtual User User { get; set; }
 
-        public void SetId(int tenantId, int userId, int webSiteId, int id)
+        public void SetId(int tenantId, int userId,string nickName, int webSiteId, int id)
         {
             Id = id;
             TenantId = tenantId;
             UserId = userId;
 
             WebSiteId = webSiteId;
+            Author = nickName;
         }
     }
 }

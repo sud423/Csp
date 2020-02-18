@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 
 body {
 	position: relative;
@@ -256,7 +256,7 @@ footer p{
 	margin:0px;
 }
 
-.table .new{
+.new{
 	display: inline-block;
 	background-color: #84ce04;
 	color: #fff;
@@ -264,7 +264,10 @@ footer p{
 	text-decoration: none;
 
 }
-
+.new:hover {
+	color: #fff;
+	text-decoration: none;
+}
 .group .col-lg-4{
     width: 315px;
     margin-bottom: 35px;

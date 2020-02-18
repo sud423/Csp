@@ -16,6 +16,8 @@ namespace Mt.Ask.Web.Models
 
         public string Content { get; set; }
 
+        public string Author { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public int Clicks { get; set; }
@@ -36,7 +38,7 @@ namespace Mt.Ask.Web.Models
 
         public virtual User User { get; set; }
 
-        public void SetId(int tenantId,int userId,int webSiteId,int id)
+        public void SetId(int tenantId,int userId,string nickName,int webSiteId,int id)
         {
             Id = id;
             TenantId = tenantId;
@@ -45,6 +47,8 @@ namespace Mt.Ask.Web.Models
             WebSiteId = webSiteId;
             CategoryId = 1;
             Status = 1;
+
+            Author = nickName;
         }
     }
 }

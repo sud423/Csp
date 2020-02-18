@@ -2,7 +2,6 @@
 using Csp.OAuth.Api.Application;
 using Csp.OAuth.Api.Infrastructure;
 using Csp.OAuth.Api.Models;
-using Csp.OAuth.Api.ViewModel;
 using Csp.Web;
 using Csp.Web.Extensions;
 using Microsoft.AspNetCore.Mvc;

@@ -11,7 +11,9 @@ namespace Mt.Fruit.Web.Services
         Task<HttpResponseMessage> Create(Article article);
 
         Task<HttpResponseMessage> Delete(int id);
-        
+
+        Task<Article> GetArticle(int id, string ip, string browser, string device, string os, int userId = 0);
+
         Task<PagedResult<Article>> GetArticles(int categoryId,int page, int size);
 
     }

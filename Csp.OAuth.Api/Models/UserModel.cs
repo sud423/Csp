@@ -1,10 +1,9 @@
 ﻿using Csp.OAuth.Api.Application;
-using Csp.OAuth.Api.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace Csp.OAuth.Api.ViewModel
+namespace Csp.OAuth.Api.Models
 {
-    public class Models
+    public class UserModel
     {
         public int TenantId { get; set; }
 

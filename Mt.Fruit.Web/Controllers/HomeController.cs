@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
+using Csp.Jwt;
+using Csp.Web.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Mt.Fruit.Web.Models;
@@ -12,12 +14,15 @@ namespace Mt.Fruit.Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ICategoryService _categoryService;
         private readonly IArticleService _articleService;
+        private readonly User _user;
 
         public HomeController(ILogger<HomeController> logger, 
             ICategoryService categoryService,
-            IArticleService articleService)
+            IArticleService articleService, IIdentityParser<User> parser)
         {
             _logger = logger;
+
+            _user = parser.Parse();
 
             _articleService = articleService;
             _categoryService = categoryService;
@@ -53,8 +58,21 @@ namespace Mt.Fruit.Web.Controllers
             return View();
         }
 
-        [Route("/vedio")]
-        public IActionResult Vedio()
+        [Route("/detail/{id:int}")]
+        public async Task<IActionResult> Detail(int id)
+        {
+            if (id <= 0)
+                return NotFound();
+
+            var article = await _articleService.GetArticle(id, HttpContext.RemoteIp(),
+                Request.BrowserNameByUserAgent(), Request.DeviceByUserAgent(),
+                Request.OsByUserAgent(), _user.Id);
+
+            return View(article);
+        }
+
+        [Route("/video")]
+        public IActionResult Video()
         {
             return View();
         }

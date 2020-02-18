@@ -17,6 +17,8 @@
 
             public static string Delete(string baseUrl, int id) => $"{baseUrl}/article/delete/{id}";
 
+            public static string GetArticle(string baseUrl) => $"{baseUrl}/articles/browse";
+
             public static string GetArticles(string baseUrl, int categoryId,int page, int size) => $"{baseUrl}/articles/2/{categoryId}/3/{page}/{size}";
 
         }

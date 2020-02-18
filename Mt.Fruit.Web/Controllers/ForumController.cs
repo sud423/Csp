@@ -20,10 +20,28 @@ namespace Mt.Fruit.Web.Controllers
             _articleService = articleService;
         }
 
+        /// <summary>
+        /// 发布水果文章
+        /// </summary>
+        /// <param name="cid"></param>
+        /// <returns></returns>
         [Route("create/{cid:int}")]
         public ActionResult Create(int cid)
         {
+            if (cid <= 0)
+                return NotFound();
+
             var model = new Article() { CategoryId = cid };
+            return View(model);
+        }
+
+        /// <summary>
+        /// 发布趣闻杂谈
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Post()
+        {
+            var model = new Article { CategoryId = 43 };
             return View(model);
         }
 
@@ -32,7 +50,7 @@ namespace Mt.Fruit.Web.Controllers
             if (!ModelState.IsValid)
                 return View(nameof(Create), article);
 
-            article.SetId(_user.TenantId,_user.Id,3,article.Id);
+            article.SetId(_user.TenantId,_user.Id,_user.NickName,3,article.Id);
 
             //forum.Id = id;
             var response=await _articleService.Create(article);

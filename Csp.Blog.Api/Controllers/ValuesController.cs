@@ -114,7 +114,6 @@ namespace Csp.Blog.Api.Controllers
         public async Task<IActionResult> GetArticles(int tenantId, int categoryId, int webSiteId,int page, int size)
         {
             var result = await _blogDbContext.Articles
-                .Include(a=>a.User)
                 .Where(a => a.TenantId == tenantId && a.Status == 1 && categoryId == a.CategoryId && (a.WebSiteId == 0 || a.WebSiteId == webSiteId))
                 .OrderBy(a => a.Sort)
                 .ThenByDescending(a => a.CreatedAt)

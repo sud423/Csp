@@ -58,7 +58,7 @@ namespace Mt.Ask.Web.Controllers
             if (!ModelState.IsValid)
                 return View(nameof(Post), article);
 
-            article.SetId(_user.TenantId, _user.Id, 1, id);//不能当前登录的用户的注册站点编号
+            article.SetId(_user.TenantId, _user.Id,_user.NickName, 1, id);//不能当前登录的用户的注册站点编号
 
             var result=await _articleService.Create(article);
 
@@ -76,7 +76,7 @@ namespace Mt.Ask.Web.Controllers
         {
             var article = await _articleService.GetArticle(id, HttpContext.RemoteIp(),
                 Request.BrowserNameByUserAgent(), Request.DeviceByUserAgent(), 
-                Request.OsByUserAgent(),_user.Id); ;
+                Request.OsByUserAgent(),_user.Id); 
 
 #if !DEBUG
             var config = await _articleService.GetWxConfig(Request.GetCurrentUrl());
