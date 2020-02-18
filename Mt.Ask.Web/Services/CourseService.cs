@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Csp.Web.Extensions;
+using Microsoft.Extensions.Options;
 using Mt.Ask.Web.Models;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -30,7 +30,7 @@ namespace Mt.Ask.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var response = JsonConvert.DeserializeObject<Course>(responseString);
+            var response = responseString.FromJson<Course>();
 
             return response;
         }
@@ -41,9 +41,9 @@ namespace Mt.Ask.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var response = JsonConvert.DeserializeObject<IEnumerable<Course>>(responseString);
+            var result = responseString.FromJson<IEnumerable<Course>>();
 
-            return response;
+            return result;
         }
 
         public async Task<IEnumerable<Course>> GetCoursesByCondtion(string academy, string classify)
@@ -52,9 +52,9 @@ namespace Mt.Ask.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var response = JsonConvert.DeserializeObject<IEnumerable<Course>>(responseString);
+            var result = responseString.FromJson<IEnumerable<Course>>();
 
-            return response;
+            return result;
         }
 
         public async Task<IEnumerable<Course>> GetHotCourses()
@@ -63,9 +63,9 @@ namespace Mt.Ask.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var response = JsonConvert.DeserializeObject<IEnumerable<Course>>(responseString);
+            var result = responseString.FromJson<IEnumerable<Course>>();
 
-            return response;
+            return result;
         }
     }
 }

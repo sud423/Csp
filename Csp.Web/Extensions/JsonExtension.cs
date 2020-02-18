@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
-namespace Csp.Extensions
+namespace Csp.Web.Extensions
 {
     public static class JsonExtension
     {

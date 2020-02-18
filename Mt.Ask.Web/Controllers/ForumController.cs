@@ -1,5 +1,5 @@
-﻿using Csp;
-using Csp.Jwt;
+﻿using Csp.Jwt;
+using Csp.Web;
 using Csp.Web.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -65,7 +65,7 @@ namespace Mt.Ask.Web.Controllers
             if (result.Succeed)
                 return RedirectToAction(nameof(List));
 
-            ModelState.AddModelError("Error", result.Msg);
+            ModelState.AddModelError("Title", result.Msg);
 
             return View(nameof(Post), article);
 

@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Csp.Web.Extensions;
+using Microsoft.Extensions.Options;
 using Mt.Fruit.Web.Models;
-using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,15 +24,15 @@ namespace Mt.Fruit.Web.Services
             _remoteServiceBaseUrl = $"{_settings.Value.OcelotUrl}/u/api/v1/account";
         }
 
-        public async Task Create(RegModel model)
+        public async Task<HttpResponseMessage> Create(RegModel model)
         {
             string uri = API.Auth.Create(_remoteServiceBaseUrl);
 
-            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+            var content = new StringContent(model.ToJson(), Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync(uri, content);
 
-            response.EnsureSuccessStatusCode();
+            return response;
         }
 
 
@@ -40,7 +40,7 @@ namespace Mt.Fruit.Web.Services
         {
             string uri = API.Auth.UserLogin(_remoteServiceBaseUrl);
             
-            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+            var content = new StringContent(model.ToJson(), Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync(uri, content);
 

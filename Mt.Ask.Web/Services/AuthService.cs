@@ -1,7 +1,7 @@
-﻿using Csp;
+﻿using Csp.Web;
+using Csp.Web.Extensions;
 using Microsoft.Extensions.Options;
 using Mt.Ask.Web.Models;
-using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +33,7 @@ namespace Mt.Ask.Web.Services
 
             var responseString = await response.Content.ReadAsStringAsync();
 
-            return JsonConvert.DeserializeObject<OptResult>(responseString);
+            return responseString.FromJson<OptResult>();
         }
 
         public async Task<string> GetAuthUrl(string redirectUrl)
@@ -51,16 +51,14 @@ namespace Mt.Ask.Web.Services
 
             var response = await _httpClient.PostAsync(uri,null);
 
-            var responseString = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<User>(responseString) ;
+            return await response.GetResult<User>();
         }
 
         public async Task<HttpResponseMessage> SignByPwd(LoginModel model)
         {
             string uri = API.Auth.UserLogin(_remoteServiceBaseUrl);
             
-            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+            var content = new StringContent(model.ToJson(), Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync(uri, content);
 

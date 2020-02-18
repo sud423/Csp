@@ -1,9 +1,8 @@
-﻿using Csp;
+﻿using Csp.Web;
 using Csp.Web.Extensions;
 using Csp.Web.Mvc.Paging;
 using Microsoft.Extensions.Options;
 using Mt.Ask.Web.Models;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -32,7 +31,7 @@ namespace Mt.Ask.Web.Services
         {
             string uri = API.Article.Create(_remoteServiceBaseUrl);
 
-            var forumContent = new StringContent(JsonConvert.SerializeObject(article), System.Text.Encoding.UTF8, "application/json");
+            var forumContent = new StringContent(article.ToJson(), System.Text.Encoding.UTF8, "application/json");
             var response= await _httpClient.PostAsync(uri, forumContent);
 
             return await response.GetResult();
@@ -63,9 +62,10 @@ namespace Mt.Ask.Web.Services
 
             string uri = API.Article.GetArticle(_remoteServiceBaseUrl);
 
-            var forumContent = new StringContent(JsonConvert.SerializeObject(browse), System.Text.Encoding.UTF8, "application/json");
+            var forumContent = new StringContent(browse.ToJson(), System.Text.Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(uri, forumContent);
-            var result = JsonConvert.DeserializeObject<Article>(await response.Content.ReadAsStringAsync());
+            
+            var result = await response.GetResult<Article>();
 
             return result;
         }
@@ -76,7 +76,7 @@ namespace Mt.Ask.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var result = JsonConvert.DeserializeObject<Article>(responseString);
+            var result = responseString.FromJson<Article>();
 
             return result;
         }
@@ -87,7 +87,7 @@ namespace Mt.Ask.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var result = JsonConvert.DeserializeObject<PagedResult<Article>>(responseString);
+            var result = responseString.FromJson<PagedResult<Article>>();
 
             return result;
         }
@@ -98,7 +98,7 @@ namespace Mt.Ask.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var result = JsonConvert.DeserializeObject<IEnumerable<Article>>(responseString);
+            var result = responseString.FromJson<IEnumerable<Article>>();
 
             return result;
         }
@@ -109,7 +109,7 @@ namespace Mt.Ask.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var result = JsonConvert.DeserializeObject<IEnumerable<Article>>(responseString);
+            var result = responseString.FromJson<IEnumerable<Article>>();
 
             return result;
         }
@@ -120,7 +120,7 @@ namespace Mt.Ask.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var result = JsonConvert.DeserializeObject<PagedResult<Reply>>(responseString);
+            var result = responseString.FromJson<PagedResult<Reply>>();
 
             return result;
         }
@@ -131,7 +131,7 @@ namespace Mt.Ask.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var result = JsonConvert.DeserializeObject<WxConfig>(responseString);
+            var result = responseString.FromJson<WxConfig>();
 
             return result;
         }

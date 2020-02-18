@@ -1,4 +1,5 @@
-﻿using Csp.Web.Extensions;
+﻿using Csp.Web;
+using Csp.Web.Extensions;
 using Csp.Wx.Api.Models;
 using Csp.Wx.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -74,7 +75,7 @@ namespace Csp.Wx.Api.Controllers
 #else
             await _wxService.SendTempMsg(model.ToUser, model.TemplateId, model.Data, model.Url, model.Color);
 #endif
-            return Ok();
+            return Ok(OptResult.Success("发送成功"));
         }
     }
 }

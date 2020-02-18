@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Csp.Web.Extensions;
+using Microsoft.Extensions.Options;
 using Mt.Ask.Web.Models;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -30,7 +30,7 @@ namespace Mt.Ask.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var response = JsonConvert.DeserializeObject<Article>(responseString);
+            var response = responseString.FromJson<Article>();
 
             return response;
         }
@@ -41,7 +41,7 @@ namespace Mt.Ask.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var response = JsonConvert.DeserializeObject<IEnumerable<Article>>(responseString);
+            var response = responseString.FromJson<IEnumerable<Article>>();
 
             return response;
         }

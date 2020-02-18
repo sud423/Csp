@@ -1,7 +1,7 @@
-﻿using Csp;
+﻿using Csp.Web;
+using Csp.Web.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -48,9 +48,7 @@ namespace Mt.Fruit.Web.Services
 
             var response = await _httpClient.PostAsync(_remoteServiceBaseUrl, multipartContent).ConfigureAwait(false);
 
-            var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            return JsonConvert.DeserializeObject<OptResult>(responseString);
+            return await response.GetResult();
         }
     }
 }

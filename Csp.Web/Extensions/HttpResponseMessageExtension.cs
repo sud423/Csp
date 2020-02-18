@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Csp.Web.Extensions
@@ -17,7 +14,7 @@ namespace Csp.Web.Extensions
         {
             var responseString = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            var result = JsonConvert.DeserializeObject<T>(responseString);
+            var result = responseString.FromJson<T>();
 
             return result;
         }

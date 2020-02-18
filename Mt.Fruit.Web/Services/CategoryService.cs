@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Csp.Web.Extensions;
+using Microsoft.Extensions.Options;
 using Mt.Fruit.Web.Models;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -30,7 +30,7 @@ namespace Mt.Fruit.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var result = JsonConvert.DeserializeObject<IEnumerable<Category>>(responseString);
+            var result = responseString.FromJson<IEnumerable<Category>>();
 
             return result;
         }
@@ -41,7 +41,7 @@ namespace Mt.Fruit.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var result = JsonConvert.DeserializeObject<Category>(responseString);
+            var result = responseString.FromJson<Category>();
 
             return result;
         }
@@ -52,7 +52,7 @@ namespace Mt.Fruit.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var result = JsonConvert.DeserializeObject<IEnumerable<Category>>(responseString);
+            var result = responseString.FromJson<IEnumerable<Category>>();
 
             return result;
         }

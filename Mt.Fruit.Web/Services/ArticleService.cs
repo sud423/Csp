@@ -1,8 +1,7 @@
-﻿using Csp.Web.Mvc.Paging;
+﻿using Csp.Web.Extensions;
+using Csp.Web.Mvc.Paging;
 using Microsoft.Extensions.Options;
 using Mt.Fruit.Web.Models;
-using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -26,23 +25,23 @@ namespace Mt.Fruit.Web.Services
         }
 
 
-        public async Task Create(Article article)
+        public async Task<HttpResponseMessage> Create(Article article)
         {
             string uri = API.Article.Create(_remoteServiceBaseUrl);
 
-            var forumContent = new StringContent(JsonConvert.SerializeObject(article), System.Text.Encoding.UTF8, "application/json");
+            var forumContent = new StringContent(article.ToJson(), System.Text.Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(uri, forumContent);
 
-            response.EnsureSuccessStatusCode();
+            return response;
         }
 
-        public async Task Delete(int id)
+        public async Task<HttpResponseMessage> Delete(int id)
         {
             string uri = API.Article.Delete(_remoteServiceBaseUrl, id);
 
             var response = await _httpClient.DeleteAsync(uri);
 
-            response.EnsureSuccessStatusCode();
+            return response;
         }
 
         public async Task<PagedResult<Article>> GetArticles(int categoryId, int page, int size)
@@ -51,7 +50,7 @@ namespace Mt.Fruit.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var result = JsonConvert.DeserializeObject<PagedResult<Article>>(responseString);
+            var result = responseString.FromJson<PagedResult<Article>>();
 
             return result;
         }

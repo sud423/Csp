@@ -51,7 +51,9 @@ namespace Mt.Fruit.Web.Controllers
             var response = await _authService.SignByPwd(model);
             if (!response.IsSuccessStatusCode)
             {
-                ModelState.AddModelError("Error", (await response.GetResult()).Msg);
+                var result = await response.GetResult();
+
+                ModelState.AddModelError(result.Msg.IndexOf("密码") > -1 ? "Password" : "UserName", result.Msg);
                 return View("Index", model);
             }
 
@@ -83,9 +85,15 @@ namespace Mt.Fruit.Web.Controllers
             
             ViewBag.returnUrl = returnUrl;
 
-            await _authService.Create(user);
+            var response=await _authService.Create(user);
+            
+            if (response.IsSuccessStatusCode)
+                return RedirectToAction(nameof(Index), new { returnUrl });
 
-            return RedirectToAction(nameof(Index), new { returnUrl });
+            var result = await response.GetResult();
+
+            ModelState.AddModelError("UserName", result.Msg);
+            return View("reg", user);
         }
 
         [HttpGet]

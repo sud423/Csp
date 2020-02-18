@@ -1,6 +1,6 @@
-﻿using Csp.Extensions;
+﻿using Csp.Web.Extensions;
 
-namespace Csp
+namespace Csp.Web
 {
     /// <summary>
     /// 统一返回结果信息

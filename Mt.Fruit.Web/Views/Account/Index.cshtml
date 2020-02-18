@@ -13,14 +13,7 @@
             <h3>欢迎</h3>
             <h4>请登录</h4>
             <form asp-action="Login" asp-route-returnurl="@ViewBag.returnUrl" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger">
-                    @foreach (var error in ViewData.ModelState.Values.SelectMany(err => err.Errors))
-                    {
-                        <div class="alert alert-warning" role="alert">
-                            &nbsp;@error.ErrorMessage
-                        </div>
-                    }
-                </div>
+                
                 <div class="form-group">
                     <label asp-for="UserName" class="control-label">用户名</label>
                     <input asp-for="UserName" required autocomplete="off" class="form-control" />

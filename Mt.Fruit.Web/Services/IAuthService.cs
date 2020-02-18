@@ -7,7 +7,7 @@ namespace Mt.Fruit.Web.Services
     public interface IAuthService
     {
 
-        Task Create(RegModel model);
+        Task<HttpResponseMessage> Create(RegModel model);
 
         Task<HttpResponseMessage> SignByPwd(LoginModel model);
     }

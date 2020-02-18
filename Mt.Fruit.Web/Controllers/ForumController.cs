@@ -1,4 +1,5 @@
 ﻿using Csp.Jwt;
+using Csp.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Mt.Fruit.Web.Models;
@@ -34,9 +35,16 @@ namespace Mt.Fruit.Web.Controllers
             article.SetId(_user.TenantId,_user.Id,3,article.Id);
 
             //forum.Id = id;
-            await _articleService.Create(article);
+            var response=await _articleService.Create(article);
 
-            return RedirectToAction("interestgroup", "home", new { id = article.CategoryId });
+            if (response.IsSuccessStatusCode)
+                return RedirectToAction("interestgroup", "home", new { id = article.CategoryId });
+
+            var result = await response.GetResult();
+
+            ModelState.AddModelError("Title", result.Msg);
+
+            return View(nameof(Create), article);
         }
 
 

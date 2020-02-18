@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Csp.Web.Extensions;
+using Microsoft.Extensions.Options;
 using Mt.Web.Models;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -30,11 +30,10 @@ namespace Mt.Web.Services
 
             string uri = API.Article.GetArticle(_remoteServiceBaseUrl);
 
-            var forumContent = new StringContent(JsonConvert.SerializeObject(browse), System.Text.Encoding.UTF8, "application/json");
-            var responseString = await _httpClient.PostAsync(uri, forumContent);
-            var response = JsonConvert.DeserializeObject<Article>(await responseString.Content.ReadAsStringAsync());
+            var forumContent = new StringContent(browse.ToJson(), System.Text.Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(uri, forumContent);
 
-            return response;
+            return await response.GetResult<Article>();
         }
 
         public async Task<IEnumerable<Article>> GetArticles()
@@ -43,9 +42,7 @@ namespace Mt.Web.Services
 
             var responseString = await _httpClient.GetStringAsync(uri);
 
-            var response = JsonConvert.DeserializeObject<IEnumerable<Article>>(responseString);
-
-            return response;
+            return responseString.FromJson<IEnumerable<Article>>();
         }
     }
 }

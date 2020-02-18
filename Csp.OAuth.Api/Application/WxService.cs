@@ -1,8 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using Csp.Extensions;
 using Csp.OAuth.Api.Models;
-using Microsoft.Extensions.Logging;
+using Csp.Web.Extensions;
 
 namespace Csp.OAuth.Api.Application
 {

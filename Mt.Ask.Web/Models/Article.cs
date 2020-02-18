@@ -44,6 +44,7 @@ namespace Mt.Ask.Web.Models
 
             WebSiteId = webSiteId;
             CategoryId = 1;
+            Status = 1;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿
 using Csp.Upload.Api.Application.Services;
+using Csp.Web;
 using Csp.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -33,28 +34,26 @@ namespace Csp.Upload.Api.Controllers
                 return BadRequest(OptResult.Failed("文件不存在"));
 
             //缩小图片
-            using (var imgBmp = new Bitmap(file.FilePath))
+            using var imgBmp = new Bitmap(file.FilePath);
+            //找到新尺寸
+            var oWidth = imgBmp.Width;
+            var oHeight = imgBmp.Height;
+            var height = oHeight;
+            if (width > oWidth)
             {
-                //找到新尺寸
-                var oWidth = imgBmp.Width;
-                var oHeight = imgBmp.Height;
-                var height = oHeight;
-                if (width > oWidth)
-                {
-                    width = oWidth;
-                }
-                else
-                {
-                    height = width * oHeight / oWidth;
-                }
-                var newImg = new Bitmap(imgBmp, width, height);
-                newImg.SetResolution(100, 100);
-                var ms = new MemoryStream();
-                newImg.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-                var bytes = ms.GetBuffer();
-                ms.Close();
-                return File(bytes, file.ContentType);
+                width = oWidth;
             }
+            else
+            {
+                height = width * oHeight / oWidth;
+            }
+            var newImg = new Bitmap(imgBmp, width, height);
+            newImg.SetResolution(100, 100);
+            var ms = new MemoryStream();
+            newImg.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+            var bytes = ms.GetBuffer();
+            ms.Close();
+            return File(bytes, file.ContentType);
         }
 
         [HttpGet, Route("oss/{id}")]
@@ -66,13 +65,11 @@ namespace Csp.Upload.Api.Controllers
             if (file==null || !System.IO.File.Exists(file.FilePath))
                 return BadRequest(OptResult.Failed("文件不存在"));
 
-            using (var sw = new FileStream(file.FilePath, FileMode.Open))
-            {
-                var bytes = new byte[sw.Length];
-                sw.Read(bytes, 0, bytes.Length);
-                sw.Close();
-                return File(bytes, file.ContentType);
-            }
+            using var sw = new FileStream(file.FilePath, FileMode.Open);
+            var bytes = new byte[sw.Length];
+            sw.Read(bytes, 0, bytes.Length);
+            sw.Close();
+            return File(bytes, file.ContentType);
         }
 
         [Authorize]

@@ -3,6 +3,7 @@ using Csp.OAuth.Api.Application;
 using Csp.OAuth.Api.Infrastructure;
 using Csp.OAuth.Api.Models;
 using Csp.OAuth.Api.ViewModel;
+using Csp.Web;
 using Csp.Web.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -59,8 +60,11 @@ namespace Csp.OAuth.Api.Controllers
                 return BadRequest(ModelState.First());
 
             var user = await _ctx.Users.Include(a=>a.UserLogin).SingleOrDefaultAsync(a => a.UserLogin.UserName == model.UserName && a.TenantId== model.TenantId);// && a.UserLogin.WebSiteId==model.WebSiteId
-            if (user == null || !PasswordHasher.Verify(model.Password, user.UserLogin?.Password))
-                return BadRequest(OptResult.Failed("用户名和密码不正确"));
+            if (user == null)
+                return BadRequest(OptResult.Failed("用户名不存在"));
+
+            if (!PasswordHasher.Verify(model.Password, user.UserLogin?.Password))
+                return BadRequest(OptResult.Failed("密码不正确"));
 
             //记录登录信息
 

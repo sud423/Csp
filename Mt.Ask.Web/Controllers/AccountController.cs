@@ -53,7 +53,7 @@ namespace Mt.Ask.Web.Controllers
             if (string.IsNullOrEmpty(user.Cell))
             {
                 ViewBag.ReturnUrl = returnUrl;
-                TempData["User"] = user;
+                TempData.Add("User", user.ToJson());
                 return View(user);
             }
 
@@ -67,7 +67,7 @@ namespace Mt.Ask.Web.Controllers
             if (!ModelState.IsValid)
                 return View("RedirectTo", user);
 
-            var oldUser = TempData["User"] as User;
+            var oldUser = TempData["User"].ToString().FromJson<User>();
 
             oldUser.Cell = user.Cell;
             var result=await _authService.BindCell(user.Cell, oldUser.Id);
@@ -95,12 +95,19 @@ namespace Mt.Ask.Web.Controllers
             var response = await _authService.SignByPwd(model);
             if (!response.IsSuccessStatusCode)
             {
-                ModelState.AddModelError("Error", (await response.GetResult()).Msg);
+                var result = await response.GetResult();
+
+                ModelState.AddModelError(result.Msg.IndexOf("密码")>-1?"Password": "UserName", result.Msg);
                 return View("Index", model);
             }
 
             var user = await response.GetResult<User>();
-
+            if (string.IsNullOrEmpty(user.Cell))
+            {
+                ViewBag.ReturnUrl = returnUrl;
+                TempData.Add("User", (await response.Content.ReadAsStringAsync()));
+                return View("RedirectTo",user);
+            }
             return await Sigin(user, returnUrl);
         }
 

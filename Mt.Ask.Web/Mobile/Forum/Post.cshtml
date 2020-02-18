@@ -28,8 +28,8 @@
             <label asp-for="Content">描述</label>
             <textarea rows="5" class="form-control" asp-for="Content" placeholder="非必填" maxlength="3000"></textarea>
         </div>
-        <input type="hidden" asp-for="Status" value="1">
-        @*<input type="hidden" asp-for="Id" value="0" />*@
+        @*<input type="hidden" asp-for="Status" value="1">
+        <input type="hidden" asp-for="Id" value="0" />*@
         <!--<button type="submit" class="btn btn-default">保存并发布</button>-->
         <button type="submit" class="btn btn-default">保存</button>
         <a asp-controller="forum" asp-action="list" class="btn btn-link">返回</a>
