@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Csp.OAuth.Api.ViewModel
+namespace Csp.OAuth.Api.Models
 {
     public class LoginModel
     {

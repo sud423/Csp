@@ -22,6 +22,8 @@ namespace Mt.Fruit.Web.Models
 
         public int Replys { get; set; }
 
+        public int Likes { get; set; }
+
         public string LastReplyUser { get; set; }
 
         [JsonIgnore]

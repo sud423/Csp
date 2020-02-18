@@ -37,6 +37,10 @@ namespace Csp.Blog.Api.Models
 
         public int Replys { get; set; }
 
+        public int Likes { get; set; }
+
+        public int Favorites { get; set; }
+
         public bool IsTop { get; set; }
 
         public bool IsRed { get; set; }

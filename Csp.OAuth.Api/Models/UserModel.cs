@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Csp.OAuth.Api.ViewModel
 {
-    public class UserModel
+    public class Models
     {
         public int TenantId { get; set; }
 
