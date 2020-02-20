@@ -15,10 +15,7 @@ namespace Csp.Upload.Api.Controllers
     {
 
         private readonly IFileService _fileSerivce;
-
-        //最大文件大小 2M
-        const int MAXSIZE = 2*1024*1024;
-
+        
 
         public OssController( IFileService fileService)
         {
@@ -81,8 +78,10 @@ namespace Csp.Upload.Api.Controllers
             {
                 if (string.IsNullOrEmpty(key))
                     key = "image";
-                if (file.Length > MAXSIZE)
-                    return BadRequest(OptResult.Failed("上传文件大小超过限制2M"));
+
+                var result = _fileSerivce.IsContentLength(file.Length, key);
+                if (!result.Succeed)
+                    return BadRequest(result);
 
                 if (_fileSerivce.IsAllowUploadExtension(file.FileName, key))
                     return BadRequest(OptResult.Failed("上传文件扩展名是不允许的扩展名\n只允许" + _fileSerivce.GetAllowExtension(key) + "格式。"));

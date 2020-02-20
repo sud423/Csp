@@ -161,6 +161,63 @@ namespace Csp.Blog.Api.Controllers
             return Ok(article);
         }
 
-        
+
+        /// <summary>
+        /// 获取文章列表
+        /// </summary>
+        /// <param name="page">查询页码</param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        [HttpGet, Route("resources/{tenantId:int}/{categoryId:int}/{webSiteId:int}/{page:int}/{size:int}")]
+        public async Task<IActionResult> GetResources(int tenantId, int categoryId, int webSiteId, int page, int size)
+        {
+            var result = await _blogDbContext.Resources
+                .Where(a => a.TenantId == tenantId && a.Status == 1 && categoryId == a.CategoryId && (a.WebSiteId == 0 || a.WebSiteId == webSiteId))
+                .OrderBy(a => a.Sort)
+                .ThenByDescending(a => a.CreatedAt)
+                .AsNoTracking()
+                .ToPagedAsync(page, size);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// 根据主键获取
+        /// </summary>
+        /// <param name="id">主键编号</param>
+        /// <param name="ip">客户端ip地址</param>
+        /// <returns></returns>
+        [HttpPost, Route("resources/browse")]
+        public async Task<IActionResult> GetResourceById([FromBody]BrowseHistory browseHistory)
+        {
+            if (browseHistory == null || browseHistory.SourceId <= 0)
+                return BadRequest(OptResult.Failed("浏览的信息不存在"));
+
+            var resource = await _blogDbContext.Resources
+                .Include(a => a.User)
+                .ThenInclude(a => a.ExternalLogin)
+                .SingleOrDefaultAsync(a => a.Id == browseHistory.SourceId);
+
+            var now = DateTime.Now.Date;
+
+            //判断 ip是否访问过
+            if (!await _blogDbContext.BrowseHistories.AnyAsync(a => (a.Ip == browseHistory.Ip
+            || a.UserId == browseHistory.UserId)
+            && a.Source == browseHistory.Source
+            && a.SourceId == browseHistory.SourceId
+            && a.CreatedAt.Date == now))
+            {
+                resource.Clicks += 1;
+
+                _blogDbContext.Resources.Update(resource);
+            }
+
+            await _blogDbContext.BrowseHistories.AddAsync(browseHistory);
+
+            await _blogDbContext.SaveChangesAsync();
+
+            return Ok(resource);
+        }
+
     }
 }

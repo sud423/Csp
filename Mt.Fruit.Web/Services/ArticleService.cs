@@ -46,7 +46,7 @@ namespace Mt.Fruit.Web.Services
 
         public async Task<Article> GetArticle(int id, string ip, string browser, string device, string os, int userId = 0)
         {
-            var browse = new BrowseHistory(id, ip, browser, os, device, userId);
+            var browse = new BrowseHistory(id, ip, browser, os, device,"article", userId);
 
             string uri = API.Article.GetArticle(_remoteServiceBaseUrl);
 

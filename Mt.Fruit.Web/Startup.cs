@@ -86,6 +86,8 @@ namespace Mt.Fruit.Web
             services.AddHttpClient<IAuthService, AuthService>();
 
             services.AddHttpClient<IArticleService, ArticleService>().AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
+            services.AddHttpClient<IResourceService, ResourceService>().AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
+
 
             services.AddHttpClient<IOssService, OssService>().AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
 

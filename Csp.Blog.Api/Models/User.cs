@@ -23,6 +23,9 @@ namespace Csp.Blog.Api.Models
         [JsonIgnore]
         public virtual Article Article { get; set; }
 
+        [JsonIgnore]
+        public virtual Resource Resource { get; set; }
+
     }
 
     public class ExternalLogin

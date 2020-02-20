@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Mt.Fruit.Web.Services;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -14,15 +15,16 @@ namespace Mt.Fruit.Web.Controllers
             _ossService = ossService;
         }
 
-
-        public async Task<IActionResult> Upload()
+        [HttpPost]
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> Upload(IFormFile file,string dir="image")
         {
-            var file = Request.Form.Files[0];
+            //var file = Request.Form.Files[0];
 
             //文件类型
-            string dirName = Request.Query["dir"];
+            //string dirName = Request.Query["dir"];
 
-            if (dirName == "image")
+            if (dir == "image")
             {
                 //处理照片大小
                 using(var image = Image.FromStream(file.OpenReadStream()))
@@ -35,7 +37,7 @@ namespace Mt.Fruit.Web.Controllers
 
             }
 
-            var result = await _ossService.Upload(file, dirName);
+            var result = await _ossService.Upload(file, dir);
 
             return Ok(new { Error = (result.Succeed ? 0 : 1), message = result.Msg, Url = result.Msg });
         }

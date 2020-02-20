@@ -6,6 +6,10 @@ body {
 	background-color: #f7f8f8;
 }
 
+a,a:active,a:hover {
+	color: #333;
+}
+
 .navbar-default {
 	background-color: #84ce04;
 	color: #fff;
@@ -166,7 +170,7 @@ footer p{
 .group {
 	margin: 60px auto;
 	border: 1px solid #d5d5d5;
-	min-height: 470px;
+	/*min-height: 470px;*/
 	font-size: 15px;
 	padding: 0 50px;
 	background: #fff;
@@ -268,6 +272,12 @@ footer p{
 	color: #fff;
 	text-decoration: none;
 }
+
+.new:active {
+	color: #fff;
+	text-decoration: none;
+}
+
 .group .col-lg-4{
     width: 315px;
     margin-bottom: 35px;
@@ -289,4 +299,12 @@ footer p{
     justify-content: center;
     align-items: center;
     cursor: pointer;
+}
+
+.addblock{
+	width:315px;
+	height:210px;
+	line-height:210px;
+	display:block;
+	text-align:center;
 }

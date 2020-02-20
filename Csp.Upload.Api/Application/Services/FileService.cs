@@ -1,6 +1,7 @@
 ﻿using Csp.Jwt;
 using Csp.Upload.Api.Infrastructure;
 using Csp.Upload.Api.Models;
+using Csp.Web;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections;
@@ -31,7 +32,7 @@ namespace Csp.Upload.Api.Application.Services
 
             extTable.Add("image", "gif,jpg,jpeg,png,bmp");
             extTable.Add("flash", "swf,flv");
-            extTable.Add("media", "swf,flv,mp3,wav,wma,wmv,mid,avi,mpg,asf,rm,rmvb");
+            extTable.Add("media", "swf,flv,mp3,mp4,wav,wma,wmv,mid,avi,mpg,asf,rm,rmvb");
             extTable.Add("file", "doc,docx,xls,xlsx,ppt,htm,html,txt,zip,rar,gz,bz2");
         }
 
@@ -82,6 +83,17 @@ namespace Csp.Upload.Api.Application.Services
             var fileExt = Path.GetExtension(filePath);
 
             return string.IsNullOrEmpty(fileExt) || Array.IndexOf(((string)extTable[key]).Split(','), fileExt.Substring(1).ToLower()) == -1;
+        }
+
+        public OptResult IsContentLength(long length, string key)
+        {
+            if (length > 30*1024*1024 && key != "image")
+                OptResult.Failed("上传文件大小超过限制30M");
+
+            if (length > 1 * 1024 * 1024 && key == "image")
+                return OptResult.Failed("上传文件大小超过限制30M");
+
+            return OptResult.Success();
         }
     }
 }

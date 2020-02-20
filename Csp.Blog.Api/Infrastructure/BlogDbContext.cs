@@ -15,6 +15,8 @@ namespace Csp.Blog.Api.Infrastructure
 
         public DbSet<Article> Articles { get; set; }
 
+        public DbSet<Resource> Resources { get; set; }
+
         public DbSet<Reply> Replies { get; set; }
 
         public DbSet<ReplyLike> ReplyLikes { get; set; }

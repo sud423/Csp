@@ -20,7 +20,7 @@
 
         public int SourceId { get; set; }
 
-        public BrowseHistory(int sourceId, string ip, string browser, string os, string device, int userId = 0)
+        public BrowseHistory(int sourceId, string ip, string browser, string os, string device,string source, int userId = 0)
         {
             WebSiteId = 1;
             TenantId = 2;
@@ -29,7 +29,7 @@
             Browser = browser;
             Device = device;
             Os = os;
-            Source = "article";
+            Source = source;
             SourceId = sourceId;
         }
     }

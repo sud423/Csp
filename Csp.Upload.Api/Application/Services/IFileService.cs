@@ -1,4 +1,5 @@
 ﻿using Csp.Upload.Api.Models;
+using Csp.Web;
 
 namespace Csp.Upload.Api.Application.Services
 {
@@ -37,5 +38,11 @@ namespace Csp.Upload.Api.Application.Services
         /// <returns>true表示允许上传，false不允许</returns>
         bool IsAllowUploadExtension(string filePath,string key);
 
+        /// <summary>
+        /// 根据key判断文件是否超出大小
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        OptResult IsContentLength(long length,string key);
     }
 }

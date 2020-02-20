@@ -12,12 +12,14 @@ namespace Mt.Fruit.Web.Controllers
     public class ForumController : Controller
     {
         private readonly IArticleService _articleService;
+        private readonly IResourceService _resourceService;
         private readonly User _user;
 
-        public ForumController(IArticleService articleService,IIdentityParser<User> parser)
+        public ForumController(IArticleService articleService, IResourceService resourceService,IIdentityParser<User> parser)
         {
             _user = parser.Parse();
             _articleService = articleService;
+            _resourceService = resourceService;
         }
 
         /// <summary>
@@ -26,7 +28,7 @@ namespace Mt.Fruit.Web.Controllers
         /// <param name="cid"></param>
         /// <returns></returns>
         [Route("create/{cid:int}")]
-        public ActionResult Create(int cid)
+        public IActionResult Create(int cid)
         {
             if (cid <= 0)
                 return NotFound();
@@ -39,16 +41,26 @@ namespace Mt.Fruit.Web.Controllers
         /// 发布趣闻杂谈
         /// </summary>
         /// <returns></returns>
-        public ActionResult Post()
+        public IActionResult Post()
         {
             var model = new Article { CategoryId = 43 };
             return View(model);
         }
 
-        public async Task<ActionResult> Save(Article article)
+        public IActionResult Resource(int cid=44)
+        {
+            var resouce = new Resource { CategoryId = cid };
+            return View(resouce);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Save(Article article)
         {
             if (!ModelState.IsValid)
-                return View(nameof(Create), article);
+                if (article.CategoryId == 43)
+                    return View(nameof(Post), article);
+                else
+                    return View(nameof(Create), article);
 
             article.SetId(_user.TenantId,_user.Id,_user.NickName,3,article.Id);
 
@@ -56,15 +68,44 @@ namespace Mt.Fruit.Web.Controllers
             var response=await _articleService.Create(article);
 
             if (response.IsSuccessStatusCode)
-                return RedirectToAction("interestgroup", "home", new { id = article.CategoryId });
+                if (article.CategoryId == 43)
+                    return RedirectToAction("interesting", "home");
+                else
+                    return RedirectToAction("interestgroup", "home", new { id = article.CategoryId });
 
             var result = await response.GetResult();
 
             ModelState.AddModelError("Title", result.Msg);
 
+            if (article.CategoryId == 43)
+                return View(nameof(Post), article);
+
             return View(nameof(Create), article);
         }
+        
+        [HttpPost]
+        public async Task<IActionResult> Commit(Resource resource)
+        {
+            if (!ModelState.IsValid)
+                return View(nameof(Resource), resource);
 
+            resource.SetId(_user.TenantId, _user.Id, _user.NickName, 3, resource.Id);
+
+            //forum.Id = id;
+            var response = await _resourceService.Create(resource);
+
+            if (response.IsSuccessStatusCode)
+                if (resource.CategoryId != 44)
+                    return RedirectToAction("interestgroup", "home", new { id = resource.CategoryId });
+                else
+                    return RedirectToAction("video", "home");
+
+            var result = await response.GetResult();
+
+            ModelState.AddModelError("Title", result.Msg);
+
+            return View(nameof(Resource), resource);
+        }
 
     }
 }

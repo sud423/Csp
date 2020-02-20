@@ -59,8 +59,6 @@ function getArticles(page) {
             case 43:
                 render1(res.data);
                 break;
-            case 44:
-                break;
             default:
                 render(res.data);
                 break;
@@ -76,6 +74,7 @@ function render(data) {
     $.each(data, function (i) {
         html.push("<tr>");
         var row = $("#trExample").html();
+        row = row.replace("{4}", this.id);
         row = row.replace("{0}", this.title);
         row = row.replace("{1}", this.author);
         row = row.replace("{2}", this.replys + "/" + this.clicks);
@@ -85,7 +84,7 @@ function render(data) {
         html.push("</tr>");
     });
 
-    $(".table tbody").html(html.join());
+    $(".table tbody").html(html.join(""));
 }
 
 function render1(data) {
@@ -105,10 +104,114 @@ function render1(data) {
         row = row.replace("{1}", this.replys);
         row = row.replace("{2}", this.likes);
         row = row.replace("{3}", this.lead);
+        row = row.replace("{5}", this.id);
         html.push(row);
 
         html.push("</div>");
     });
 
-    $("#list").html(html.join());
+    $("#list").html(html.join(""));
+}
+
+
+function getResource(page, size) {
+    $.get("/list/" + categoryId + "/" + page + "?size=" + size, function (res) {
+        switch (categoryId) {
+            case 44:
+                render2(res.data);
+                break;
+            default:
+                render3(res.data);
+                break;
+        }
+
+        setPaginator(res);
+    });
+}
+
+function render2(data) {
+    $("#list").empty();
+    var html = [];
+    $.each(data, function (i) {
+       
+        var row = $("#example").html();
+
+        row = row.replace("{0}", this.src);
+        row = row.replace("{1}", this.title);
+        row = row.replace("{2}", this.id);
+        row = row.replace("{2}", this.id);
+        html.push(row);
+
+    });
+
+    $("#list").html(html.join(""));
+}
+
+function render3(data) {
+    $("#list").empty();
+    var html = [];
+    $.each(data, function (index) {
+        var clsName = "";
+
+        if (index === 0 || index === 3)
+            clsName = "first-child";
+        if (index === 2)
+            clsName = "last-child";
+
+        html.push("<div class=\"col-lg-4 " + clsName + "\" > ");
+
+        html.push('<img id=' + this.id + ' onclick="openPhotoSwipe(this)" style="max-height:210px;" src="' + this.src + '" alt="' + this.title + '" />');
+
+        html.push("</div>");
+
+    });
+
+    $("#list").html(html.join(""));
+}
+
+function read(id) {
+    $.get("/read/" + id, function (res) { });
+    $("video").each(function () {
+        this.pause();
+    });
+    $("#" + id)[0].play();
+}
+
+
+function openPhotoSwipe(_img) {
+    var items = [{ src: _img.src, w: _img.naturalWidth, h: _img.naturalHeight, id: _img.id, title:_img.alt }];
+    var imgs = $("#list").find("img");
+    if (imgs.length > 0) {
+        // build items array
+        $.each(imgs, function (i, img) {
+            if (img.src != _img.src) {
+                items.push({
+                    src: img.src,
+                    w: img.naturalWidth,
+                    h: img.naturalHeight,
+                    id: img.id,
+                    title: img.alt
+                });
+            }
+        });
+    }
+    var pswpElement = document.querySelectorAll('.pswp')[0];
+
+    // define options (if needed)
+    var options = {
+        // history & focus options are disabled on CodePen
+        history: false,
+        focus: false,
+
+        showAnimationDuration: 0,
+        hideAnimationDuration: 0
+
+    };
+
+    var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+    gallery.listen('imageLoadComplete',
+        function (index, item) {
+            $.get("/read/" + item.id, function (res) { });
+        });
+    gallery.init();
 }

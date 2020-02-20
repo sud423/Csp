@@ -23,6 +23,17 @@
 
         }
 
+        public static class Resource
+        {
+            public static string Create(string baseUrl) => $"{baseUrl}/resource/create";
+
+            public static string Delete(string baseUrl, int id) => $"{baseUrl}/resource/delete/{id}";
+
+            public static string GetResource(string baseUrl) => $"{baseUrl}/resources/browse";
+
+            public static string GetResources(string baseUrl, int categoryId, int page, int size) => $"{baseUrl}/resources/2/{categoryId}/3/{page}/{size}";
+
+        }
 
         public static class Auth
         {

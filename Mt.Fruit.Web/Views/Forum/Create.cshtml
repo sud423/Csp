@@ -19,6 +19,11 @@
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
         <div class="form-group">
+            <label asp-for="Lead" class="control-label">导语</label>
+            <textarea asp-for="Lead" autocomplete="off" rows="3" maxlength="255" class="form-control"></textarea>
+            <span asp-validation-for="Lead" class="text-danger"></span>
+        </div>
+        <div class="form-group">
             <label asp-for="Content" class="control-label">内容</label>
             <textarea id="editor_id" asp-for="Content" autocomplete="off" rows="15" required class="form-control"></textarea>
             <span asp-validation-for="Content" class="text-danger"></span>
