@@ -172,7 +172,7 @@ footer p{
 	border: 1px solid #d5d5d5;
 	/*min-height: 470px;*/
 	font-size: 15px;
-	padding: 0 50px;
+	padding: 0 50px 50px;
 	background: #fff;
 }
 
@@ -307,4 +307,10 @@ footer p{
 	line-height:210px;
 	display:block;
 	text-align:center;
+}
+
+
+.sidebar-module {
+	padding: 15px;
+	margin: 0 -15px 15px;
 }

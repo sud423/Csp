@@ -9,17 +9,49 @@ using System.Threading.Tasks;
 namespace Mt.Fruit.Web.Controllers
 {
     [Authorize]
-    public class ForumController : Controller
+    public class MyController : Controller
     {
         private readonly IArticleService _articleService;
         private readonly IResourceService _resourceService;
+        private readonly ICategoryService _categoryService;
         private readonly User _user;
 
-        public ForumController(IArticleService articleService, IResourceService resourceService,IIdentityParser<User> parser)
+        public MyController(IArticleService articleService, 
+            IResourceService resourceService,
+            IIdentityParser<User> parser,
+            ICategoryService categoryService)
         {
             _user = parser.Parse();
             _articleService = articleService;
             _resourceService = resourceService;
+            _categoryService = categoryService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var result = await _categoryService.GetCategories("article");
+
+            return View(result);
+        }
+
+        public async Task<IActionResult> Category(int id)
+        {
+            var result = await _categoryService.GetCategory(id);
+
+            return View(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Category(Category category)
+        {
+            if (!ModelState.IsValid)
+                return View(category);
+
+            var response = await _categoryService.Create(category);
+            if (response.IsSuccessStatusCode)
+                return RedirectToAction(nameof(Index));
+            else
+                return View(category);
         }
 
         /// <summary>

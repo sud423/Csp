@@ -32,7 +32,7 @@
                                 <li><a href="/interesting">趣闻杂谈</a></li>
                                 @if (ViewContext.HttpContext.User.Identity.IsAuthenticated)
                                 {
-                                    <li><span style="display:block;font-size:18px;padding-top:14px;">欢迎@(ViewContext.HttpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value)，</span></li>
+                                    <li><a href="/my">欢迎@(ViewContext.HttpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value)</a></li>
                                     <li><a asp-action="logout" asp-controller="account" asp-route-returnUrl="@(ViewContext.HttpContext.Request.Path)" style="padding-left:0;">退出</a></li>
                                 }
                                 else

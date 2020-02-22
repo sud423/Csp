@@ -72,7 +72,10 @@ namespace Csp.Blog.Api.Controllers
 
             if (category.Id > 0)
             {
-                _blogDbContext.Categories.Update(category);
+                var old = await _blogDbContext.Categories.SingleOrDefaultAsync(a => a.Id == category.Id);
+                old.Name = category.Name;
+                old.Descript = category.Descript;
+                _blogDbContext.Categories.Update(old);
             }
             else
             {

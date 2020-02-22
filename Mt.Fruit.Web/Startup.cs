@@ -82,7 +82,7 @@ namespace Mt.Fruit.Web
 
             services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5));//.AddDevspacesSupport();
 
-            services.AddHttpClient<ICategoryService, CategoryService>();
+            services.AddHttpClient<ICategoryService, CategoryService>().AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
             services.AddHttpClient<IAuthService, AuthService>();
 
             services.AddHttpClient<IArticleService, ArticleService>().AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();

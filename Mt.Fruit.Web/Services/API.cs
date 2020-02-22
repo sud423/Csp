@@ -4,6 +4,8 @@
     {
         public static class Category
         {
+            public static string Create(string baseUrl) => $"{baseUrl}/category/create";
+
             public static string GetCategories(string baseUrl, string type) => $"{baseUrl}/categories/2/3/{type}";
             
             public static string GetCategory(string baseUrl, int id) => $"{baseUrl}/categories/find/{id}";
