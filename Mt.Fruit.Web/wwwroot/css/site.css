@@ -314,3 +314,15 @@ footer p{
 	padding: 15px;
 	margin: 0 -15px 15px;
 }
+
+
+.my p{display:none;}
+
+.my p:first-child {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 400px;
+	display: inline-block;
+	margin:0px;
+}

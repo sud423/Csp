@@ -27,12 +27,19 @@ namespace Mt.Fruit.Web.Controllers
             _categoryService = categoryService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var result = await _categoryService.GetCategories("article");
-
-            return View(result);
+            return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Categories(int page)
+        {
+            var result = await _categoryService.GetCategoryByPage("both", _user.Id, page, 20);
+
+            return Ok(result);
+        }
+
 
         public async Task<IActionResult> Category(int id)
         {

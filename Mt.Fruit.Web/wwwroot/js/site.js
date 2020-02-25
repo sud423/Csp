@@ -33,7 +33,7 @@ function setScrollTop() {
 }
 
 //分页功能
-var setPaginator = function (data) {
+var setPaginator = function (data,t,s) {
     $('.pagination').bootstrapPaginator({
         bootstrapMajorVersion: 3, //对应bootstrap版本
         size: 'small', //分页大小
@@ -48,7 +48,18 @@ var setPaginator = function (data) {
          * @param {any} page [点击按钮对应的页码]
          */
         onPageClicked: function (event, originalEvent, type, page) {
-            getArticles(page);//根据点击页数渲染页面
+            switch (t) {
+                case 1:
+                    getResource(page,s);
+                    break;
+                case 2:
+                    getCategoryPage(page);
+                    break;
+                default:
+                    getArticles(page);//根据点击页数渲染页面
+                    break;
+            }
+            
         }
     });
 };
@@ -125,7 +136,7 @@ function getResource(page, size) {
                 break;
         }
 
-        setPaginator(res);
+        setPaginator(res, 1,size);
     });
 }
 
@@ -214,4 +225,22 @@ function openPhotoSwipe(_img) {
             $.get("/read/" + item.id, function (res) { });
         });
     gallery.init();
+}
+
+
+function getCategoryPage(page) {
+    $.get("/my/categories?page=" + page, function (res) {
+        $("#list").empty();
+        var html = [];
+        $.each(res.data, function () {
+            html.push("<tr>");
+            html.push('<td style="width:20%">' + this.name + '</td>');
+            html.push('<td>' + this.fllows + '</td>');
+            html.push('<td style="width:55%;text-align:left;">' + this.descript + '</td>');
+            html.push('<td style="padding-right:25px;"><a href="/my/category/' + this.id +'">编辑</a></td>');
+            html.push("</tr>");
+        });
+        $("#list").html(html.join(""));
+        setPaginator(res, 2);
+    });
 }

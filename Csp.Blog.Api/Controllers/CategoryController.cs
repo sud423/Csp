@@ -1,5 +1,6 @@
 ﻿using Csp.Blog.Api.Infrastructure;
 using Csp.Blog.Api.Models;
+using Csp.EF.Extensions;
 using Csp.EF.Paging;
 using Csp.Web;
 using Csp.Web.Extensions;
@@ -29,11 +30,18 @@ namespace Csp.Blog.Api.Controllers
         /// <param name="page"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        [HttpGet, Route("{tenantId:int}")]
-        public async Task<IActionResult> Index(int tenantId, int page, int size)
+        [HttpGet, Route("{tenantId:int}/{type}")]
+        public async Task<IActionResult> Index(int tenantId, string type,int userId, int page, int size)
         {
+            var predicate = PredicateExtension.True<Category>();
+
+            predicate = predicate.And(a => a.TenantId == tenantId && type == a.Type && a.Status == 1);
+
+            if (userId > 0)
+                predicate = predicate.And(a => a.UserId == userId);
+
             var result = await _blogDbContext.Categories
-                .Where(a => a.TenantId == tenantId && a.Status == 1)
+                .Where(predicate)
                 .OrderBy(a => a.Sort)
                 .ToPagedAsync(page, size);
 

@@ -9,6 +9,9 @@
             public static string GetCategories(string baseUrl, string type) => $"{baseUrl}/categories/2/3/{type}";
             
             public static string GetCategory(string baseUrl, int id) => $"{baseUrl}/categories/find/{id}";
+            
+            public static string GetCategoryByPage(string baseUrl, int userId,string type,int page,int size) 
+                => $"{baseUrl}/category/2/{type}?userId={userId}&page={page}&size={size}";
 
             public static string GetHotCategories(string baseUrl, string type) => $"{baseUrl}/categories/hot/2/3/{type}";
 

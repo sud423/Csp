@@ -1,4 +1,5 @@
 ﻿using Csp.Web.Extensions;
+using Csp.Web.Mvc.Paging;
 using Microsoft.Extensions.Options;
 using Mt.Fruit.Web.Models;
 using System.Collections.Generic;
@@ -50,6 +51,17 @@ namespace Mt.Fruit.Web.Services
             var responseString = await _httpClient.GetStringAsync(uri);
 
             var result = responseString.FromJson<Category>();
+
+            return result;
+        }
+
+        public async Task<PagedResult<Category>> GetCategoryByPage(string type, int userId, int page, int size)
+        {
+            string uri = API.Category.GetCategoryByPage(_remoteServiceBaseUrl, userId, type, page, size);
+
+            var responseString = await _httpClient.GetStringAsync(uri);
+
+            var result = responseString.FromJson<PagedResult<Category>>();
 
             return result;
         }
