@@ -35,7 +35,7 @@ namespace Mt.Fruit.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var result = await _categoryService.GetHotCategories("article");
+            var result = await _categoryService.GetHotCategories("both");
 
             return View(result);
         }
@@ -43,7 +43,7 @@ namespace Mt.Fruit.Web.Controllers
         [Route("/group")]
         public async Task<IActionResult> Group()
         {
-            var result = await _categoryService.GetCategories("article");
+            var result = await _categoryService.GetCategories("both");
 
             return View(result);
         }
