@@ -28,11 +28,11 @@ namespace Csp.Blog.Api.Controllers
         /// <param name="page"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        [HttpGet, Route("{tenantId:int}")]
-        public async Task<IActionResult> Index(int tenantId, int page, int size)
+        [HttpGet, Route("{type}/{tenantId:int}/{userId:int}")]
+        public async Task<IActionResult> Index(int tenantId, int userId,string type, int page, int size)
         {
             var result = await _blogDbContext.Resources
-                .Where(a => a.TenantId == tenantId && a.Status == 1)
+                .Where(a => a.TenantId == tenantId && userId == a.UserId && a.Status == 1 && type==a.Type)
                 .OrderBy(a => a.Sort)
                 .ToPagedAsync(page, size);
 

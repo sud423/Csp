@@ -7,43 +7,55 @@
 
 @model Article
 
-<div class="container" style="margin-bottom:100px;">
-    @*<h4>请填写用户信息</h4>*@
-    <form asp-action="save" method="post">
-        <div class="form-group">
-            <input asp-for="CategoryId" type="hidden" autocomplete="off" class="form-control" value="@(Model.CategoryId)" />
-        </div>
-        <div class="form-group">
-            <label asp-for="Title" class="control-label">主题</label>
-            <input asp-for="Title" required autocomplete="off" maxlength="100" class="form-control" />
-            <span asp-validation-for="Title" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Lead" class="control-label">导语</label>
-            <textarea asp-for="Lead" autocomplete="off" rows="3" maxlength="255" class="form-control"></textarea>
-            <span asp-validation-for="Lead" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label class="control-label" asp-for="Cover">封面</label>
-            <div class="input-group">
-                <input asp-for="Cover" class="form-control" required autocomplete="off" readonly />
-                <div class="input-group-addon" style="padding:4.5px 12px;">
-                    <input type="button" id="uploadButton" value="选择文件" />
+<div class="container" style="margin-bottom:100px;background:#fff;">
+    <div class="row">
+        <partial name="_Nav" />
+
+        <div class="col-sm-8 col-sm-offset-1">
+            <ol class="breadcrumb">
+                <li><a asp-action="index">我的</a></li>
+                <li class="active">发布趣闻杂谈</li>
+            </ol>
+            @*<h4>请填写用户信息</h4>*@
+            <form asp-action="save" method="post">
+                <div class="form-group">
+                    <input asp-for="CategoryId" type="hidden" autocomplete="off" class="form-control" value="@(Model.CategoryId)" />
                 </div>
-            </div>
-            <span asp-validation-for="Cover" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label">主题</label>
+                    <input asp-for="Title" required autocomplete="off" maxlength="100" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Lead" class="control-label">导语</label>
+                    <textarea asp-for="Lead" autocomplete="off" rows="3" maxlength="255" class="form-control"></textarea>
+                    <span asp-validation-for="Lead" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" asp-for="Cover">封面</label>
+                    <div class="input-group">
+                        <input asp-for="Cover" class="form-control" required autocomplete="off" readonly />
+                        <div class="input-group-addon" style="padding:4.5px 12px;">
+                            <input type="button" id="uploadButton" value="选择文件" />
+                        </div>
+                    </div>
+                    <span asp-validation-for="Cover" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Content" class="control-label">内容</label>
+                    <textarea id="editor_id" asp-for="Content" autocomplete="off" rows="15" required class="form-control"></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="发 布" class="btn btn-primary" />
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-            <label asp-for="Content" class="control-label">内容</label>
-            <textarea id="editor_id" asp-for="Content" autocomplete="off" rows="15" required class="form-control"></textarea>
-            <span asp-validation-for="Content" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="发 布" class="btn btn-primary" />
-        </div>
-    </form>
+    </div>
+
 </div>
 
+        
 
 @*@section Styles{
 

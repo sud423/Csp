@@ -18,7 +18,7 @@ namespace Csp.Blog.Api.Models
         public string Title { get; set; }
 
         [StringLength(255, ErrorMessage = "关键字最大为255个字符")]
-        public string Keywrod { get; set; }
+        public string Keyword { get; set; }
 
         public string Cover { get; set; }
 

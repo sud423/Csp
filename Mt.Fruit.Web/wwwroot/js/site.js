@@ -236,7 +236,7 @@ function getCategoryPage(page) {
             html.push("<tr>");
             html.push('<td style="width:20%">' + this.name + '</td>');
             html.push('<td>' + this.fllows + '</td>');
-            html.push('<td style="width:55%;text-align:left;">' + this.descript + '</td>');
+            html.push('<td style="text-align:left;">' + this.descript + '</td>');
             html.push('<td style="padding-right:25px;"><a href="/my/category/' + this.id +'">编辑</a></td>');
             html.push("</tr>");
         });

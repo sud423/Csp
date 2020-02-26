@@ -86,12 +86,27 @@ namespace Mt.Fruit.Web.Controllers
             return View(model);
         }
 
+        public IActionResult Pic()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 上传资源 默认上传视频
+        /// </summary>
+        /// <param name="cid"></param>
+        /// <returns></returns>
         public IActionResult Resource(int cid=44)
         {
             var resouce = new Resource { CategoryId = cid };
             return View(resouce);
         }
 
+        /// <summary>
+        /// 保存趣闻轶事
+        /// </summary>
+        /// <param name="article"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Save(Article article)
         {
@@ -122,6 +137,11 @@ namespace Mt.Fruit.Web.Controllers
             return View(nameof(Create), article);
         }
         
+        /// <summary>
+        /// 保存资源 信息
+        /// </summary>
+        /// <param name="resource"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Commit(Resource resource)
         {

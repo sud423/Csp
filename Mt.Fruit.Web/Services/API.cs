@@ -38,6 +38,8 @@
 
             public static string GetResources(string baseUrl, int categoryId, int page, int size) => $"{baseUrl}/resources/2/{categoryId}/3/{page}/{size}";
 
+            public static string GetResources(string baseUrl, string type,int userId, int page, int size) => $"{baseUrl}/resource/{type}/2/{userId}?page={page}&size={size}";
+
         }
 
         public static class Auth

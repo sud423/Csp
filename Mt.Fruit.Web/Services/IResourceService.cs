@@ -14,5 +14,7 @@ namespace Mt.Fruit.Web.Services
         Task<Resource> GetResource(int id, string ip, string browser, string device, string os, int userId = 0);
 
         Task<PagedResult<Resource>> GetResources(int categoryId, int page, int size);
+
+        Task<PagedResult<Resource>> GetResources(string type,int userId, int page, int size);
     }
 }

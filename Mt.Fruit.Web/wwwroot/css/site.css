@@ -218,6 +218,9 @@ footer p{
 	font-size: 12px;
 }
 
+.group .col-md-8 p{
+	margin-bottom:20px;
+}
 
 .table {
 	background-color: #fff;

@@ -3,17 +3,21 @@
 *@
 @{
 
-    ViewBag.Title = "我爱果庄，分类";
+    ViewBag.Title = "我爱果庄，分类信息编辑";
 }
 
 @model Category
 
-<div class="container" style="padding:20px; margin-bottom:120px;">
+<div class="container" style="padding:20px; margin-bottom:120px;background:#fff;">
 
     <div class="row">
         <partial name="_Nav" />
 
         <div class="col-sm-8 col-sm-offset-1">
+            <ol class="breadcrumb">
+                <li><a asp-action="index">我的</a></li>
+                <li class="active">分类信息编辑</li>
+            </ol>
             <form asp-action="category" method="post">
                 <div class="form-group">
                     <input asp-for="Id" type="hidden" autocomplete="off" class="form-control" value="@(Model.Id)" />
@@ -47,7 +51,8 @@
         KindEditor.ready(function(K) {
             window.editor = K.create('#editor_id', {
                 //uploadJson: "@Url.Action("Upload","Oss")",
-                items:[]
+                items: [],
+                pasteType : 1
             });
         });
     </script>
