@@ -91,6 +91,14 @@ namespace Mt.Fruit.Web.Controllers
             return View();
         }
 
+
+        public async Task<IActionResult> GetPics(int page)
+        {
+            var result =await _resourceService.GetResources("image", _user.Id, page, 20);
+
+            return Ok(result);
+        }
+
         /// <summary>
         /// 上传资源 默认上传视频
         /// </summary>

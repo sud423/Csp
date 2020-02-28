@@ -440,5 +440,6 @@ user-info .user-other {
 	justify-content: center;
 	align-items: center;
 	background-size: 100%;
-	background-image: url('/images/online_ad.jpg?v=0.0.0.2')
+	background-image: url('/images/online_ad.jpg?v=0.0.0.2');
+	background-repeat:no-repeat;
 }

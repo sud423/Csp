@@ -244,3 +244,20 @@ function getCategoryPage(page) {
         setPaginator(res, 2);
     });
 }
+
+
+function getPics(page) {
+    $.get("/my/getpics?page=" + page, function (res) {
+        $("#list").empty();
+        var html = [];
+        $.each(res.data, function () {
+            html.push("<tr>");
+            html.push('<td>' + this.title + '</td>');
+            html.push('<td style="text-align:left;">' + this.src + '</td>');
+            html.push('<td style="padding-right:25px;"><a href="/my/category/' + this.id + '">编辑</a></td>');
+            html.push("</tr>");
+        });
+        $("#list").html(html.join(""));
+        setPaginator(res, 2);
+    });
+}

@@ -109,7 +109,7 @@ namespace Mt.Fruit.Web.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Forum");
+            return RedirectToAction("Index", "Home");
         }
 
         private IEnumerable<Claim> AddMyClaims(User user)
