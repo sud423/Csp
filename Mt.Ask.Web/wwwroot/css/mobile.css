@@ -432,3 +432,13 @@ user-info .user-other {
 	height: 40px;
 	line-height: 40px;
 }
+
+
+.online {
+	height: 195px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-size: 100%;
+	background-image: url('/images/online_ad.jpg?v=0.0.0.2')
+}
