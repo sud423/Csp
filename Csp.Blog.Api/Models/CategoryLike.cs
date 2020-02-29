@@ -1,4 +1,6 @@
-﻿namespace Csp.Blog.Api.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Csp.Blog.Api.Models
 {
     public class CategoryLike
     {
@@ -6,6 +8,7 @@
 
         public int UserId { get; set; }
 
+        [JsonIgnore]
         public virtual Category Category { get; set; }
 
         public CategoryLike() { }

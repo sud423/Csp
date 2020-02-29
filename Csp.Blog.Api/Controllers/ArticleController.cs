@@ -29,17 +29,24 @@ namespace Csp.Blog.Api.Controllers
         /// <param name="page">查询页码</param>
         /// <param name="size"></param>
         /// <returns></returns>
-        [HttpGet,Route("{tenantId:int}/{categoryId:int}")]
-        public async Task<IActionResult> Index(int tenantId,int categoryId,int userId,int page,int size)
+        [HttpGet,Route("{tenantId:int}/{webSiteId:int}/{categoryId:int}")]
+        public async Task<IActionResult> Index(int tenantId,int webSiteId,int categoryId,int userId,int page,int size)
         {
             var predicate = PredicateExtension.True<Article>();
 
-            predicate = predicate.And(a => a.TenantId == tenantId && a.Status == 1 && a.CategoryId == categoryId);
+            predicate = predicate.And(a => a.TenantId == tenantId && a.Status == 1 );
 
             if (userId > 0)
                 predicate = predicate.And(a => a.UserId == userId);
-            
+
+            if (webSiteId > 0)
+                predicate = predicate.And(a => a.WebSiteId == webSiteId);
+
+            if (categoryId > 0)
+                predicate = predicate.And(a => a.CategoryId == categoryId);
+
             var result =await _blogDbContext.Articles
+                .Include(a=>a.Category)
                 .Where(predicate)
                 .OrderBy(a => a.Sort)
                 .ThenByDescending(a=>a.CreatedAt)
@@ -78,7 +85,8 @@ namespace Csp.Blog.Api.Controllers
             if(article.Id>0)
             {
                 var old = await _blogDbContext.Articles.SingleOrDefaultAsync(a => a.Id == article.Id);
-                old.SetUpdated(article.Title, article.Content);
+                old.SetUpdated(article);
+                
                 _blogDbContext.Articles.Update(old);
             }
             else

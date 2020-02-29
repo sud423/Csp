@@ -27,6 +27,7 @@ namespace Mt.Fruit.Web.Controllers
             _categoryService = categoryService;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
@@ -41,6 +42,7 @@ namespace Mt.Fruit.Web.Controllers
         }
 
 
+        [HttpGet]
         public async Task<IActionResult> Category(int id)
         {
             var result = await _categoryService.GetCategory(id);
@@ -61,40 +63,72 @@ namespace Mt.Fruit.Web.Controllers
                 return View(category);
         }
 
+
+        [HttpGet]
+        public IActionResult Articles()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetArticles(int page=1)
+        {
+            var result = await _articleService.GetArticles(0, _user.Id, page, 20);
+
+            return Ok(result);
+        }
+
         /// <summary>
         /// 发布水果文章
         /// </summary>
         /// <param name="cid"></param>
         /// <returns></returns>
-        [Route("create/{cid:int}")]
-        public IActionResult Create(int cid)
+        [HttpGet]
+        public async Task<IActionResult> Create(int cid=0,int id=0)
         {
-            if (cid <= 0)
+            if (cid <= 0 && id<=0)
                 return NotFound();
 
-            var model = new Article() { CategoryId = cid };
-            return View(model);
+            Article article;
+            if (id > 0)
+                article = await _articleService.GetArticle(id);
+            else
+                article = new Article() { CategoryId = cid };
+            return View(article);
         }
 
         /// <summary>
         /// 发布趣闻杂谈
         /// </summary>
         /// <returns></returns>
-        public IActionResult Post()
+        [HttpGet]
+        public async Task<IActionResult> Post(int id=0)
         {
-            var model = new Article { CategoryId = 43 };
-            return View(model);
+            Article article;
+            if (id > 0)
+                article = await _articleService.GetArticle(id);
+            else
+                article = new Article() { CategoryId = 43 };
+
+            return View(article);
         }
 
+        [HttpGet]
         public IActionResult Pic()
         {
             return View();
         }
 
-
-        public async Task<IActionResult> GetPics(int page)
+        [HttpGet]
+        public IActionResult Mp()
         {
-            var result =await _resourceService.GetResources("image", _user.Id, page, 20);
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetResources(int page,string type)
+        {
+            var result =await _resourceService.GetResources(type, _user.Id, page, 20);
 
             return Ok(result);
         }
@@ -104,14 +138,20 @@ namespace Mt.Fruit.Web.Controllers
         /// </summary>
         /// <param name="cid"></param>
         /// <returns></returns>
-        public IActionResult Resource(int cid=44)
+        [HttpGet]
+        public async Task<IActionResult> Resource(int cid = 44, int id = 0)
         {
-            var resouce = new Resource { CategoryId = cid };
-            return View(resouce);
+            Resource resource;
+            if (id > 0)
+                resource = await _resourceService.GetResource(id);
+            else
+                resource = new Resource { CategoryId = cid };
+
+            return View(resource);
         }
 
         /// <summary>
-        /// 保存趣闻轶事
+        /// 保存趣闻轶事/水果帖子
         /// </summary>
         /// <param name="article"></param>
         /// <returns></returns>
@@ -130,10 +170,19 @@ namespace Mt.Fruit.Web.Controllers
             var response=await _articleService.Create(article);
 
             if (response.IsSuccessStatusCode)
-                if (article.CategoryId == 43)
-                    return RedirectToAction("interesting", "home");
+            {
+                if (article.Id > 0)
+                {
+                    return RedirectToAction(nameof(Articles));
+                }
                 else
-                    return RedirectToAction("interestgroup", "home", new { id = article.CategoryId });
+                {
+                    if (article.CategoryId == 43)
+                        return RedirectToAction("interesting", "home");
+                    else
+                        return RedirectToAction("interestgroup", "home", new { id = article.CategoryId });
+                }
+            }
 
             var result = await response.GetResult();
 
@@ -162,10 +211,7 @@ namespace Mt.Fruit.Web.Controllers
             var response = await _resourceService.Create(resource);
 
             if (response.IsSuccessStatusCode)
-                if (resource.CategoryId != 44)
-                    return RedirectToAction("interestgroup", "home", new { id = resource.CategoryId });
-                else
-                    return RedirectToAction("video", "home");
+                return RedirectToAction(resource.Id, resource.CategoryId);
 
             var result = await response.GetResult();
 
@@ -174,5 +220,22 @@ namespace Mt.Fruit.Web.Controllers
             return View(nameof(Resource), resource);
         }
 
+        private IActionResult RedirectToAction(int id, int cid)
+        {
+            if (cid != 44)
+            {
+                if (id > 0)
+                    return RedirectToAction(nameof(Pic));
+                else
+                    return RedirectToAction("interestgroup", "home", new { id = cid });
+            }
+            else
+            {
+                if (id > 0)
+                    return RedirectToAction(nameof(Pic));
+                else
+                    return RedirectToAction("video", "home");
+            }
+        }
     }
 }

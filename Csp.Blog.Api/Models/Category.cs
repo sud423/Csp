@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace Csp.Blog.Api.Models
 {
@@ -47,8 +48,8 @@ namespace Csp.Blog.Api.Models
 
         public int UserId { get; set; }
 
+        [JsonIgnore]
         public ICollection<Article> Articles { get; set; }
-
         
         public ICollection<CategoryLike> CategoryLikes { get; set; }
 

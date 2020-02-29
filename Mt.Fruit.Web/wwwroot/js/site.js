@@ -55,6 +55,9 @@ var setPaginator = function (data,t,s) {
                 case 2:
                     getCategoryPage(page);
                     break;
+                case 3:
+                    getMyArticles(page);
+                    break;
                 default:
                     getArticles(page);//根据点击页数渲染页面
                     break;
@@ -219,12 +222,15 @@ function openPhotoSwipe(_img) {
 
     };
 
-    var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
-    gallery.listen('imageLoadComplete',
-        function (index, item) {
-            $.get("/read/" + item.id, function (res) { });
-        });
-    gallery.init();
+    var pswp = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+    pswp.listen("afterChange", function () {
+        var item = pswp.currItem;
+        $.get("/read/" + item.id, function (res) { });
+        
+    });
+
+    pswp.init();
+
 }
 
 
@@ -245,19 +251,39 @@ function getCategoryPage(page) {
     });
 }
 
+var t = "image";
 
-function getPics(page) {
-    $.get("/my/getpics?page=" + page, function (res) {
+function getResources(page) {
+    $.get("/my/getresources?type="+t+"&page=" + page, function (res) {
         $("#list").empty();
         var html = [];
         $.each(res.data, function () {
             html.push("<tr>");
             html.push('<td>' + this.title + '</td>');
-            html.push('<td style="text-align:left;">' + this.src + '</td>');
-            html.push('<td style="padding-right:25px;"><a href="/my/category/' + this.id + '">编辑</a></td>');
+            html.push('<td>' + this.src + '</td>');
+            html.push('<td><a href="/my/resource?id=' + this.id + '">编辑</a></td>');
             html.push("</tr>");
         });
         $("#list").html(html.join(""));
         setPaginator(res, 2);
+    });
+}
+
+function getMyArticles(page) {
+    $.get("/my/getarticles?page=" + page, function (res) {
+        $("#list").empty();
+        var html = [];
+        $.each(res.data, function () {
+            html.push("<tr>");
+            html.push('<td>' + this.category.name + '</td>');
+            html.push('<td>' + this.title + '</td>');
+            if (this.categoryId === 43)
+                html.push('<td><a href="/my/post?id=' + this.id + '">编辑</a></td>');
+            else
+                html.push('<td><a href="/my/create?id=' + this.id + '">编辑</a></td>');
+            html.push("</tr>");
+        });
+        $("#list").html(html.join(""));
+        setPaginator(res, 3);
     });
 }

@@ -11,6 +11,8 @@ namespace Mt.Fruit.Web.Services
 
         Task<HttpResponseMessage> Delete(int id);
 
+        Task<Resource> GetResource(int id);
+
         Task<Resource> GetResource(int id, string ip, string browser, string device, string os, int userId = 0);
 
         Task<PagedResult<Resource>> GetResources(int categoryId, int page, int size);

@@ -60,6 +60,16 @@ namespace Mt.Fruit.Web.Services
             return result;
         }
 
+        public async Task<Resource> GetResource(int id)
+        {
+            string uri = API.Resource.GetResource(_remoteServiceBaseUrl, id);
+            var responseString = await _httpClient.GetStringAsync(uri);
+
+            var result = responseString.FromJson<Resource>();
+
+            return result;
+        }
+
         public async Task<PagedResult<Resource>> GetResources(int categoryId, int page, int size)
         {
             string uri = API.Resource.GetResources(_remoteServiceBaseUrl, categoryId, page, size);

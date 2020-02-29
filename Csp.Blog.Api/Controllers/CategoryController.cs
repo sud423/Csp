@@ -43,6 +43,7 @@ namespace Csp.Blog.Api.Controllers
             var result = await _blogDbContext.Categories
                 .Where(predicate)
                 .OrderBy(a => a.Sort)
+                .ThenByDescending(a => a.CreatedAt)
                 .ToPagedAsync(page, size);
 
             return Ok(result);

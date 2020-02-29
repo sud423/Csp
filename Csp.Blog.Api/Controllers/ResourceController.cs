@@ -34,6 +34,7 @@ namespace Csp.Blog.Api.Controllers
             var result = await _blogDbContext.Resources
                 .Where(a => a.TenantId == tenantId && userId == a.UserId && a.Status == 1 && type==a.Type)
                 .OrderBy(a => a.Sort)
+                .ThenByDescending(a=>a.CreatedAt)
                 .ToPagedAsync(page, size);
 
             return Ok(result);

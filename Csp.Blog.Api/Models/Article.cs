@@ -62,10 +62,13 @@ namespace Csp.Blog.Api.Models
 
 
 
-        public void SetUpdated(string title,string content)
+        public void SetUpdated(Article article)
         {
-            Title = title;
-            Content = content;
+            Title = article.Title;
+            Content = article.Content;
+            Keyword = article.Keyword;
+            Cover = article.Cover;
+            Lead = article.Lead;
         }
     }
 }

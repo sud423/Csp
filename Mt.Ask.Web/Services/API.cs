@@ -19,7 +19,7 @@
             public static string GetArticles(string baseUrl, int categoryId) => $"{baseUrl}/articles/2/{categoryId}/1";
 
             public static string GetArticleByPage(string baseUrl,int categoryId, int userId, int page, int size)
-                => $"{baseUrl}/article/2/{categoryId}?userId={userId}&page={page}&size={size}";
+                => $"{baseUrl}/article/2/1/{categoryId}?userId={userId}&page={page}&size={size}";
 
             public static string GetReplyByPage(string baseUrl, int id, int page, int size)
                 => $"{baseUrl}/article/getreplies/{id}?page={page}&size={size}";

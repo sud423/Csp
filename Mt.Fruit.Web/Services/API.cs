@@ -24,8 +24,13 @@
 
             public static string GetArticle(string baseUrl) => $"{baseUrl}/articles/browse";
 
-            public static string GetArticles(string baseUrl, int categoryId,int page, int size) => $"{baseUrl}/articles/2/{categoryId}/3/{page}/{size}";
+            public static string GetArticle(string baseUrl,int id) => $"{baseUrl}/article/find/{id}";
 
+            public static string GetArticles(string baseUrl, int categoryId,int page, int size) 
+                => $"{baseUrl}/articles/2/{categoryId}/3/{page}/{size}";
+
+            public static string GetArticles(string baseUrl, int categoryId, int page, int size, int userId)
+                => $"{baseUrl}/article/2/3/{categoryId}?userId={userId}&page={page}&size={size}";
         }
 
         public static class Resource
@@ -35,6 +40,8 @@
             public static string Delete(string baseUrl, int id) => $"{baseUrl}/resource/delete/{id}";
 
             public static string GetResource(string baseUrl) => $"{baseUrl}/resources/browse";
+
+            public static string GetResource(string baseUrl,int id) => $"{baseUrl}/resource/find/{id}";
 
             public static string GetResources(string baseUrl, int categoryId, int page, int size) => $"{baseUrl}/resources/2/{categoryId}/3/{page}/{size}";
 

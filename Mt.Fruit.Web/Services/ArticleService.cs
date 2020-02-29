@@ -58,9 +58,31 @@ namespace Mt.Fruit.Web.Services
             return result;
         }
 
+        public async Task<Article> GetArticle(int id)
+        {
+            string uri = API.Article.GetArticle(_remoteServiceBaseUrl, id);
+
+            var responseString = await _httpClient.GetStringAsync(uri);
+
+            var result = responseString.FromJson<Article>();
+
+            return result;
+        }
+
         public async Task<PagedResult<Article>> GetArticles(int categoryId, int page, int size)
         {
             string uri = API.Article.GetArticles(_remoteServiceBaseUrl, categoryId,page, size);
+
+            var responseString = await _httpClient.GetStringAsync(uri);
+
+            var result = responseString.FromJson<PagedResult<Article>>();
+
+            return result;
+        }
+
+        public async Task<PagedResult<Article>> GetArticles(int categoryId, int userId, int page, int size)
+        {
+            string uri = API.Article.GetArticles(_remoteServiceBaseUrl, categoryId, page, size,userId);
 
             var responseString = await _httpClient.GetStringAsync(uri);
 

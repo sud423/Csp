@@ -16,7 +16,7 @@ namespace Mt.Fruit.Web.Models
 
         public string Cover { get; set; }
 
-        [StringLength(255,ErrorMessage ="导语最大为255个字符")]
+        [StringLength(255, ErrorMessage = "导语最大为255个字符")]
         public string Lead { get; set; }
 
         public string Content { get; set; }
@@ -46,6 +46,8 @@ namespace Mt.Fruit.Web.Models
         public int WebSiteId { get; set; }
 
         public virtual User User { get; set; }
+
+        public virtual Category Category { get; set; }
 
         public void SetId(int tenantId, int userId,string nickName, int webSiteId, int id)
         {

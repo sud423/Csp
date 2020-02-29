@@ -62,7 +62,17 @@ a,a:active,a:hover {
 	background-repeat: unset;
 }
 
-#app h2{
+.table-bordered > tbody > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > thead > tr > th {
+	border: none;
+	border-top: solid 1px #ddd;
+}
+
+#app h2 {
 	margin-top: 28px;
 	margin-bottom: 12px;
 	font-weight: bold;
