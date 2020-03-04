@@ -70,7 +70,9 @@
     KindEditor.ready(function (K) {
         var editor = K.create('#editor_id', {
             uploadJson: "@Url.Action("Upload","Oss")",
-            pasteType: 1
+            pasteType: 1,
+            filePostName:"file",
+            //allowImageRemote:false
         });
 
         var uploadbutton = K.uploadbutton({

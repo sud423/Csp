@@ -27,12 +27,10 @@ namespace Mt.Fruit.Web.Controllers
             if (dir == "image")
             {
                 //处理照片大小
-                using(var image = Image.FromStream(file.OpenReadStream()))
+                using var image = Image.FromStream(file.OpenReadStream());
+                if (image.Width > 1024 || image.Height > 720)
                 {
-                    if(image.Width>1024 || image.Height > 720)
-                    {
-                        return Ok(new { Error=1,Message="图片太大，最佳图片宽高为：1024*720"});
-                    }
+                    return Ok(new { Error = 1, Message = "图片太大，最佳图片宽高为：1024*720" });
                 }
 
             }
