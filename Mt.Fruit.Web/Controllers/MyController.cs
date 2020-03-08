@@ -156,7 +156,7 @@ namespace Mt.Fruit.Web.Controllers
         /// <param name="article"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Save(Article article)
+        public async Task<IActionResult> Save(Article article,bool isPerview=false)
         {
             if (!ModelState.IsValid)
                 if (article.CategoryId == 43)
@@ -171,6 +171,12 @@ namespace Mt.Fruit.Web.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                var s = await response.GetResult();
+
+                if (isPerview)
+                    return Ok(s);
+
+
                 if (article.Id > 0)
                 {
                     return RedirectToAction(nameof(Articles));

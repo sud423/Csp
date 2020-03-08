@@ -96,7 +96,7 @@ namespace Csp.Blog.Api.Controllers
 
             await _blogDbContext.SaveChangesAsync();
 
-            return Ok(OptResult.Success());
+            return Ok(OptResult.Success(article.Id.ToString()));
         }
 
         /// <summary>

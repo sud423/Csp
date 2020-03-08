@@ -1,36 +1,24 @@
 /**
  * 网站脚本
  */
-var scroll_top = {
-	"#qiyejieshao" : 670,
-	"#gongkaike" : 1420,
-	"#kechengyudingzhi" : 2585,
-	"#yuanxiao" : 3340,
-	"#zhuanjiayuxiaoyou" : 4175,
-	"#xianshangxuexi" : 5310
-};
+
 
 var categoryId = 0;
 
 $(function () {
-
-    $(".nav a").click(function () {
-        setTimeout(setScrollTop, 10);
+    $("#btn_preview").click(function () {
+        if ($("#Title").val() === '') {
+            alert("标题不能为空");
+            return;
+        }
+        $("#editor_id").val(editor.html());
+        $.post("/my/save?isPerview=true", $("#from1").serialize(), function (e) {
+            window.open("/detail/" + e.msg);
+        });
+        
     });
-
-    setScrollTop();
 });
 
-function setScrollTop() {
-
-	var key = window.location.hash;
-	if (!key)
-		return;
-
-	var h = scroll_top[key];
-
-	$("html,body").scrollTop(h);
-}
 
 //分页功能
 var setPaginator = function (data,t,s) {
