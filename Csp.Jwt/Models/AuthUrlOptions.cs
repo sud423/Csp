@@ -4,7 +4,7 @@
     /// 一种简单的结构，用于存储配置的登录/注销
     /// 路径和返回URL参数的名称
     /// </summary>
-    public sealed class AuthUrlOption
+    public sealed class AuthUrlOptions
     {
         /// <summary>
         /// 在未经身份验证的请求的情况下将用户重定向到的登录路径。

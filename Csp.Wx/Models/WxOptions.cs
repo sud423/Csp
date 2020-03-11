@@ -5,7 +5,7 @@ namespace Csp.Wx.Models
     /// <summary>
     /// 微信配置参数
     /// </summary>
-    public class WxOption
+    public class WxOptions
     {
         /// <summary>
         /// 开发者ID

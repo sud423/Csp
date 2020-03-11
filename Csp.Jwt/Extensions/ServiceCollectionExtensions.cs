@@ -13,13 +13,13 @@ namespace Csp.Jwt.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        private static JwtTokenOption jwtTokenOptions;
+        private static JwtTokenOptions jwtTokenOptions;
 
         public static IServiceCollection AddJwt(this IServiceCollection services, IConfiguration configuration)
         {
             var appSettingsSection = configuration.GetSection("Jwt");
-            services.Configure<JwtTokenOption>(appSettingsSection);
-            jwtTokenOptions = appSettingsSection.Get<JwtTokenOption>();
+            services.Configure<JwtTokenOptions>(appSettingsSection);
+            jwtTokenOptions = appSettingsSection.Get<JwtTokenOptions>();
 
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
@@ -36,11 +36,11 @@ namespace Csp.Jwt.Extensions
         public static IServiceCollection AddMvcJwt(this IServiceCollection services, IConfiguration configuration, string applicationDiscriminator = null)
         {
             var appSettingsSection = configuration.GetSection("Jwt");
-            services.Configure<JwtTokenOption>(appSettingsSection);
-            jwtTokenOptions = appSettingsSection.Get<JwtTokenOption>();
+            services.Configure<JwtTokenOptions>(appSettingsSection);
+            jwtTokenOptions = appSettingsSection.Get<JwtTokenOptions>();
 
             var appSettings = configuration.GetSection("AuthUrl");
-            AuthUrlOption authUrlOptions = appSettingsSection.Get<AuthUrlOption>();
+            AuthUrlOptions authUrlOptions = appSettingsSection.Get<AuthUrlOptions>();
 
             var hostingEnvironment = services.BuildServiceProvider().GetService<IWebHostEnvironment>();
 

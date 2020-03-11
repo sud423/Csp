@@ -22,8 +22,8 @@ namespace Csp.Logger
             builder.AddConfiguration();
 
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>());
-            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<FileLoggerOption>, FileLoggerOptionSetup>());
-            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IOptionsChangeTokenSource<FileLoggerOption>, LoggerProviderOptionsChangeTokenSource<FileLoggerOption, FileLoggerProvider>>());
+            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<FileLoggerOptions>, FileLoggerOptionSetup>());
+            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IOptionsChangeTokenSource<FileLoggerOptions>, LoggerProviderOptionsChangeTokenSource<FileLoggerOptions, FileLoggerProvider>>());
             return builder;
         }
 
@@ -31,7 +31,7 @@ namespace Csp.Logger
         /// <summary>
         /// 将文件记录程序提供程序（别名为“File”）以单例形式添加到可用服务中，并将文件记录程序选项类绑定到appsettings.json文件的“文件”部分
         /// </summary>
-        public static ILoggingBuilder AddFile(this ILoggingBuilder builder, Action<FileLoggerOption> configure)
+        public static ILoggingBuilder AddFile(this ILoggingBuilder builder, Action<FileLoggerOptions> configure)
         {
             if (configure == null)
             {

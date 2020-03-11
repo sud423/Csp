@@ -11,9 +11,9 @@ namespace Csp.Jwt
 {
     public class JwtTokenGenerator : IJwtTokenGenerator
     {
-        private readonly JwtTokenOption _tokenOptions;
+        private readonly JwtTokenOptions _tokenOptions;
 
-        public JwtTokenGenerator(IOptions<JwtTokenOption> options)
+        public JwtTokenGenerator(IOptions<JwtTokenOptions> options)
         {
             _tokenOptions = options.Value;
         }

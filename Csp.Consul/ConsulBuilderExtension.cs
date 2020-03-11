@@ -15,7 +15,7 @@ namespace Csp.Consul
             // Retrieve Consul client from DI
             var consulClient = app.ApplicationServices.GetRequiredService<IConsulClient>();
             var consulConfig = app.ApplicationServices
-                                .GetRequiredService<IOptions<ConsulOption>>();
+                                .GetRequiredService<IOptions<ConsulOptions>>();
             // Setup logger
             //var loggingFactory = app.ApplicationServices
             //                    .GetRequiredService<ILoggerFactory>();

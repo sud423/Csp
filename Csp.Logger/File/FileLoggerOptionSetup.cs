@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace Csp.Logger.File
 {
-    public class FileLoggerOptionSetup : ConfigureFromConfigurationOptions<FileLoggerOption>
+    public class FileLoggerOptionSetup : ConfigureFromConfigurationOptions<FileLoggerOptions>
     {
         public FileLoggerOptionSetup(ILoggerProviderConfiguration<FileLoggerProvider> providerConfiguration)
             : base(providerConfiguration.Configuration)

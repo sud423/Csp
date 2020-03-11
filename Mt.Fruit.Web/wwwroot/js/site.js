@@ -14,6 +14,7 @@ $(function () {
         $("#editor_id").val(editor.html());
         $.post("/my/save?isPerview=true", $("#from1").serialize(), function (e) {
             window.open("/detail/" + e.msg);
+            $("#Id").val(e.msg);
         });
         
     });

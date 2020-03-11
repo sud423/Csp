@@ -10,26 +10,30 @@ namespace Csp.EF.Extensions
     {
         public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => {
             builder.AddFilter((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Debug).AddDebug();
+            builder.AddFilter((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information).AddConsole();
+#if DEBUG
             builder.AddFilter((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information).AddFile();
+#endif
         });
 
 
         public static IServiceCollection AddEF<TDbContext>(this IServiceCollection services, IConfiguration configuration) where TDbContext : DbContext
         {
-            var appSettingsSection = configuration.GetSection("SqlConnection");
+            var appSettingsSection = configuration.GetSection("ConnectionStrings:DefaultConnectionString");
 
-            var _options = appSettingsSection.Get<SqlOption>();
+            var _options = appSettingsSection.Get<SqlOptions>();
             services.AddDbContext<TDbContext>(options =>
             {
                 options.UseLoggerFactory(MyLoggerFactory);
-                switch (_options.SqlType)
+
+                if ("MySql.Data.MySqlClient".ToLower().Equals(_options.ProviderName.ToLower()))
                 {
-                    case SqlType.MySql:
-                        options.UseMySql(_options.MySqlConnection);
-                        break;
-                    case SqlType.SqlServer:
-                        options.UseSqlServer(_options.SqlServerConnection);
-                        break;
+                    options.UseMySql(_options.ConnectionString);
+                }
+
+                if ("System.Data.SqlClient".ToLower().Equals(_options.ProviderName.ToLower()))
+                {
+                    options.UseSqlServer(_options.ConnectionString);
                 }
             });
 

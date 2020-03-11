@@ -12,10 +12,10 @@ namespace Csp.Consul
     {
         private CancellationTokenSource _cts;
         private readonly IConsulClient _client;
-        private readonly ConsulOption _options;
+        private readonly ConsulOptions _options;
         private string _registrationID;
 
-        public ConsulHostedService(IConsulClient client, IOptions<ConsulOption> options)
+        public ConsulHostedService(IConsulClient client, IOptions<ConsulOptions> options)
         {
             _options = options.Value;
             _client = client;

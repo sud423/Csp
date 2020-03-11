@@ -11,9 +11,9 @@ namespace Csp.Wx
 {
     public class WxService : IWxService
     {
-        private readonly WxOption _options;
+        private readonly WxOptions _options;
         
-        public WxService(IOptions<WxOption> options, HttpClient client, IMemoryCache cache)
+        public WxService(IOptions<WxOptions> options, HttpClient client, IMemoryCache cache)
         {
             _options = options.Value;
 

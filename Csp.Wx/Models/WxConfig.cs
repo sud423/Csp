@@ -48,7 +48,7 @@ namespace Csp.Wx.Models
             _jsapi_ticket = jstickte;
         }
 
-        public static WxConfig Create(WxOption options, string jsapi_ticket, string url)
+        public static WxConfig Create(WxOptions options, string jsapi_ticket, string url)
         {
             return new WxConfig(jsapi_ticket, url)
             {

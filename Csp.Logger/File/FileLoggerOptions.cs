@@ -3,7 +3,7 @@ using System;
 
 namespace Csp.Logger.File
 {
-    public class FileLoggerOption
+    public class FileLoggerOptions
     {
         private long? _fileSizeLimit; //每个文件的最大日志大小（以字节为单位）
         private int? _retainedFileCountLimit; // 保留最新几个日志

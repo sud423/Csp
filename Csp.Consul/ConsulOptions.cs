@@ -2,7 +2,7 @@
 
 namespace Csp.Consul
 {
-    public class ConsulOption
+    public class ConsulOptions
     {
 
         /// <summary>

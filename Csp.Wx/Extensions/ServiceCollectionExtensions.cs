@@ -9,7 +9,7 @@ namespace Csp.Wx.Extensions
         public static IServiceCollection AddWx(this IServiceCollection services, IConfiguration configuration)
         {
             var appSettingsSection = configuration.GetSection("Wx");
-            services.Configure<WxOption>(appSettingsSection);
+            services.Configure<WxOptions>(appSettingsSection);
 
             services.AddTransient<WxRequestHeaderDelegatingHandler>();
 

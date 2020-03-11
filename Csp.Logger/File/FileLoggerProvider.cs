@@ -17,7 +17,7 @@ namespace Csp.Logger.File
     [ProviderAlias("File")]
     public class FileLoggerProvider : LoggerProvider
     {
-        FileLoggerOption _settings;
+        FileLoggerOptions _settings;
 
         bool terminated;
         int counter = 0;
@@ -26,7 +26,7 @@ namespace Csp.Logger.File
         ConcurrentQueue<LogMessage> infoQueue = new ConcurrentQueue<LogMessage>();
 
 
-        public FileLoggerProvider(FileLoggerOption settings)
+        public FileLoggerProvider(FileLoggerOptions settings)
         {
 
             _settings = settings;
@@ -142,7 +142,7 @@ namespace Csp.Logger.File
         /// <summary>
         /// IOptionsMonitor提供OnChange()方法，当用户更改appsettings.json文件中此提供程序的设置时，将调用此方法。
         /// </summary>
-        public FileLoggerProvider(IOptionsMonitor<FileLoggerOption> settings) : this(settings.CurrentValue)
+        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> settings) : this(settings.CurrentValue)
         {
             // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/change-tokens
             _optionsChangeToken = settings.OnChange(setting => {

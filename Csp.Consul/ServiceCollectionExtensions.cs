@@ -10,7 +10,7 @@ namespace Csp.Consul
         public static IServiceCollection AddConsul(this IServiceCollection services, IConfiguration configuration)
         {
             var appSettingsSection = configuration.GetSection("Consul");
-            services.Configure<ConsulOption>(appSettingsSection);
+            services.Configure<ConsulOptions>(appSettingsSection);
             //var options= appSettingsSection.Get<ConsulOption>(); 
             //services.AddSingleton<IHostedService, ConsulHostedService>();
             services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(consulConfig =>

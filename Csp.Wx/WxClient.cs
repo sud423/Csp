@@ -12,9 +12,9 @@ namespace Csp.Wx
 
         public static IMemoryCache MemoryCache { get; private set; }
 
-        public static WxOption WxOption { get; private set; }
+        public static WxOptions WxOption { get; private set; }
 
-        internal static void Init(HttpClient client, IMemoryCache cache,WxOption option)
+        internal static void Init(HttpClient client, IMemoryCache cache,WxOptions option)
         {
             _client = client;
             MemoryCache = cache;

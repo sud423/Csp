@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Csp.Jwt.Models
 {
-    public sealed class JwtTokenOption
+    public sealed class JwtTokenOptions
     {
         /// <summary>
         /// Token发布者

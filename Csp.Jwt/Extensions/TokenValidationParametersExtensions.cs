@@ -6,7 +6,7 @@ namespace Csp.Jwt.Extensions
 {
     static class TokenValidationParametersExtensions
     {
-        internal static TokenValidationParameters ToTokenValidationParams(this JwtTokenOption tokenOptions) =>
+        internal static TokenValidationParameters ToTokenValidationParams(this JwtTokenOptions tokenOptions) =>
             new TokenValidationParameters
             {
                 ClockSkew = TimeSpan.Zero,
