@@ -43,7 +43,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mt.Jt.Web", "Mt.Jt.Web\Mt.J
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mt.Ask.Web", "Mt.Ask.Web\Mt.Ask.Web.csproj", "{C0362C4A-7D74-43D5-B1B0-C5A528D86759}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mt.Fruit.Web", "Mt.Fruit.Web\Mt.Fruit.Web.csproj", "{D8D206E6-8587-4884-8D76-19690E39EC85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mt.Fruit.Web", "Mt.Fruit.Web\Mt.Fruit.Web.csproj", "{D8D206E6-8587-4884-8D76-19690E39EC85}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

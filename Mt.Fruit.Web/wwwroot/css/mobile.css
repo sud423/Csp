@@ -126,3 +126,94 @@ a,a:hover,a:active{
     padding: 0;
     margin-bottom: 25px;
 }
+
+#app .more {
+    color: #fff;
+    background-color: #84ce04;
+    padding: 3px 10px;
+    font-weight: bold;
+    font-size: 18px;
+    text-decoration: none;
+    height: 30px;
+    width: 145px;
+    display: inline-block;
+    margin:20px;
+}
+
+
+
+/*兴趣小组分页*/
+.group {
+    margin: 20px auto;
+    border: 1px solid #d5d5d5;
+    font-size: 15px;
+    background: #fff;
+    width:250px;
+}
+
+.group .panel {
+    border-radius: unset;
+    margin-bottom: 0px;
+    border: none;
+    -webkit-box-shadow: unset;
+    box-shadow: unset;
+}
+
+.group img {
+    width:202px;
+}
+
+.group .panel-footer {
+    background-color: unset;
+    text-align: center;
+    border-radius: unset;
+    border: unset;
+    padding: 0;
+}
+
+.group h2 {
+    font-weight: bold;
+    margin: 0px;
+}
+
+.group .love {
+    padding-left: 18px;
+    background-image: url("../images/heart.png");
+    background-repeat: no-repeat;
+}
+
+.group .add {
+    padding-left: 18px;
+    background-image: url("../images/jiahao.png");
+    background-repeat: no-repeat;
+}
+
+.group .panel-footer p {
+    margin: 10px;
+    font-size: 12px;
+}
+
+.header {
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    background:#fff;
+}
+
+.header .line {
+    display: inline-block;
+    width: 44%;
+    border-top: 2px dashed #cccccc;
+    vertical-align: 5px;
+}
+
+.header .text{
+    font-weight:bold;
+    font-size:18px;
+}
+.dl-list{
+    margin:0px;
+}
+.dl-list dt {
+    font-weight: normal;
+}

@@ -72,22 +72,29 @@ function getArticles(page) {
 }
 
 function render(data) {
-    $(".table tbody").empty();
+
+    $(".dl-list").empty();
+    $(".table-bordered tbody").empty();
     var html = [];
+    var arr = [];
     $.each(data, function (i) {
-        html.push("<tr>");
+        arr.push("<dt><a href='/detail/" + this.id + "'>");
+        arr.push(this.title + ' ' + this.replys + "/" + this.clicks);
+        arr.push("</a></dt>");
         var row = $("#trExample").html();
-        row = row.replace("{4}", this.id);
-        row = row.replace("{0}", this.title);
-        row = row.replace("{1}", this.author);
-        row = row.replace("{2}", this.replys + "/" + this.clicks);
-        row = row.replace("{3}", this.lastReplyUser == null ? "" : this.lastReplyUser);
-        html.push(row);
-
-        html.push("</tr>");
+        if (row) {
+            html.push("<tr>");
+            row = row.replace("{4}", this.id);
+            row = row.replace("{0}", this.title);
+            row = row.replace("{1}", this.author);
+            row = row.replace("{2}", this.replys + "/" + this.clicks);
+            row = row.replace("{3}", this.lastReplyUser == null ? "" : this.lastReplyUser);
+            html.push(row);
+            html.push("</tr>");
+        }
     });
-
-    $(".table tbody").html(html.join(""));
+    $(".dl-list").html(arr.join(""));
+    $(".table-bordered tbody").html(html.join(""));
 }
 
 function render1(data) {

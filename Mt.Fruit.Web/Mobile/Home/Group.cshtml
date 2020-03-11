@@ -2,18 +2,15 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    ViewData["Title"] = "我爱果庄";
-    
+    ViewData["Title"] = "我爱果庄，兴趣小组";
+
     int l = Model.Count();
-    int row = l / 2;
+    int rw = l / 2;
+
+    int row = l % 2 == 0 ? rw : rw + 1;
 }
 
 @model IEnumerable<Category>
-
-<div class="carousel">
-    <h1>我爱上课，遇见更美好的的自己</h1>
-    <p>I LOVE CLASS,MEET A BEETER LIFE.</p>
-</div>
 
 <partial name="_Nav" />
 
@@ -36,9 +33,5 @@
             }
         </div>
     }
-
-    <div class="row text-center">
-        <a asp-area="" asp-action="group" class="more">查看更多……</a>
-    </div>
 
 </div>
