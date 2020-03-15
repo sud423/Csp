@@ -42,8 +42,8 @@ a,a:hover,a:active{
 
 .carousel {
     background-color: #fff;
-    height: 354px;
-    max-height: 354px;
+    /*height: 354px;
+    max-height: 354px;*/
     display: flex;
     text-align: center;
     flex-direction: column;
@@ -97,34 +97,41 @@ a,a:hover,a:active{
 
 #app .panel {
     border-radius: unset;
-    margin-bottom: 5px;
-    border: 1px solid #d5d5d5;
-    width: 49%;
-    display: inline-block;
+    margin: 0px;
+    /*border: 1px solid #d5d5d5;*/
+    width: 33%;
+    /* display: inline-block; */
+    float: left;
 }
 
+#app .panel:first-child {
+    width: 33.5%;
+}
+#app .panel:last-child {
+    width: 33.5%;
+}
 #app .panel-body {
-    padding: 0px;
-    height: 150px;
+    padding: 15px;
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#app .panel-body img{
-    width:126px;
-    height:90px;
-}
+/*#app .panel-body img{
+    width:84px;
+    height:60px;
+}*/
 
 #app .panel-footer {
     background-color: unset;
     text-align: center;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: bold;
     border-radius: unset;
     border: unset;
     padding: 0;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 #app .more {
