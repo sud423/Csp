@@ -224,3 +224,55 @@ a,a:hover,a:active{
 .dl-list dt {
     font-weight: normal;
 }
+
+
+
+
+footer {
+    margin-top: 30px;
+    /*background-image: url('../images/could.png');*/
+    background:#fff;
+    -moz-background-size: 100% 100%;
+    background-size: 100% 100%;
+}
+
+
+footer .row {
+    margin-top: 35px;
+}
+
+footer .panel {
+    border-radius: unset;
+    margin-bottom: 0px;
+    border: none;
+    -webkit-box-shadow: unset;
+    box-shadow: unset;
+    float:left;
+}
+
+footer .panel-body {
+    padding: 0px;
+    height: 85px;
+}
+
+footer .panel-body {
+    padding: 0px;
+    height: 85px;
+}
+
+
+footer .panel-footer {
+    background-color: unset;
+    text-align: center;
+    border-radius: unset;
+    border: unset;
+    padding: 0;
+}
+
+footer p {
+    margin: 25px 0;
+}
+
+.mb-3 {
+margin-bottom: 1rem !important
+}

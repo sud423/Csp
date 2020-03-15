@@ -27,11 +27,11 @@
 
                         @if (ViewContext.HttpContext.User.Identity.IsAuthenticated)
                         {
-                            <text>欢迎，@(ViewContext.HttpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value)</text>
+                        <text>欢迎，@(ViewContext.HttpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value)</text>
                         }
                         else
                         {
-                            <a asp-controller="account" asp-action="index" style="display: inline-block; ">登录/注册</a>
+                        <a asp-controller="account" asp-action="index" style="display: inline-block; ">登录/注册</a>
                         }
                     </div>
 
@@ -43,41 +43,47 @@
     @RenderBody()
 
 
-    <div class="container">
-        
+    <footer>
+        <div class="container text-center" style="padding-right: 7px; padding-left: 10px;">
 
-        <div class="row text-center">
-            <div class="col-xs-4">
-                <div class="qrcode">
-                    <img class="img-responsive"
-                         src="~/images/wx_qr.jpg"
-                         alt="wxqrcode" />
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img class="img-responsive" src="~/images/qr_code.png" alt="官方微博" />
+                    </div>
+                    <div class="panel-footer">
+                        官方微博
+                    </div>
                 </div>
-                <p style="margin:5px 0px 10px;font-size:9px;">官方微信公众号</p>
-            </div>
-            <div class="col-xs-4">
-                <div class="qrcode">
-                    <img class="img-responsive"
-                         src="~/images/wb_qr.jpg"
-                         alt="wbqrcode" />
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img class="img-responsive" src="~/images/qr_code.png" alt="官方微信" />
+                    </div>
+                    <div class="panel-footer">
+                        官方微信
+                    </div>
                 </div>
-                <p style="margin:5px 0px 10px;font-size:9px;">官方新浪微博号</p>
-            </div>
-            <div class="col-xs-4">
-                <div class="qrcode">
-                    <img class="img-responsive"
-                         src="~/images/dy_qr.jpg"
-                         alt="dyqrcode" />
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img class="img-responsive" src="~/images/qr_code.png" alt="官方抖音" />
+                    </div>
+                    <div class="panel-footer">
+                        官方抖音
+                    </div>
                 </div>
-                <p style="margin:5px 0px 10px;font-size:9px;">官方抖音号</p>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img class="img-responsive" src="~/images/qr_code.png" alt="官方快手" />
+                    </div>
+                    <div class="panel-footer">
+                        官方快手
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="row text-center" style="font-size:8px;">
             <p>Copyright &copy; 敏太文化 2015 沪ICP备15053877</p>
         </div>
-    </div>
-
+    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
