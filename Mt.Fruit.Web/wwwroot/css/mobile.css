@@ -41,9 +41,9 @@ a,a:hover,a:active{
 }
 
 .carousel {
-    background-color: #9e3b28;
-    height: 175px;
-    max-height: 175px;
+    background-color: #fff;
+    height: 354px;
+    max-height: 354px;
     display: flex;
     text-align: center;
     flex-direction: column;
@@ -99,7 +99,7 @@ a,a:hover,a:active{
     border-radius: unset;
     margin-bottom: 5px;
     border: 1px solid #d5d5d5;
-    width: 170px;
+    width: 49%;
     display: inline-block;
 }
 
