@@ -98,17 +98,21 @@ a,a:hover,a:active{
 #app .panel {
     border-radius: unset;
     margin: 0px;
-    /*border: 1px solid #d5d5d5;*/
+    border:unset;
+    border-top: 1px solid #ddd;
     width: 33%;
     /* display: inline-block; */
     float: left;
 }
 
+
 #app .panel:first-child {
     width: 33.5%;
+    border-right: 1px solid #ddd;
 }
-#app .panel:last-child {
+#app .panel:not(:first-child):last-child {
     width: 33.5%;
+    border-left: 1px solid #ddd;
 }
 #app .panel-body {
     padding: 15px;
@@ -126,7 +130,7 @@ a,a:hover,a:active{
 #app .panel-footer {
     background-color: unset;
     text-align: center;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     border-radius: unset;
     border: unset;
@@ -229,16 +233,15 @@ a,a:hover,a:active{
 
 
 footer {
-    margin-top: 30px;
-    /*background-image: url('../images/could.png');*/
-    background:#fff;
+    background-image: url('../images/cloud.png');
+    /*background:#fff;*/
     -moz-background-size: 100% 100%;
     background-size: 100% 100%;
 }
 
 
 footer .row {
-    margin-top: 35px;
+    margin-top: 125px;
 }
 
 footer .panel {
@@ -247,18 +250,15 @@ footer .panel {
     border: none;
     -webkit-box-shadow: unset;
     box-shadow: unset;
-    float:left;
+    display:inline-block;
 }
 
 footer .panel-body {
     padding: 0px;
-    height: 85px;
+    width:80px;
+    height: 80px;
 }
 
-footer .panel-body {
-    padding: 0px;
-    height: 85px;
-}
 
 
 footer .panel-footer {
