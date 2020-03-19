@@ -81,11 +81,11 @@
             }
         });
         uploadbutton.fileBox.change(function (e) {
-            if (e.srcElement.files[0].size > 1*1024*1024 && @(Model.CategoryId)==44) {
+            if (e.srcElement.files[0].size > 1*1024*1024 && @(Model.CategoryId)!=44) {
                 alert("文件不能超过1M")
                 return;
             }
-            if (e.srcElement.files[0].size > 31457280 && @(Model.CategoryId)!=44) {
+            if (e.srcElement.files[0].size > 31457280 && @(Model.CategoryId)==44) {
                 alert("文件不能超过30M")
                 return;
             }

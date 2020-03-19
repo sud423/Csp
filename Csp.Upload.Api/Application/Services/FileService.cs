@@ -91,7 +91,7 @@ namespace Csp.Upload.Api.Application.Services
                 OptResult.Failed("上传文件大小超过限制30M");
 
             if (length > 1 * 1024 * 1024 && key == "image")
-                return OptResult.Failed("上传文件大小超过限制30M");
+                return OptResult.Failed("上传文件大小超过限制1M");
 
             return OptResult.Success();
         }
