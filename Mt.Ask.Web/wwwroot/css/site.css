@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 
 body {
 	position: relative;
@@ -459,4 +459,13 @@ footer {
 
 .izl-rmenu .btn-top:hover {
 	background-color: #444;
+}
+
+
+.online {
+	height: 200px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid #000;
 }
