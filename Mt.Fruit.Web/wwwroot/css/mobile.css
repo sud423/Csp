@@ -142,8 +142,8 @@ a,a:hover,a:active{
     color: #fff;
     background-color: #84ce04;
     padding: 3px 10px;
-    font-weight: bold;
-    font-size: 18px;
+    /*font-weight: bold;
+    font-size: 18px;*/
     text-decoration: none;
     height: 30px;
     width: 145px;
@@ -151,7 +151,9 @@ a,a:hover,a:active{
     margin:20px;
 }
 
-
+#app img{
+    height:71.67px;
+}
 
 /*兴趣小组分页*/
 .group {
@@ -213,7 +215,7 @@ a,a:hover,a:active{
 
 .header .line {
     display: inline-block;
-    width: 44%;
+    width: 41%;
     border-top: 2px dashed #cccccc;
     vertical-align: 5px;
 }
@@ -227,6 +229,12 @@ a,a:hover,a:active{
 }
 .dl-list dt {
     font-weight: normal;
+    /*overflow: hidden;
+    text-overflow: ellipsis;
+    height:24px;
+    line-height:24px;
+    width:180px;
+    display:inline;*/
 }
 
 
@@ -237,11 +245,12 @@ footer {
     /*background:#fff;*/
     -moz-background-size: 100% 100%;
     background-size: 100% 100%;
+    margin-top:-20px;
 }
 
 
 footer .row {
-    margin-top: 125px;
+    margin-top: 65px;
 }
 
 footer .panel {
@@ -251,12 +260,17 @@ footer .panel {
     -webkit-box-shadow: unset;
     box-shadow: unset;
     display:inline-block;
+    margin-right:20px;
+}
+
+footer .panel:last-child{
+    margin-right:0px;
 }
 
 footer .panel-body {
     padding: 0px;
-    width:80px;
-    height: 80px;
+    width:60px;
+    height: 60px;
 }
 
 
@@ -271,6 +285,7 @@ footer .panel-footer {
 
 footer p {
     margin: 25px 0;
+    font-size:13px;
 }
 
 .mb-3 {

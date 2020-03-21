@@ -78,9 +78,9 @@ function render(data) {
     var html = [];
     var arr = [];
     $.each(data, function (i) {
-        arr.push("<dt><a href='/detail/" + this.id + "'>");
-        arr.push(this.title + ' ' + this.replys + "/" + this.clicks);
-        arr.push("</a></dt>");
+        arr.push("<dt title='" + this.title + "'><a href='/detail/" + this.id + "'>");
+        arr.push(this.title + ' ' );
+        arr.push("</a><span>" + this.replys + "/" + this.clicks+"</span></dt>");
         var row = $("#trExample").html();
         if (row) {
             html.push("<tr>");
