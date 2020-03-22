@@ -24,7 +24,24 @@
             {
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <a asp-action="interestgroup" asp-route-id="@(Model.ElementAt(i)?.Id)"><img class="img-responsive" src="@(Model.ElementAt(i)?.SmallPic)" alt="@(Model.ElementAt(i)?.Name)" /></a>
+                        <a asp-action="interestgroup" asp-route-id="@(Model.ElementAt(i)?.Id)">
+                            @switch (Model.ElementAt(i).Id)
+                            {
+                                case 17:
+                                case 26:
+                                    <img class="img-responsive" style="height:80px;" src="@(Model.ElementAt(i)?.SmallPic)" alt="@(Model.ElementAt(i)?.Name)" />
+                                    break;
+                                case 23:
+                                case 24:
+                                    <img class="img-responsive" style="height:85px;" src="@(Model.ElementAt(i)?.SmallPic)" alt="@(Model.ElementAt(i)?.Name)" />
+                                    break;
+                                default:
+                                    <img class="img-responsive" src="@(Model.ElementAt(i)?.SmallPic)" alt="@(Model.ElementAt(i)?.Name)" />
+                                    break;
+                            }
+
+
+                        </a>
                     </div>
                     <div class="panel-footer font-space">
                         <a asp-action="interestgroup" asp-route-id="@(Model.ElementAt(i)?.Id)">@(Model.ElementAt(i)?.Name)</a>
