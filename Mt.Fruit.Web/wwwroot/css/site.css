@@ -303,3 +303,16 @@ footer p{
 	display: inline-block;
 	margin:0px;
 }
+
+
+
+.thumbnail {
+	border: none;
+	padding: 0px;
+	width: 33%;
+	display: inline-block;
+}
+
+.thumbnail video {
+	border-radius: 4px 4px 0px 0px;
+}
