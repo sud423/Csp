@@ -316,3 +316,41 @@ footer p{
 .thumbnail video {
 	border-radius: 4px 4px 0px 0px;
 }
+
+.videoed {
+	display: none;
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	left: 45%;
+	top: 45%;
+	z-index: 99;
+	border-radius: 100%;
+}
+
+.videos {
+	display: none;
+	position: fixed;
+	top:0;
+	right:0;
+	bottom:0;
+	left: 0;
+	z-index: 9999;
+	background:#ddd;
+}
+
+.videos > video {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
+.vclose {
+	position: absolute;
+	right: 1%;
+	top: 1%;
+	border-radius: 100%;
+	cursor: pointer;
+}

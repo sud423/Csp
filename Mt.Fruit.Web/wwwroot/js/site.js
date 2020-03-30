@@ -184,7 +184,10 @@ function read(id) {
     $("video").each(function () {
         this.pause();
     });
-    $("#" + id)[0].play();
+    var src=$("#" + id).attr("src");
+
+    $('.videos').html("<video id=\"video\" src='" + src + "' preload=\"auto\" controls=\"controls\" autoplay=\"autoplay\"></video><img onClick=\"close1()\" class=\"vclose\" src=\"/images/gb.png\" width=\"25\" height=\"25\"/>");
+    $('.videos').show();
 }
 
 
@@ -282,4 +285,11 @@ function getMyArticles(page) {
         $("#list").html(html.join(""));
         setPaginator(res, 3);
     });
+}
+
+function close1() {
+    var v = document.getElementById('video');//获取视频节点
+    $('.videos').hide();//点击关闭按钮关闭暂停视频
+    v.pause();
+    $('.videos').html();
 }
