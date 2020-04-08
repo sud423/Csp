@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>susd</Authors>
+    <PackageProjectUrl>https://github.com/sud423/Csp.git</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
