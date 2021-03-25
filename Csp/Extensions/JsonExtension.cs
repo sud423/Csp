@@ -35,12 +35,12 @@ namespace Csp.Extensions
         /// <param name="json">待反序列化字符串</param>
         /// <param name="parentToken">父节点路径，多级用'.'</param>
         /// <returns></returns>
-        public static T FromJson<T>(this string json, string parentToken = null)
-        {
-            var jsonToParse = string.IsNullOrEmpty(parentToken) ? json : JObject.Parse(json).SelectToken(parentToken).ToString();
+        //public static T FromJson<T>(this string json, string parentToken = null)
+        //{
+        //    var jsonToParse = string.IsNullOrEmpty(parentToken) ? json : JObject.Parse(json).SelectToken(parentToken).ToString();
 
-            return JsonConvert.DeserializeObject<T>(jsonToParse);
-        }
+        //    return JsonConvert.DeserializeObject<T>(jsonToParse);
+        //}
 
         /// <summary>
         /// 根据json key获取相应的值
@@ -53,9 +53,13 @@ namespace Csp.Extensions
         /// 中间用‘.’来区别层级
         /// </param>
         /// <returns></returns>
-        public static T GetValue<T>(this string json, string nodeKey)
+        public static T GetValue<T>(this string json, string nodeKey = "")
         {
-            var val = JObject.Parse(json).SelectToken(nodeKey).Value<T>();
+            if (string.IsNullOrEmpty(nodeKey))
+            {
+                return JsonConvert.DeserializeObject<T>(json);
+            }
+            var val = JObject.Parse(json).SelectToken(nodeKey).ToObject<T>();
             return val;
         }
     }

@@ -7,6 +7,8 @@
 
         public string Error { get; set; }
 
+        public Result() { }
+
         protected Result(bool succeed, string error)
         {
             Succeed = succeed;
