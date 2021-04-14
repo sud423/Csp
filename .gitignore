@@ -347,3 +347,5 @@ healthchecksdb
 /Mt.Fruit.Web/.config
 /Mt.Web/.config
 /Mt.Jt.Web/.config
+/src/modules/Csp.Sample.Api
+/src/modules/Csp.Sample
