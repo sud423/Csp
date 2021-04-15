@@ -16,7 +16,7 @@ namespace Csp.Jwt.Extensions
             services.Configure<JwtTokenOptions>(appSettingsSection);
             var jwtTokenOptions = appSettingsSection.Get<JwtTokenOptions>();
 
-            services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+            services.AddScoped<ITokenGenerator, TokenGenerator>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, x =>
@@ -38,7 +38,7 @@ namespace Csp.Jwt.Extensions
 
             var hostingEnvironment = services.BuildServiceProvider().GetService<IWebHostEnvironment>();
 
-            services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+            services.AddScoped<ITokenGenerator, TokenGenerator>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>

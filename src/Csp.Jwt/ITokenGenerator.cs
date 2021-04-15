@@ -7,7 +7,7 @@ namespace Csp.Jwt
     /// <summary>
     /// token生成接口
     /// </summary>
-    public interface IJwtTokenGenerator
+    public interface ITokenGenerator
     {
         /// <summary>
         /// 根据用户名生成token和身份标识

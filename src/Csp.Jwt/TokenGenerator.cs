@@ -9,11 +9,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Csp.Jwt
 {
-    public class JwtTokenGenerator : IJwtTokenGenerator
+    public class TokenGenerator : ITokenGenerator
     {
         private readonly JwtTokenOptions _tokenOptions;
 
-        public JwtTokenGenerator(IOptions<JwtTokenOptions> options)
+        public TokenGenerator(IOptions<JwtTokenOptions> options)
         {
             _tokenOptions = options.Value;
         }

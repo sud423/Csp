@@ -1,17 +1,27 @@
 ﻿using Csp.Result.Exceptions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
 
 namespace Csp.Web.Filters
 {
-    public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
+    public class CspExceptionFilterAttribute : Attribute, IExceptionFilter
     {
         private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
-        public ApiExceptionFilterAttribute()
+        
+        private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IModelMetadataProvider _modelMetadataProvider;
+
+        public CspExceptionFilterAttribute(IWebHostEnvironment hostEnvironment,
+            IModelMetadataProvider modelMetadataProvider)
         {
+            _hostEnvironment = hostEnvironment;
+            _modelMetadataProvider = modelMetadataProvider;
             // Register known exception types and handlers.
             _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
@@ -22,11 +32,29 @@ namespace Csp.Web.Filters
             };
         }
 
-        public override void OnException(ExceptionContext context)
+        public void OnException(ExceptionContext context)
         {
-            HandleException(context);
+            if (!context.ExceptionHandled)//如果异常没有处理
+            {
+                if (_hostEnvironment.EnvironmentName.ToLower()== "development")//如果是开发环境
+                {
+                    var result = new ViewResult { ViewName = "Error" };
+                    result.ViewData = new ViewDataDictionary(_modelMetadataProvider, context.ModelState)
+                    {
+                        { "Exception", context.Exception }//传递数据
+                    };
+                    context.Result = result;
+                }
+                else
+                {
+                    HandleException(context);
+                }
+                context.ExceptionHandled = true;//异常已处理
+            }
 
-            base.OnException(context);
+            
+
+            //base.OnException(context);
         }
 
         private void HandleException(ExceptionContext context)
@@ -145,5 +173,6 @@ namespace Csp.Web.Filters
 
             context.ExceptionHandled = true;
         }
+
     }
 }
