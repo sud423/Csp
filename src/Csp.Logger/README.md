@@ -1,6 +1,6 @@
 ﻿### Csp.Logger
-Csp.Logger是之前想着不如何不用第三方日志框架，而.net core自带的只能输出到
-console，所以自己去网上搜刮整理：如何将.net core自带日志写到文件。
+`Csp.Logger`是之前想着不如何不用第三方日志框架，而.net core自带的只能输出到
+`Console`，所以自己去网上搜刮整理：如何将.net core自带日志写到文件。
 
 ### 注意
 Csp.Logger是自己兴趣捣鼓，要是大项目生产环境上建议还是慎用。
@@ -109,3 +109,57 @@ public class HomeController : Controller
 6、输出
 
 ![File](file.png)
+
+7、与 `LogDashboard` 结合使用
+
+`LogDashboard`提供了一个可以简单快速查看日志的面板。下面是具体使用情况：
+
+7.1、修改配置文件
+配置文件需要分隔符才可以被 `LogDashboard` 解析，默认是 || 与 `||end`
+
+``` xml
+<?xml version="1.0" encoding="utf-8" ?>
+<nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<targets>
+		<target name="logfile" xsi:type="File" fileName="log\nlog-${shortdate}.log" layout="${longdate}||${level}||${logger}||${message}||${exception:format=ToString:innerFormat=ToString:maxInnerExceptionLevel=10:separator=\r\n}||end" />
+	</targets>
+
+	<rules>
+		<logger name="*" minlevel="Trace" writeTo="logfile" />
+	</rules>
+</nlog>
+```
+
+7.2、安装`LogDashboard`
+
+> Install-Package LogDashboard
+
+7.3、修改`Startup.cs`
+
+``` c#
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddLogDashboard();
+}
+```
+
+``` c#
+public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+{
+    if (env.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+    }
+
+    app.UseLogDashboard();
+
+    app.Run(async (context) =>
+    {
+        await context.Response.WriteAsync("Hello World!");
+    });
+}
+```
+
+7.4 运行项目，在浏览器中导航到 `/logdashboard`
