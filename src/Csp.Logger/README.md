@@ -1,5 +1,5 @@
 ﻿### Csp.Logger
-`Csp.Logger`是之前想着不如何不用第三方日志框架，而.net core自带的只能输出到
+`Csp.Logger`是之前想着如何不使用第三方日志框架把日志写到文件，.net core自带的只能输出到
 `Console`，所以自己去网上搜刮整理：如何将.net core自带日志写到文件。
 
 ### 注意
